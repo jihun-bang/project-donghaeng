@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:dongheang/view/home_view.dart';
-import 'package:dongheang/viewmodel/chat_viewmodel.dart';
-import 'package:dongheang/viewmodel/user_viewmodel.dart';
+import 'package:donghaeng/view/home_view.dart';
+import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

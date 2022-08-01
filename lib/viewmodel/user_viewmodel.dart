@@ -1,4 +1,4 @@
-import 'package:dongheang/model/user.dart';
+import 'package:donghaeng/model/user.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserViewModel extends ChangeNotifier {

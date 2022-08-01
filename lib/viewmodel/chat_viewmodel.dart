@@ -1,4 +1,4 @@
-import 'package:dongheang/model/chat.dart';
+import 'package:donghaeng/model/chat.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatViewModel extends ChangeNotifier {
