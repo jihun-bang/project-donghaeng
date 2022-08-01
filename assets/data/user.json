@@ -1,0 +1,47 @@
+[
+  {
+    "id": "a",
+    "nick_name": "구반석",
+    "image_path": "assets/images/구반석.png"
+  },
+  {
+    "id": "b",
+    "nick_name": "박정아",
+    "image_path": "assets/images/박정아.png"
+  },
+  {
+    "id": "c",
+    "nick_name": "박진양",
+    "image_path": "assets/images/박진양.png"
+  },
+  {
+    "id": "d",
+    "nick_name": "방지훈",
+    "image_path": "assets/images/방지훈.png"
+  },
+  {
+    "id": "e",
+    "nick_name": "방지호",
+    "image_path": "assets/images/방지호.png"
+  },
+  {
+    "id": "f",
+    "nick_name": "이유진",
+    "image_path": "assets/images/이유진.png"
+  },
+  {
+    "id": "g",
+    "nick_name": "태성현",
+    "image_path": "assets/images/태성현.png"
+  },
+  {
+    "id": "h",
+    "nick_name": "나이키",
+    "image_path": "assets/images/나이키.png"
+  },
+  {
+    "id": "i",
+    "nick_name": "유니클",
+    "image_path": "assets/images/유니클.png"
+  }
+]
