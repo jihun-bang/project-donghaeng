@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => chatViewModel.addChat(),
         tooltip: '방 만들기',
         child: const Icon(Icons.add),
       ),
@@ -101,6 +101,8 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _communities() {
     return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
+      chatViewModel = viewModel;
+
       return Expanded(
         child: ListView.builder(
             itemCount: viewModel.chats.length,

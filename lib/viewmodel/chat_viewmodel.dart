@@ -16,4 +16,9 @@ class ChatViewModel extends ChangeNotifier {
       }
     });
   }
+
+  void addChat() {
+    chats.add(Chat(title: '제목', members: ['a'], tags: ['tag']));
+    notifyListeners();
+  }
 }
