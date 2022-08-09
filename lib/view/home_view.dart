@@ -44,7 +44,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             image: DecorationImage(
                 image: AssetImage(
                     'assets/images/image_home_$_selectedTabIndex.png'),
-                alignment: Alignment.topCenter)),
+                alignment: Alignment.topCenter,
+                fit: BoxFit.cover)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
