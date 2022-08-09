@@ -11,145 +11,173 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  late UserViewModel userViewModel;
-  late ChatViewModel chatViewModel;
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+  late TabController _tabController;
+  final _tabList = const ['전체보기', '영국', '프라하', '크로아티아'];
+  String _selectedTab = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('동행'),
-        centerTitle: false,
-        actions: [_notification(), _message()],
-      ),
-      backgroundColor: Colors.blue.shade100,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [_onlineUsers(), _communities()],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined), label: '피드'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined), label: '캘린더'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '설정')
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => chatViewModel.addChat(),
-        tooltip: '방 만들기',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+  final _titleTextStyle = const TextStyle(
+      fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white);
+  final _cardSmallTextStyle =
+      const TextStyle(fontSize: 8, color: Color(0xFF646464));
 
-  Widget _notification() {
-    return IconButton(
-        onPressed: () => {}, icon: const Icon(CupertinoIcons.bell));
-  }
-
-  Widget _message() {
-    return IconButton(onPressed: () => {}, icon: const Icon(Icons.send));
-  }
-
-  Widget _onlineUsers() {
-    return Consumer<UserViewModel>(builder: (_, viewModel, ___) {
-      userViewModel = viewModel;
-
-      return Container(
-          alignment: Alignment.center,
-          height: 90,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            scrollDirection: Axis.horizontal,
-            itemCount: viewModel.users.length,
-            itemBuilder: (_, index) {
-              return Container(
-                padding: const EdgeInsets.only(right: 12),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () => {},
-                      customBorder: const CircleBorder(),
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            AssetImage(viewModel.users[index].imagePath),
-                      ),
-                    ),
-                    Text(
-                      viewModel.users[index].nickName,
-                      style: const TextStyle(fontSize: 11),
-                    )
-                  ],
-                ),
-              );
-            },
-          ));
+  void _onTabTapped(String country) {
+    setState(() {
+      _selectedTab = country == '전체보기' ? '' : country;
     });
   }
 
-  Widget _communities() {
-    return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
-      chatViewModel = viewModel;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
 
-      return Expanded(
-        child: ListView.builder(
-            itemCount: viewModel.chats.length,
+  @override
+  Widget build(BuildContext context) {
+    return _view;
+  }
+
+  Widget get _view => Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+                image: AssetImage('assets/images/image_all.png'),
+                alignment: Alignment.topCenter)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 98, 32, 24),
+              child: Text(
+                '홍길동 님,\n함께할 여행자를 찾으세요?',
+                style: _titleTextStyle,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: TabBar(
+                  onTap: (index) => _onTabTapped(_tabList.elementAt(index)),
+                  controller: _tabController,
+                  labelStyle: _titleTextStyle,
+                  isScrollable: true,
+                  padding: EdgeInsets.zero,
+                  indicator: null,
+                  tabs: _tabList.map((e) => Tab(text: e)).toList()),
+            ),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                ),
+                child: _communities(context),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _communities(BuildContext context) {
+    return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
+      return Container(
+        color: Colors.white,
+        padding: const EdgeInsets.only(left: 24, right: 24),
+        child: ListView.separated(
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => const SizedBox(
+                  height: 12,
+                ),
+            padding: const EdgeInsets.only(top: 24),
+            itemCount: viewModel.chats
+                .where((element) => element.title.contains(_selectedTab))
+                .length,
             itemBuilder: (_, index) {
               final chat = viewModel.chats[index];
-              final users = userViewModel.users
+              final users = context
+                  .watch<UserViewModel>()
+                  .users
                   .where((user) => chat.members.contains(user.id));
-              final host = users.first;
+              final tags = chat.tags.map((e) => '#$e').toList().join('');
 
               return Card(
-                child: ListTile(
-                  onTap: () => {},
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage(host.imagePath),
-                  ),
-                  title: Text(chat.title +
-                      '\n${users.map((e) => '${e.nickName} 💬').take(4).join('\n')}'),
-                  subtitle: Text(chat.tags.map((e) => '#$e').toList().join('')),
-                  trailing: Column(
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              CupertinoIcons.person,
-                              size: 20,
-                            ),
-                            Text('${chat.members.length}'),
-                          ],
+                color: const Color(0xFFD9D9D9),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    onTap: () => {},
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text(
+                          '${_selectedTab != '' ? '[$_selectedTab] ' : ''}${chat.title}',
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )),
+                        SizedBox(
+                          width: 78,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Icon(
+                                CupertinoIcons.person,
+                                size: 14,
+                              ),
+                              Text(
+                                '+${chat.members.length}명',
+                                style: _cardSmallTextStyle,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: 50,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              CupertinoIcons.chat_bubble_text,
-                              size: 20,
-                            ),
-                            Text('${chat.members.length * 50}'),
-                          ],
+                      ],
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${chat.start} - ${chat.end}',
+                                  style: _cardSmallTextStyle.copyWith(
+                                      fontSize: 12)),
+                              Text(
+                                '$tags\n$tags\n$tags',
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 78,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Icon(
+                                Icons.circle,
+                                color: Color(0xFFFF8D3A),
+                                size: 6,
+                              ),
+                              Text(
+                                '실시간 대화 중',
+                                style: _cardSmallTextStyle,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -12,6 +12,8 @@ dependencies:
   cupertino_icons:
   provider: ^6.0.3
   json_annotation:
+  google_fonts: ^3.0.1
+  intl:
 
 dev_dependencies:
   flutter_test:
