@@ -92,8 +92,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 ),
             padding: const EdgeInsets.only(top: 24),
             itemCount: viewModel.chats
-                .where((element) => element.title
-                    .contains(_tabList.elementAt(_selectedTabIndex)))
+                .where((element) => element.title.contains(
+                    _selectedTabIndex != 0
+                        ? _tabList.elementAt(_selectedTabIndex)
+                        : ''))
                 .length,
             itemBuilder: (_, index) {
               final chat = viewModel.chats[index];
@@ -101,8 +103,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   .watch<UserViewModel>()
                   .users
                   .where((user) => chat.members.contains(user.id));
+              final country = _tabList.elementAt(_selectedTabIndex);
               final tags = chat.tags.map((e) => '#$e').toList().join('');
-
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -116,7 +118,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       children: [
                         Expanded(
                             child: Text(
-                          '${_selectedTabIndex != 0 ? '[$_selectedTabIndex] ' : ''}${chat.title}',
+                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chat.title}',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
