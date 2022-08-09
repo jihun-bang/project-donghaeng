@@ -14,16 +14,16 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late TabController _tabController;
   final _tabList = const ['전체보기', '영국', '프라하', '크로아티아'];
-  String _selectedTab = '';
+  int _selectedTabIndex = 0;
 
   final _titleTextStyle = const TextStyle(
       fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white);
   final _cardSmallTextStyle =
       const TextStyle(fontSize: 8, color: Color(0xFF646464));
 
-  void _onTabTapped(String country) {
+  void _onTabTapped(int index) {
     setState(() {
-      _selectedTab = country == '전체보기' ? '' : country;
+      _selectedTabIndex = index;
     });
   }
 
@@ -39,10 +39,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   Widget get _view => Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             color: Colors.white,
             image: DecorationImage(
-                image: AssetImage('assets/images/image_all.png'),
+                image: AssetImage(
+                    'assets/images/image_home_$_selectedTabIndex.png'),
                 alignment: Alignment.topCenter)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -59,12 +60,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: TabBar(
-                  onTap: (index) => _onTabTapped(_tabList.elementAt(index)),
+                  onTap: (index) => _onTabTapped(index),
                   controller: _tabController,
                   labelStyle: _titleTextStyle,
                   isScrollable: true,
                   padding: EdgeInsets.zero,
-                  indicator: null,
+                  indicatorColor: Colors.transparent,
                   tabs: _tabList.map((e) => Tab(text: e)).toList()),
             ),
             Expanded(
@@ -83,7 +84,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
       return Container(
         color: Colors.white,
-        padding: const EdgeInsets.only(left: 24, right: 24),
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
         child: ListView.separated(
             shrinkWrap: true,
             separatorBuilder: (context, index) => const SizedBox(
@@ -91,7 +92,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 ),
             padding: const EdgeInsets.only(top: 24),
             itemCount: viewModel.chats
-                .where((element) => element.title.contains(_selectedTab))
+                .where((element) => element.title
+                    .contains(_tabList.elementAt(_selectedTabIndex)))
                 .length,
             itemBuilder: (_, index) {
               final chat = viewModel.chats[index];
@@ -114,7 +116,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       children: [
                         Expanded(
                             child: Text(
-                          '${_selectedTab != '' ? '[$_selectedTab] ' : ''}${chat.title}',
+                          '${_selectedTabIndex != 0 ? '[$_selectedTabIndex] ' : ''}${chat.title}',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
