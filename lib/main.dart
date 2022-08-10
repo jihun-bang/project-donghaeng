@@ -4,12 +4,26 @@ import 'package:donghaeng/view/base_view.dart';
 import 'package:donghaeng/view/theme/color.dart';
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  /// URL # 제거
+  setPathUrlStrategy();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
+
   runApp(const MyApp());
 }
 
