@@ -18,7 +18,7 @@ import 'view/sign_in_view.dart';
 
 Future<void> main() async {
   /// 환경 변수
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: 'assets/..env');
 
   /// URL # 제거
   setPathUrlStrategy();
@@ -44,10 +44,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
-
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: primary,
