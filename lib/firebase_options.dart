@@ -46,32 +46,34 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static FirebaseOptions web = const FirebaseOptions(
-    apiKey: 'AIzaSyDWhE2M-Qo34nfSQaCBgp0cLxYHb-Inwnw',
-    appId: '1:968695725622:web:554fbebae77a883845a297',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCMGFvYHoSRkcTPdbZqkk2atcNiRc2xY8Y',
+    appId: '1:968695725622:web:6fcc4af62835272445a297',
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
     authDomain: 'project-donghaeng.firebaseapp.com',
+    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
-    measurementId: 'G-0DKC3CKS55',
+    measurementId: 'G-4HCCZRPTVB',
   );
 
-  static FirebaseOptions android = const FirebaseOptions(
+  static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCPYZxGje4v7ycu-6oi3PvufOhu7y1Ebpw',
     appId: '1:968695725622:android:b3cfbb9c26a539ff45a297',
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
+    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
   );
 
-  static FirebaseOptions ios = const FirebaseOptions(
+  static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB1QOSqG357_6htnbRgPlU2Q-W96XfQZTM',
     appId: '1:968695725622:ios:1c17b41fae4b415645a297',
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
+    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
-    iosClientId:
-        '968695725622-scr95oo3710fj2g4skcia0jrpfcbg3f4.apps.googleusercontent.com',
+    iosClientId: '968695725622-scr95oo3710fj2g4skcia0jrpfcbg3f4.apps.googleusercontent.com',
     iosBundleId: 'com.donghaeng.donghaeng',
   );
 }

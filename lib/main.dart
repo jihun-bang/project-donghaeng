@@ -7,20 +7,31 @@ import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
-import 'view/login_view.dart';
+import 'view/sign_in_view.dart';
 
 Future<void> main() async {
+  /// 환경 변수
+  await dotenv.load(fileName: ".env");
+
   /// URL # 제거
   setPathUrlStrategy();
 
+  /// Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterFireUIAuth.configureProviders([
+    GoogleProviderConfiguration(clientId: dotenv.env['GOOGLE_CLIENT_ID']!),
+  ]);
+
+  /// 시스템 앱바 투명
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -56,7 +67,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserViewModel>(create: (_) => UserViewModel()),
         ChangeNotifierProvider<ChatViewModel>(create: (_) => ChatViewModel()),
         ChangeNotifierProvider<LoginViewModel>(create: (_) => LoginViewModel())
-      ], child: const LoginView()),
+      ], child: const SignInView()),
     );
   }
 }

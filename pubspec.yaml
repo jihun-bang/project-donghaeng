@@ -21,6 +21,8 @@ dependencies:
   google_sign_in: ^5.4.1
   firebase_core: ^1.20.0
   firebase_auth: ^3.6.2
+  flutterfire_ui: ^0.4.3+4
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +36,4 @@ flutter:
     - assets/images/
     - assets/data/
     - assets/icons/
+    - assets/.env

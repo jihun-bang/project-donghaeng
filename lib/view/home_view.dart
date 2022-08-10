@@ -1,5 +1,6 @@
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+  final currentUser = FirebaseAuth.instance.currentUser;
+
   late TabController _tabController;
   final _tabList = const ['전체보기', '영국', '프라하', '크로아티아'];
   int _selectedTabIndex = 0;
@@ -53,7 +56,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 98, 32, 24),
               child: Text(
-                '홍길동 님,\n함께할 여행자를 찾으세요?',
+                '${currentUser?.displayName} 님,\n함께할 여행자를 찾으세요?',
                 style: _titleTextStyle,
                 textAlign: TextAlign.start,
               ),

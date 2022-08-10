@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "968695725622",
+    "firebase_url": "https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "project-donghaeng",
     "storage_bucket": "project-donghaeng.appspot.com"
   },
@@ -12,12 +13,7 @@
           "package_name": "com.donghaeng.donghaeng"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "968695725622-3ktom3a66i1bs4gbrtg51igroqmvc8qp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyCPYZxGje4v7ycu-6oi3PvufOhu7y1Ebpw"
@@ -26,10 +22,6 @@
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
-            {
-              "client_id": "968695725622-3ktom3a66i1bs4gbrtg51igroqmvc8qp.apps.googleusercontent.com",
-              "client_type": 3
-            },
             {
               "client_id": "968695725622-scr95oo3710fj2g4skcia0jrpfcbg3f4.apps.googleusercontent.com",
               "client_type": 2,
