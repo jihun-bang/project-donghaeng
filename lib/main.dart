@@ -18,7 +18,7 @@ import 'view/sign_in_view.dart';
 
 Future<void> main() async {
   /// 환경 변수
-  await dotenv.load(fileName: 'assets/.env');
+  await dotenv.load(fileName: 'env');
 
   /// URL # 제거
   setPathUrlStrategy();
