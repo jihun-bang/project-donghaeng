@@ -155,7 +155,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('${chat.start} - ${chat.end}',
+                              Text(
+                                  '${chat.travelDate.start} - ${chat.travelDate.end}',
                                   style: _cardSmallTextStyle.copyWith(
                                       fontSize: 12)),
                               Text(

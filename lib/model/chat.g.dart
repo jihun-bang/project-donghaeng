@@ -9,8 +9,8 @@ part of 'chat.dart';
 Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      start: json['start'] as String,
-      end: json['end'] as String,
+      travelDate:
+          TravelDate.fromJson(json['travelDate'] as Map<String, dynamic>),
       owner: json['owner'] as String,
       members:
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
@@ -23,12 +23,22 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'title': instance.title,
       'createdAt': instance.createdAt.toIso8601String(),
-      'start': instance.start,
-      'end': instance.end,
+      'travelDate': instance.travelDate,
       'owner': instance.owner,
       'members': instance.members,
       'tags': instance.tags,
       'chatContents': instance.chatContents,
+    };
+
+TravelDate _$TravelDateFromJson(Map<String, dynamic> json) => TravelDate(
+      start: json['start'] as String,
+      end: json['end'] as String,
+    );
+
+Map<String, dynamic> _$TravelDateToJson(TravelDate instance) =>
+    <String, dynamic>{
+      'start': instance.start,
+      'end': instance.end,
     };
 
 ChatContent _$ChatContentFromJson(Map<String, dynamic> json) => ChatContent(

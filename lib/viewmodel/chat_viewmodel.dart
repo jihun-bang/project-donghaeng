@@ -23,8 +23,7 @@ createChatRoom(String title, String start, String end, String owner) async {
   final chat = Chat(
       title: title,
       createdAt: DateTime.now().toUtc(),
-      start: start,
-      end: end,
+      travelDate: TravelDate(start: start, end: end),
       owner: owner,
       members: [owner],
       tags: ["tag1", "tag2"],

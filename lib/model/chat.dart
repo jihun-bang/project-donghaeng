@@ -6,8 +6,7 @@ part 'chat.g.dart';
 class Chat {
   String title;
   DateTime createdAt;
-  String start; // todo : 왜 string으로 한걸까요?
-  String end;
+  TravelDate travelDate;
   String owner;
   List<String> members;
   List<String> tags; // todo: 무슨 기능인지 모르겠어영
@@ -16,8 +15,7 @@ class Chat {
   Chat(
       {required this.title,
       required this.createdAt,
-      required this.start,
-      required this.end,
+      required this.travelDate,
       required this.owner,
       required this.members,
       required this.tags,
@@ -26,6 +24,19 @@ class Chat {
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatToJson(this);
+}
+
+@JsonSerializable()
+class TravelDate {
+  String start;
+  String end;
+
+  TravelDate({required this.start, required this.end});
+
+  factory TravelDate.fromJson(Map<String, dynamic> json) =>
+      _$TravelDateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TravelDateToJson(this);
 }
 
 @JsonSerializable()
