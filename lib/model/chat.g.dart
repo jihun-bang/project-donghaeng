@@ -6,7 +6,7 @@ part of 'chat.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
+Chatroom _$ChatroomFromJson(Map<String, dynamic> json) => Chatroom(
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       travelDate:
@@ -14,13 +14,13 @@ Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       owner: json['owner'] as String,
       members:
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
       chatContents: (json['chatContents'] as List<dynamic>?)
-          ?.map((e) => ChatContent.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Chat.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
+Map<String, dynamic> _$ChatroomToJson(Chatroom instance) => <String, dynamic>{
       'title': instance.title,
       'createdAt': instance.createdAt.toIso8601String(),
       'travelDate': instance.travelDate,
@@ -41,7 +41,7 @@ Map<String, dynamic> _$TravelDateToJson(TravelDate instance) =>
       'end': instance.end,
     };
 
-ChatContent _$ChatContentFromJson(Map<String, dynamic> json) => ChatContent(
+Chat _$ChatFromJson(Map<String, dynamic> json) => Chat(
       createdAt: DateTime.parse(json['createdAt'] as String),
       owner: json['owner'] as String,
       content: json['content'] as String,
@@ -49,8 +49,7 @@ ChatContent _$ChatContentFromJson(Map<String, dynamic> json) => ChatContent(
           (json['reader'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$ChatContentToJson(ChatContent instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'createdAt': instance.createdAt.toIso8601String(),
       'owner': instance.owner,
       'content': instance.content,

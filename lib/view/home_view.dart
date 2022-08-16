@@ -108,7 +108,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   .users
                   .where((user) => chat.members.contains(user.id));
               final country = _tabList.elementAt(_selectedTabIndex);
-              final tags = chat.tags.map((e) => '#$e').toList().join('');
+              final tags = chat.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(

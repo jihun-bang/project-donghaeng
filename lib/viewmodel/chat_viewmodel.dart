@@ -6,21 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ChatViewModel extends ChangeNotifier {
-  final List<Chat> chats = [];
+  final List<Chatroom> chats = [];
 
   ChatViewModel() {
     rootBundle.loadString('assets/data/chat.json').then((str) {
       final jsonString = json.decode(str) as List;
       for (final chat in jsonString) {
-        chats.add(Chat.fromJson(chat));
+        chats.add(Chatroom.fromJson(chat));
         notifyListeners();
       }
     });
   }
 }
 
-createChatRoom(String title, String start, String end, String owner) async {
-  final chat = Chat(
+createChatroom(String title, String start, String end, String owner) async {
+  final chat = Chatroom(
       title: title,
       createdAt: DateTime.now().toUtc(),
       travelDate: TravelDate(start: start, end: end),
@@ -36,12 +36,12 @@ createChatRoom(String title, String start, String end, String owner) async {
   await ref.child('$newPostKey').set(chat.toJson());
 }
 
-addChatContent(String chatId, String owner, String content) async {
-  final chatContent = ChatContent(
+addChat(String chatroomID, String owner, String content) async {
+  final chatContent = Chat(
       createdAt: DateTime.now(), owner: owner, content: content, reader: null);
 
   DatabaseReference ref =
-      FirebaseDatabase.instance.ref("chatrooms/$chatId/chatContents");
+      FirebaseDatabase.instance.ref("chatrooms/$chatroomID/chatContents");
 
   final newPostKey = ref.push().key;
 

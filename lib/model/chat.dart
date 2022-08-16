@@ -3,16 +3,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'chat.g.dart';
 
 @JsonSerializable()
-class Chat {
+class Chatroom {
   String title;
   DateTime createdAt;
   TravelDate travelDate;
   String owner;
   List<String> members;
-  List<String> tags; // todo: 무슨 기능인지 모르겠어영
-  List<ChatContent>? chatContents;
+  List<String>? tags;
+  List<Chat>? chatContents;
 
-  Chat(
+  Chatroom(
       {required this.title,
       required this.createdAt,
       required this.travelDate,
@@ -21,9 +21,14 @@ class Chat {
       required this.tags,
       required this.chatContents});
 
-  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
+  factory Chatroom.fromJson(Map<String, dynamic> json) =>
+      _$ChatroomFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChatToJson(this);
+  Map<String, dynamic> toJson() => _$ChatroomToJson(this);
+
+  int countMember() {
+    return members.length;
+  }
 }
 
 @JsonSerializable()
@@ -40,20 +45,19 @@ class TravelDate {
 }
 
 @JsonSerializable()
-class ChatContent {
+class Chat {
   DateTime createdAt;
   String owner;
   String content;
   List<String>? reader; // todo: 읽은 사람. 미확정
 
-  ChatContent(
+  Chat(
       {required this.createdAt,
       required this.owner,
       required this.content,
       required this.reader});
 
-  factory ChatContent.fromJson(Map<String, dynamic> json) =>
-      _$ChatContentFromJson(json);
+  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChatContentToJson(this);
+  Map<String, dynamic> toJson() => _$ChatToJson(this);
 }
