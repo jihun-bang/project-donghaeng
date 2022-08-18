@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/view/theme/color.dart';
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
 import 'package:donghaeng/viewmodel/login_viewmodel.dart';
@@ -35,6 +36,9 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+
+  /// 의존성 주입
+  initLocator();
 
   runApp(const MyApp());
 }

@@ -1,5 +1,4 @@
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -103,10 +102,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                 .length,
             itemBuilder: (_, index) {
               final chat = viewModel.chats[index];
-              final users = context
-                  .watch<UserViewModel>()
-                  .users
-                  .where((user) => chat.members.contains(user.id));
               final country = _tabList.elementAt(_selectedTabIndex);
               final tags = chat.tags.map((e) => '#$e').toList().join('');
               return Card(

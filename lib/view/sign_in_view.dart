@@ -1,4 +1,6 @@
+import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/view/base_view.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +37,11 @@ class _SignInViewState extends State<SignInView> {
               ],
             );
           } else {
-            return const BaseView();
+            return FutureBuilder(
+                future: sl<UserViewModel>().addUser(),
+                builder: (_, snapshot) => snapshot.hasData
+                    ? const BaseView()
+                    : const CircularProgressIndicator());
           }
         },
       ),
