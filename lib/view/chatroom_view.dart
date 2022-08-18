@@ -109,7 +109,7 @@ class _ChatroomViewState extends State<ChatroomView> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
+                  GestureDetector( // todo : 정해지면 수정
                     onTap: () {},
                     child: Container(
                       height: 30,
@@ -143,17 +143,29 @@ class _ChatroomViewState extends State<ChatroomView> {
                   const SizedBox(
                     width: 15,
                   ),
-                  FloatingActionButton(
+                  ElevatedButton(
                     onPressed: () {
                       sendMessage(_textController.text);
                     },
-                    backgroundColor: Colors.blue,
-                    elevation: 0,
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
+                    style: ElevatedButton.styleFrom(
+                      // Foreground color
+                      onPrimary: Theme.of(context).colorScheme.onPrimary,
+                      // Background color
+                      primary: const Color(0x127287EA), // 배경색
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 20), // 사이즈
+                      shape: const StadiumBorder(),
+                    ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                    child: const Text(
+                      "SEND",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff7287EA)),
+                      textAlign: TextAlign.center,
                     ),
+                  ),
+                  const SizedBox(
+                    width: 15,
                   ),
                 ],
               ),
