@@ -10,7 +10,7 @@ class Chatroom {
   String owner;
   List<String> members;
   List<String>? tags;
-  List<Chat>? chatContents;
+  List<Chat>? chats;
 
   Chatroom(
       {required this.title,
@@ -18,8 +18,8 @@ class Chatroom {
       required this.travelDate,
       required this.owner,
       required this.members,
-      required this.tags,
-      required this.chatContents});
+      this.tags,
+      this.chats});
 
   factory Chatroom.fromJson(Map<String, dynamic> json) =>
       _$ChatroomFromJson(json);

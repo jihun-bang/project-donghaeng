@@ -6,15 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutterfire_ui/auth.dart';
 
-class ChatView extends StatefulWidget {
-  const ChatView({Key? key}) : super(key: key);
+import '../viewmodel/chat_viewmodel.dart';
+
+class ChatroomView extends StatefulWidget {
+  const ChatroomView({Key? key}) : super(key: key);
 
   @override
-  State<ChatView> createState() => _ChatViewState();
+  State<ChatroomView> createState() => _ChatroomViewState();
 }
 
-class _ChatViewState extends State<ChatView> {
+class _ChatroomViewState extends State<ChatroomView> {
   final TextEditingController _textController = TextEditingController();
+  final ChatroomDataModel _chatroomDataModel =
+      ChatroomDataModel("-N9MFEaBgdhFATRXFDxr");
 
   // todo: 임시 데이터 -> db 데이터로 수정
   List<Chat> chatMessages = [
@@ -56,6 +60,24 @@ class _ChatViewState extends State<ChatView> {
                 ),
                 const Expanded(
                   child: Center(child: Text("채팅 제목!")),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.more_horiz,
+                    color: Colors.black,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.share,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),
@@ -145,13 +167,17 @@ class _ChatViewState extends State<ChatView> {
   sendMessage(String text) {
     setState(() {
       chatMessages.add(Chat(
-          createdAt: DateTime.now(),
+          createdAt: DateTime.now().toUtc(),
           owner: "junga",
           content: text,
           reader: null));
     });
 
+    // _chatroomDataModel.addChat("junga...id", DateTime.now(), text);
+
     _textController.clear();
+
+    _chatroomDataModel.readChatroom(); //todo: remove_test
   }
 }
 

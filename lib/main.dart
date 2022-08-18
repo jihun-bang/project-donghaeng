@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:donghaeng/view/chat_view.dart';
+import 'package:donghaeng/view/chatroom_view.dart';
 import 'package:donghaeng/view/theme/color.dart';
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
 import 'package:donghaeng/viewmodel/login_viewmodel.dart';
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserViewModel>(create: (_) => UserViewModel()),
         ChangeNotifierProvider<ChatViewModel>(create: (_) => ChatViewModel()),
         ChangeNotifierProvider<LoginViewModel>(create: (_) => LoginViewModel())
-      ], child: const ChatView()),
+      ], child: const ChatroomView()),
     );
   }
 }

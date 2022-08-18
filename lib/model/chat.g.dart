@@ -15,7 +15,7 @@ Chatroom _$ChatroomFromJson(Map<String, dynamic> json) => Chatroom(
       members:
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
       tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      chatContents: (json['chatContents'] as List<dynamic>?)
+      chats: (json['chats'] as List<dynamic>?)
           ?.map((e) => Chat.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -27,7 +27,7 @@ Map<String, dynamic> _$ChatroomToJson(Chatroom instance) => <String, dynamic>{
       'owner': instance.owner,
       'members': instance.members,
       'tags': instance.tags,
-      'chatContents': instance.chatContents,
+      'chats': instance.chats,
     };
 
 TravelDate _$TravelDateFromJson(Map<String, dynamic> json) => TravelDate(
