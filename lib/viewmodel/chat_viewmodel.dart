@@ -29,60 +29,25 @@ class ChatroomDataModel {
     chatroomRef = FirebaseDatabase.instance.ref("chatrooms/$chatroomID");
   }
 
-  readChatroom() async {
+  Future<Chatroom> readChatroom() async {
     final snapshot = await chatroomRef.get();
     if (snapshot.exists) {
-      print(snapshot.value);
-
       Map<String, dynamic> json = <String, dynamic>{};
       Map<String, dynamic>.from(snapshot.value as Map).forEach((key, value) {
         json[key] = value;
       });
 
-      print(json["chats"]);
-      List<Chat>? chatList = [];
       if (json.containsKey("chats")) {
-        Map<String, dynamic>.from(json["chats"] as Map).forEach((key, value) {
-          Map<String, dynamic> chatJson = <String, dynamic>{};
-          Map<String, dynamic>.from(value as Map).forEach((key, value) {
-            chatJson[key] = value;
-          });
-
-          chatList.add(Chat.fromJson(chatJson));
-        });
-        json['chats'] = chatList;
+        json['chats'] =
+            Map<String, dynamic>.from(json["chats"] as Map).values.toList();
       } else {
         json['chats'] = null;
       }
-      json['tags'] = ["test"];
-      print(chatList);
 
-      Chatroom c = Chatroom.fromJson(json);
-      print(c);
-      // // Map<String, dynamic>.from(snapshot.value as Map);
-      //
-      // // print(data);
-      // Map<dynamic, dynamic> result = snapshot.value;
-      // Map<String, dynamic> data = Map<String, dynamic>();
-      // for (dynamic type in result.keys) {
-      //   data[type.toString()] = result[type];
-      // }
-      //
-      // var result = dynamicMapToString(snapshot.value);
-      // final chatroom = Chatroom.fromJson(result);
-      // print(chatroom.createdAt);
-      // print(chatroom.title);
+      return Chatroom.fromJson(json);
     } else {
-      print('No data available.');
+      throw 'No data available.';
     }
-
-    // chatroomRef.onValue.listen((DatabaseEvent event) {
-    //   final data = event.snapshot.value;
-    //   print(data);
-    //
-    //   Chatroom chatroom = Chatroom.fromJson(jsonDecode(data.toString()));
-    //   print(chatroom);
-    // });
   }
 
   addChat(String owner, DateTime createdAt, String content) async {

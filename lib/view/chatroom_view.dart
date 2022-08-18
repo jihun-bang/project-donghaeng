@@ -17,19 +17,26 @@ class ChatroomView extends StatefulWidget {
 
 class _ChatroomViewState extends State<ChatroomView> {
   final TextEditingController _textController = TextEditingController();
-  final ChatroomDataModel _chatroomDataModel =
-      ChatroomDataModel("-N9MFEaBgdhFATRXFDxr");
+  late final ChatroomDataModel _chatroomDataModel;
+  Future<Chatroom>? chatroom;
+  final myID = "junga...id"; // todo: for test
 
-  // todo: 임시 데이터 -> db 데이터로 수정
-  List<Chat> chatMessages = [
-    Chat(
-        createdAt: DateTime.now(), owner: "chera", content: "hi", reader: null),
-    Chat(
-        createdAt: DateTime.now(),
-        owner: "yg.h",
-        content: "hi_222",
-        reader: null),
-  ];
+  _ChatroomViewState() {
+    _chatroomDataModel =
+        ChatroomDataModel("-N9MFEaBgdhFATRXFDxr"); // todo: for test
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    chatroom = _chatroomDataModel.readChatroom();
+  }
+
+  Future<Chatroom> readChatroom() async {
+    Chatroom dbChat = await _chatroomDataModel.readChatroom();
+    print(dbChat);
+    return dbChat;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +65,18 @@ class _ChatroomViewState extends State<ChatroomView> {
                 const SizedBox(
                   width: 12,
                 ),
-                const Expanded(
-                  child: Center(child: Text("채팅 제목!")),
+                Expanded(
+                  child: FutureBuilder(
+                      future: chatroom,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          Chatroom? chatroom = snapshot.data as Chatroom?;
+                          return Center(child: Text(chatroom?.title ?? 'Fail'));
+                        } else if (snapshot.hasError) {
+                          return const Center(child: Text("Fail"));
+                        }
+                        return const Center(child: Text("loading"));
+                      }),
                 ),
                 IconButton(
                   onPressed: () {
@@ -86,20 +103,29 @@ class _ChatroomViewState extends State<ChatroomView> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: chatMessages.length,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 10, bottom: 10),
-                child: Text(
-                    '${chatMessages[index].owner} = ${chatMessages[index].content}'),
-              );
-            },
-          ),
+          FutureBuilder(
+              future: chatroom,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  Chatroom? chatroom = snapshot.data as Chatroom?;
+                  // return Center(child: Text(chatroom?.title ?? 'Fail'));
+                  return ListView.builder(
+                    itemCount: chatroom?.chats?.length ?? 0,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, top: 10, bottom: 10),
+                        child: Text(
+                            '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}'),
+                      );
+                    },
+                  );
+                }
+                return const Center(child: Text("loading"));
+              }),
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
@@ -109,7 +135,8 @@ class _ChatroomViewState extends State<ChatroomView> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  GestureDetector( // todo : 정해지면 수정
+                  GestureDetector(
+                    // todo : 정해지면 수정
                     onTap: () {},
                     child: Container(
                       height: 30,
@@ -177,21 +204,17 @@ class _ChatroomViewState extends State<ChatroomView> {
   }
 
   sendMessage(String text) {
-    setState(() {
-      chatMessages.add(Chat(
-          createdAt: DateTime.now().toUtc(),
-          owner: "junga",
-          content: text,
-          reader: null));
-    });
-
-    // _chatroomDataModel.addChat("junga...id", DateTime.now(), text);
+    _chatroomDataModel.addChat(myID, DateTime.now(), text);
 
     _textController.clear();
-
-    _chatroomDataModel.readChatroom(); //todo: remove_test
   }
 }
+
+// // read data
+// Future<Chatroom> dbChat = _chatroomDataModel.readChatroom();
+// dbChat.then((value) => {print(value.toString())}).catchError((error) {
+// print(error);
+// });
 
 // todo: 원형 표시 - 프로필
 // const CircleAvatar(

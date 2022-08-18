@@ -10,6 +10,12 @@ class Chatroom {
   String owner;
   List<String> members;
   List<String>? tags;
+
+  @override
+  String toString() {
+    return 'Chatroom{title: $title, createdAt: $createdAt, travelDate: $travelDate, owner: $owner, members: $members, tags: $tags, chats: $chats}';
+  }
+
   List<Chat>? chats;
 
   Chatroom(
