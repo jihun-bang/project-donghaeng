@@ -10,13 +10,12 @@ class Chatroom {
   String owner;
   List<String> members;
   List<String>? tags;
+  List<Chat>? chats;
 
   @override
   String toString() {
     return 'Chatroom{title: $title, createdAt: $createdAt, travelDate: $travelDate, owner: $owner, members: $members, tags: $tags, chats: $chats}';
   }
-
-  List<Chat>? chats;
 
   Chatroom(
       {required this.title,
@@ -31,6 +30,23 @@ class Chatroom {
       _$ChatroomFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatroomToJson(this);
+
+  factory Chatroom.fromRealtimeDB(Map<dynamic, dynamic> data) {
+    Map<String, dynamic> json = <String, dynamic>{};
+    Map<String, dynamic>.from(data).forEach((key, value) {
+      json[key] = value;
+    });
+
+    // todo: 아래부분 때문에 id를 추가할지 고민
+    if (json.containsKey("chats")) {
+      json['chats'] =
+          Map<String, dynamic>.from(json["chats"] as Map).values.toList();
+    } else {
+      json['chats'] = null;
+    }
+
+    return Chatroom.fromJson(json);
+  }
 
   int countMember() {
     return members.length;

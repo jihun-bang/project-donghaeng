@@ -32,19 +32,7 @@ class ChatroomDataModel {
   Future<Chatroom> readChatroom() async {
     final snapshot = await chatroomRef.get();
     if (snapshot.exists) {
-      Map<String, dynamic> json = <String, dynamic>{};
-      Map<String, dynamic>.from(snapshot.value as Map).forEach((key, value) {
-        json[key] = value;
-      });
-
-      if (json.containsKey("chats")) {
-        json['chats'] =
-            Map<String, dynamic>.from(json["chats"] as Map).values.toList();
-      } else {
-        json['chats'] = null;
-      }
-
-      return Chatroom.fromJson(json);
+      return Chatroom.fromRealtimeDB(snapshot.value as Map);
     } else {
       throw 'No data available.';
     }

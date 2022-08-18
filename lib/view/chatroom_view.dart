@@ -108,7 +108,6 @@ class _ChatroomViewState extends State<ChatroomView> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   Chatroom? chatroom = snapshot.data as Chatroom?;
-                  // return Center(child: Text(chatroom?.title ?? 'Fail'));
                   return ListView.builder(
                     itemCount: chatroom?.chats?.length ?? 0,
                     shrinkWrap: true,
