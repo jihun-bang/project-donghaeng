@@ -16,7 +16,15 @@ class UserViewModel extends ChangeNotifier {
 
   UserViewModel();
 
-  Future<bool> addUser() async {
-    return await _repository.addUser(user: u.User(id: 'test'));
+  Future<bool> validateUser() async {
+    return await _repository.getUser() != null;
+  }
+
+  Future<bool> addUser(String id) async {
+    return await _repository.addUser(user: u.User(id: id));
+  }
+
+  Future<void> logout() async {
+    await _repository.logOut();
   }
 }

@@ -45,7 +45,7 @@ class LoginViewModel extends ChangeNotifier {
       case SignInType.naver:
         return const Tuple3('네이버', Colors.white, Color(0xFF00C73C));
       case SignInType.kakao:
-        return const Tuple3('카카오', Color(0xFF3D1B1A), Color(0XFFF8DF00));
+        return const Tuple3('카카오', Color(0xFF3D1B1A), Color(0XFFFFE812));
     }
   }
 }

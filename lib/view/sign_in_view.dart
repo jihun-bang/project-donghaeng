@@ -1,5 +1,6 @@
 import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/view/base_view.dart';
+import 'package:donghaeng/view/sign_up_view.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,10 +36,28 @@ class _SignInViewState extends State<SignInView> {
             );
           } else {
             return FutureBuilder(
-                future: sl<UserViewModel>().addUser(),
+                future: sl<UserViewModel>().validateUser(),
                 builder: (_, snapshot) => snapshot.hasData
-                    ? const BaseView()
-                    : const CircularProgressIndicator());
+                    ? snapshot.data == true
+                        ? const BaseView()
+                        : const SignUpView()
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Text(
+                              '로그인 중 🚴‍♀️',
+                              textScaleFactor: 2,
+                            ),
+                          ),
+                          SizedBox(
+                              width: 150,
+                              height: 150,
+                              child:
+                                  CircularProgressIndicator(strokeWidth: 10)),
+                        ],
+                      ));
           }
         },
       ),
