@@ -33,9 +33,7 @@ class _ChatroomViewState extends State<ChatroomView> {
   }
 
   Future<Chatroom> readChatroom() async {
-    Chatroom dbChat = await _chatroomDataModel.readChatroom();
-    print(dbChat);
-    return dbChat;
+    return await _chatroomDataModel.readChatroom();
   }
 
   @override
@@ -117,8 +115,27 @@ class _ChatroomViewState extends State<ChatroomView> {
                       return Container(
                         padding: const EdgeInsets.only(
                             left: 16, right: 16, top: 10, bottom: 10),
-                        child: Text(
-                            '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}'),
+                        child: Align(
+                          // todo: 사용자 id 받아서 위치 수정하기
+                          alignment: (chatroom?.chats?[index].owner == myID
+                              ? Alignment.topRight
+                              : Alignment.topLeft),
+                          child: Container(
+                            constraints: const BoxConstraints(maxWidth: 299),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.grey.shade200),
+                              color: (chatroom?.chats?[index].owner == myID
+                                  ? Colors.grey.shade200
+                                  : Colors.white),
+                            ),
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}',
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
                       );
                     },
                   );
