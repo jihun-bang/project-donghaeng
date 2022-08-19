@@ -49,3 +49,18 @@ flutter:
     - assets/data/
     - assets/icons/
     - env
+  fonts:
+    - family: Noto_Sans_KR
+      fonts:
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Thin.otf
+          weight: 100
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Light.otf
+          weight: 300
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Noto_Sans_KR/NotoSansKR-Black.otf
+          weight: 900

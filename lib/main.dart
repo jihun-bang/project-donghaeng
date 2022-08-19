@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             create: (_) => sl<SignUpViewModel>()),
       ],
       child: MaterialApp(
-          theme: themeDate(context),
+          theme: themeDate,
           scrollBehavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {
               PointerDeviceKind.mouse,
