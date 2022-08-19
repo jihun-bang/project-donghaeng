@@ -1,5 +1,5 @@
 import 'package:donghaeng/view/base_view.dart';
-import 'package:donghaeng/view/widget/label.dart';
+import 'package:donghaeng/view/widget/text_form_filed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,20 +43,12 @@ class _SignUpViewState extends State<SignUpView> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 36, right: 36, top: 8),
-        child: Column(
-          children: [
-            const Label(text: '아이디'),
-            TextFormField(
-              controller: textController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '영문, 숫자, 언더바 조합',
-              ),
-            )
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.only(left: 36, right: 36, top: 8),
+          child: DhTextFormFiled(
+            controller: textController,
+            label: '아이디',
+            hint: '영문, 숫자, 언더바 조합',
+          )),
     );
   }
 }
