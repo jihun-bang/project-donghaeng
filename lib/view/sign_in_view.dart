@@ -43,14 +43,15 @@ class _SignInViewState extends State<SignInView> {
                   if (snapshot.hasData ||
                       snapshot.connectionState == ConnectionState.done) {
                     final user = snapshot.data;
-                    sl<UserViewModel>().user = user;
-
                     if (user == null) {
                       return const SignUpView();
-                    } else if (user.name.isEmpty) {
-                      return const ProfileEditView();
                     } else {
-                      return const HomeView();
+                      sl<UserViewModel>().user = user;
+                      if (user.name.isEmpty) {
+                        return const ProfileEditView();
+                      } else {
+                        return const HomeView();
+                      }
                     }
                   }
                   return Column(
