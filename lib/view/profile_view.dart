@@ -22,7 +22,16 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             final user = snapshot.data!;
-            return Center(child: Text(user.id));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(user.id),
+                  Text(user.description),
+                  Text(user.instagram),
+                ],
+              ),
+            );
           }
           return const Center(child: CircularProgressIndicator());
         });
