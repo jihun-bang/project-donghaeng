@@ -24,7 +24,7 @@ class UserViewModel extends ChangeNotifier {
     return await _repository.addUser(user: u.User(id: id));
   }
 
-  Future<void> logout() async {
-    await _repository.logOut();
+  void logout() {
+    _repository.logOut();
   }
 }
