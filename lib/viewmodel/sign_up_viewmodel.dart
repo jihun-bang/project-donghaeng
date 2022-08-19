@@ -26,8 +26,6 @@ class SignUpViewModel extends UserViewModel {
 
   void setId(String id) {
     this.id = id;
-    _loading = true;
-    print('$loading $id');
     notifyListeners();
   }
 
