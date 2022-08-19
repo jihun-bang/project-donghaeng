@@ -1,8 +1,9 @@
 import 'dart:ui';
 
 import 'package:donghaeng/data/di/locator.dart';
+import 'package:donghaeng/view/navigation/route.dart';
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
-import 'package:donghaeng/viewmodel/login_viewmodel.dart';
+import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
+import 'view/navigation/navigation.dart';
 import 'view/sign_in_view.dart';
 import 'view/theme/app.dart';
 
@@ -47,21 +49,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: themeDate(context),
-      scrollBehavior: const MaterialScrollBehavior().copyWith(
-        dragDevices: {
-          PointerDeviceKind.mouse,
-          PointerDeviceKind.touch,
-          PointerDeviceKind.stylus,
-          PointerDeviceKind.unknown
-        },
-      ),
-      home: MultiProvider(providers: [
-        ChangeNotifierProvider<UserViewModel>(create: (_) => UserViewModel()),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserViewModel>(
+            create: (_) => sl<UserViewModel>()),
         ChangeNotifierProvider<ChatViewModel>(create: (_) => ChatViewModel()),
-        ChangeNotifierProvider<LoginViewModel>(create: (_) => LoginViewModel())
-      ], child: const SignInView()),
+        ChangeNotifierProvider<SignUpViewModel>(
+            create: (_) => sl<SignUpViewModel>()),
+      ],
+      child: MaterialApp(
+          theme: themeDate(context),
+          scrollBehavior: const MaterialScrollBehavior().copyWith(
+            dragDevices: {
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.touch,
+              PointerDeviceKind.stylus,
+              PointerDeviceKind.unknown
+            },
+          ),
+          navigatorKey: sl<NavigationService>().key,
+          routes: routes(context),
+          home: const SignInView()),
     );
   }
 }

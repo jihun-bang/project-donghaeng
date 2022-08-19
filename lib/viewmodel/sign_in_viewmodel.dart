@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tuple/tuple.dart';
 
-class LoginViewModel extends ChangeNotifier {
-  LoginViewModel();
+import '../utils/toast.dart';
+
+class SignInViewModel extends ChangeNotifier {
+  SignInViewModel();
 
   Future<void> signIn(SignInType type) async {
     switch (type) {
@@ -14,13 +15,7 @@ class LoginViewModel extends ChangeNotifier {
         break;
       case SignInType.naver:
       case SignInType.kakao:
-        Fluttertoast.showToast(
-            msg: '서비스 준비중입니다 😥',
-            gravity: ToastGravity.BOTTOM,
-            webPosition: 'center',
-            textColor: Colors.black,
-            webBgColor: 'white',
-            backgroundColor: Colors.white);
+        showToast(message: '서비스 준비중입니다 😥');
         break;
     }
   }

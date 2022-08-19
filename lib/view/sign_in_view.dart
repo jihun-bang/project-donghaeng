@@ -1,5 +1,5 @@
 import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/view/base_view.dart';
+import 'package:donghaeng/view/home_view.dart';
 import 'package:donghaeng/view/sign_up_view.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../viewmodel/login_viewmodel.dart';
+import '../viewmodel/sign_in_viewmodel.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  final viewModel = sl<LoginViewModel>();
+  final viewModel = sl<SignInViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _SignInViewState extends State<SignInView> {
                 future: sl<UserViewModel>().validateUser(),
                 builder: (_, snapshot) => snapshot.hasData
                     ? snapshot.data == true
-                        ? const BaseView()
+                        ? const HomeView()
                         : const SignUpView()
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,

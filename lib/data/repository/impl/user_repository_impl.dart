@@ -3,6 +3,8 @@ import 'package:donghaeng/data/repository/user_repository.dart';
 import 'package:donghaeng/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+import '../../../utils/toast.dart';
+
 class UserRepositoryImpl implements UserRepository {
   final auth = firebase_auth.FirebaseAuth.instance;
   final fireStore = FirebaseFirestore.instance;
@@ -17,6 +19,7 @@ class UserRepositoryImpl implements UserRepository {
       return true;
     } catch (e) {
       print(e);
+      showToast(message: '회원가입에 실패했습니다.. 😭');
       return false;
     }
   }

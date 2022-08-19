@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import '../data/di/locator.dart';
 import '../data/repository/user_repository.dart';
 
-class UserViewModel extends ChangeNotifier {
+class UserViewModel with ChangeNotifier {
   final _repository = sl<UserRepository>();
 
   late User _user;
@@ -25,6 +25,7 @@ class UserViewModel extends ChangeNotifier {
   }
 
   void logout() {
+    print('logout');
     _repository.logOut();
   }
 }
