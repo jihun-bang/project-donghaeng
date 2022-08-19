@@ -8,24 +8,27 @@ import '../data/repository/user_repository.dart';
 class UserViewModel with ChangeNotifier {
   final _repository = sl<UserRepository>();
 
-  late User _user;
-  User get user => _user;
+  late u.User _user;
+  u.User get user => _user;
   set user(user) => _user = user;
 
   final List<User> users = [];
 
   UserViewModel();
 
-  Future<bool> validateUser() async {
-    return await _repository.getUser() != null;
+  Future<u.User?> getUser() async {
+    return await _repository.getUser();
   }
 
   Future<bool> addUser(String id) async {
     return await _repository.addUser(user: u.User(id: id));
   }
 
+  Future<bool> updateUser(u.User user) async {
+    return await _repository.updateUser(user: user);
+  }
+
   void logout() {
-    print('logout');
     _repository.logOut();
   }
 }

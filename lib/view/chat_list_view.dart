@@ -1,4 +1,6 @@
+import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +58,7 @@ class _ChatListViewState extends State<ChatListView>
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 98, 32, 24),
               child: Text(
-                '${currentUser?.displayName} 님,\n함께할 여행자를 찾으세요?',
+                '${sl<UserViewModel>().user.name} 님,\n함께할 여행자를 찾으세요?',
                 style: _titleTextStyle,
                 textAlign: TextAlign.start,
               ),

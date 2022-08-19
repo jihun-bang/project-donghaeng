@@ -51,7 +51,7 @@ class _SignUpViewState extends State<SignUpView> {
         hint: '영문 소문자, 숫자, 언더바 조합',
         enabled: !viewModel.loading,
         validator: viewModel.validateId,
-        onChange: viewModel.setId,
+        onChange: (value) => viewModel.id = value,
         onFieldSubmitted: (value) => viewModel.addUser(value),
       );
 }
