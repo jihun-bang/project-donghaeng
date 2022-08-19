@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:donghaeng/model/chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -22,15 +24,17 @@ class ChatViewModel extends ChangeNotifier {
 // todo: 위치 옮기기, rename
 class ChatroomDataModel {
   late final String chatroomID;
-  late final DatabaseReference chatroomRef;
+  late final DatabaseReference chatroomsRef;
+  late final DatabaseReference chatsRef;
 
   ChatroomDataModel(String cID) {
     chatroomID = cID;
-    chatroomRef = FirebaseDatabase.instance.ref("chatrooms/$chatroomID");
+    chatroomsRef = FirebaseDatabase.instance.ref("chatrooms/$chatroomID");
+    chatsRef = chatroomsRef.child("chats");
   }
 
   Future<Chatroom> readChatroom() async {
-    final snapshot = await chatroomRef.get();
+    final snapshot = await chatroomsRef.get();
     if (snapshot.exists) {
       return Chatroom.fromRealtimeDB(snapshot.value as Map);
     } else {
@@ -38,14 +42,27 @@ class ChatroomDataModel {
     }
   }
 
-  addChat(String owner, DateTime createdAt, String content) async {
+  // todo : rename
+  Stream<DatabaseEvent> keepReadChats() {
+    final chatsQuery = chatsRef.limitToLast(10);
+
+    return chatsQuery.onChildAdded;
+    // .listen(
+    //   (DatabaseEvent event) {
+    //     print('Child added: ${event.snapshot.value}');
+    //   },
+    //   onError: (Object o) {
+    //     final error = o as FirebaseException;
+    //     print('Error: ${error.code} ${error.message}');
+    //   },
+    // );
+  }
+
+  addChat(String owner, DateTime createdAt, String content)  {
     final chats = Chat(
         createdAt: createdAt, owner: owner, content: content, reader: null);
 
-    DatabaseReference chatRef = chatroomRef.child("chats");
-    final newPostKey = chatRef.push().key;
-
-    await chatRef.child('$newPostKey').set(chats.toJson());
+    chatroomsRef.child("chats").push().set(chats.toJson());
   }
 }
 
@@ -87,9 +104,5 @@ createChatroom(String title, String start, String end, String owner) async {
       tags: ["tag1", "tag2"],
       chats: null);
 
-  DatabaseReference ref = FirebaseDatabase.instance.ref("chatrooms");
-
-  final newPostKey = ref.push().key;
-
-  await ref.child('$newPostKey').set(chat.toJson());
+  await FirebaseDatabase.instance.ref("chatrooms").push().set(chat.toJson());
 }

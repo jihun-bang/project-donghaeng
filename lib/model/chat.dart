@@ -53,6 +53,7 @@ class Chatroom {
   }
 }
 
+// todo: JsonSerializable 없어도 될꺼같은데, 좀 더 고민해봄
 @JsonSerializable()
 class TravelDate {
   String start;

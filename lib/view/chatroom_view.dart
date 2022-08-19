@@ -1,10 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/view/base_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:provider/provider.dart';
 
 import '../viewmodel/chat_viewmodel.dart';
 
@@ -21,6 +26,8 @@ class _ChatroomViewState extends State<ChatroomView> {
   Future<Chatroom>? chatroom;
   final myID = "junga...id"; // todo: for test
 
+  late Stream<DatabaseEvent> chatsStream;
+
   _ChatroomViewState() {
     _chatroomDataModel =
         ChatroomDataModel("-N9MFEaBgdhFATRXFDxr"); // todo: for test
@@ -29,11 +36,12 @@ class _ChatroomViewState extends State<ChatroomView> {
   @override
   void initState() {
     super.initState();
-    chatroom = _chatroomDataModel.readChatroom();
+    init();
   }
 
-  Future<Chatroom> readChatroom() async {
-    return await _chatroomDataModel.readChatroom();
+  init() {
+    chatroom = _chatroomDataModel.readChatroom();
+    chatsStream = _chatroomDataModel.keepReadChats();
   }
 
   @override
@@ -71,6 +79,7 @@ class _ChatroomViewState extends State<ChatroomView> {
                           Chatroom? chatroom = snapshot.data as Chatroom?;
                           return Center(child: Text(chatroom?.title ?? 'Fail'));
                         } else if (snapshot.hasError) {
+                          print('error : chatroom_view : FutureBuilder : ${snapshot.error}');
                           return const Center(child: Text("Fail"));
                         }
                         return const Center(child: Text("loading"));
@@ -101,44 +110,49 @@ class _ChatroomViewState extends State<ChatroomView> {
       ),
       body: Stack(
         children: <Widget>[
-          FutureBuilder(
-              future: chatroom,
-              builder: (context, snapshot) {
+          StreamBuilder(
+              stream: chatsStream,
+              builder: (BuildContext context, snapshot) {
                 if (snapshot.hasData) {
-                  Chatroom? chatroom = snapshot.data as Chatroom?;
-                  return ListView.builder(
-                    itemCount: chatroom?.chats?.length ?? 0,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 10, bottom: 10),
-                        child: Align(
-                          // todo: 사용자 id 받아서 위치 수정하기
-                          alignment: (chatroom?.chats?[index].owner == myID
-                              ? Alignment.topRight
-                              : Alignment.topLeft),
-                          child: Container(
-                            constraints: const BoxConstraints(maxWidth: 299),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.grey.shade200),
-                              color: (chatroom?.chats?[index].owner == myID
-                                  ? Colors.grey.shade200
-                                  : Colors.white),
-                            ),
-                            padding: const EdgeInsets.all(16),
-                            child: Text(
-                              '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}',
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                  print('StreamBuilder context $context');
+                  print('StreamBuilder success ${snapshot.data.toString()}');
+                  return const Text("data");
+                  // Chatroom? chatroom = snapshot.data as Chatroom?;
+                  // return ListView.builder(
+                  //   itemCount: chatroom?.chats?.length ?? 0,
+                  //   shrinkWrap: true,
+                  //   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   itemBuilder: (context, index) {
+                  //     return Container(
+                  //       padding: const EdgeInsets.only(
+                  //           left: 16, right: 16, top: 10, bottom: 10),
+                  //       child: Align(
+                  //         // todo: 사용자 id 받아서 위치 수정하기
+                  //         alignment: (chatroom?.chats?[index].owner == myID
+                  //             ? Alignment.topRight
+                  //             : Alignment.topLeft),
+                  //         child: Container(
+                  //           constraints: const BoxConstraints(maxWidth: 299),
+                  //           decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(20),
+                  //             border: Border.all(color: Colors.grey.shade200),
+                  //             color: (chatroom?.chats?[index].owner == myID
+                  //                 ? Colors.grey.shade200
+                  //                 : Colors.white),
+                  //           ),
+                  //           padding: const EdgeInsets.all(16),
+                  //           child: Text(
+                  //             '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}',
+                  //             style: const TextStyle(fontSize: 15),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // );
+                } else if (snapshot.hasError) {
+                  print('error : chatroom_view : StreamBuild : ${snapshot.error}');
                 }
                 return const Center(child: Text("loading"));
               }),
