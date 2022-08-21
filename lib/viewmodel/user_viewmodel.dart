@@ -8,16 +8,17 @@ import '../data/repository/user_repository.dart';
 class UserViewModel with ChangeNotifier {
   final _repository = sl<UserRepository>();
 
-  late u.User _user;
-  u.User get user => _user;
-  set user(user) => _user = user;
+  u.User? _user;
+  u.User? get user => _user;
 
   final List<User> users = [];
 
   UserViewModel();
 
   Future<u.User?> getUser() async {
-    return await _repository.getUser();
+    _user = await _repository.getUser();
+    notifyListeners();
+    return user;
   }
 
   Future<bool> addUser(String id) async {

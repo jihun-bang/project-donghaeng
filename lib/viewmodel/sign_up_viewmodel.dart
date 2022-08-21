@@ -32,12 +32,18 @@ class SignUpViewModel extends UserViewModel {
     _loading = true;
     notifyListeners();
 
-    final updateUser = User(
-        id: id, name: name, description: description, instagram: instagram);
+    await super.getUser();
+    if (user != null) {
+      final updateUser = User(
+          id: user!.id,
+          name: name,
+          description: description,
+          instagram: instagram);
 
-    if (validateId(id) == null && await super.updateUser(updateUser)) {
-      _loading = false;
-      sl<NavigationService>().pushNamedAndRemoveAll('/home');
+      if (validateId(user!.id) == null && await super.updateUser(updateUser)) {
+        _loading = false;
+        sl<NavigationService>().pushNamedAndRemoveAll('/home');
+      }
     }
 
     _loading = false;

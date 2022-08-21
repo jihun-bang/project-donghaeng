@@ -46,7 +46,6 @@ class _SignInViewState extends State<SignInView> {
                     if (user == null) {
                       return const SignUpView();
                     } else {
-                      sl<UserViewModel>().user = user;
                       if (user.name.isEmpty) {
                         return const ProfileEditView();
                       } else {
@@ -60,7 +59,7 @@ class _SignInViewState extends State<SignInView> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 16),
                         child: Text(
-                          '로딩 중 🚴‍♀️',
+                          '로딩 중 🚴‍',
                           textScaleFactor: 2,
                         ),
                       ),

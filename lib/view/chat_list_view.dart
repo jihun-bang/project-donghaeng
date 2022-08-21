@@ -40,6 +40,7 @@ class _ChatListViewState extends State<ChatListView>
 
   @override
   Widget build(BuildContext context) {
+    print(sl<UserViewModel>().user?.toJson());
     return _view;
   }
 
@@ -58,7 +59,7 @@ class _ChatListViewState extends State<ChatListView>
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 98, 32, 24),
               child: Text(
-                '${sl<UserViewModel>().user.name} 님,\n함께할 여행자를 찾으세요?',
+                '${sl<UserViewModel>().user?.name ?? ''} 님,\n함께할 여행자를 찾으세요?',
                 style: _titleTextStyle,
                 textAlign: TextAlign.start,
               ),
