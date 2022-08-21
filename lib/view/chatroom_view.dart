@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:donghaeng/model/chat.dart';
-import 'package:donghaeng/view/base_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,7 +78,8 @@ class _ChatroomViewState extends State<ChatroomView> {
                           Chatroom? chatroom = snapshot.data as Chatroom?;
                           return Center(child: Text(chatroom?.title ?? 'Fail'));
                         } else if (snapshot.hasError) {
-                          print('error : chatroom_view : FutureBuilder : ${snapshot.error}');
+                          print(
+                              'error : chatroom_view : FutureBuilder : ${snapshot.error}');
                           return const Center(child: Text("Fail"));
                         }
                         return const Center(child: Text("loading"));
@@ -152,7 +152,8 @@ class _ChatroomViewState extends State<ChatroomView> {
                   //   },
                   // );
                 } else if (snapshot.hasError) {
-                  print('error : chatroom_view : StreamBuild : ${snapshot.error}');
+                  print(
+                      'error : chatroom_view : StreamBuild : ${snapshot.error}');
                 }
                 return const Center(child: Text("loading"));
               }),
