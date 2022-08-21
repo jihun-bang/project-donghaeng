@@ -2,15 +2,24 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:donghaeng/model/chat.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class ChatViewModel extends ChangeNotifier {
+import '../data/di/locator.dart';
+import '../data/repository/chatroom_repository.dart';
+
+class ChatroomViewModel extends ChangeNotifier {
+  final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
+
+  final _repository = sl<ChatroomRepository>();
+
+  Chatroom? _chatroom;
+  Chatroom? get chatroom => _chatroom;
+
   final List<Chatroom> chats = [];
 
-  ChatViewModel() {
+  ChatroomViewModel() {
     rootBundle.loadString('assets/data/chat.json').then((str) {
       final jsonString = json.decode(str) as List;
       for (final chat in jsonString) {
@@ -18,6 +27,28 @@ class ChatViewModel extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  // todo: chatroom id를 parameter로 받기
+  Future<Chatroom?> getChatroom() async {
+    _chatroom = await _repository.getChatroom(chatroomID: chatroomID);
+    notifyListeners();
+    return _chatroom;
+  }
+
+  Future<bool> addChat(String owner, String content) async {
+    return await _repository.addChat(
+        chatroomID: chatroomID,
+        chat: Chat(
+            createdAt: DateTime.now().toUtc(),
+            owner: owner,
+            content: content,
+            reader: null));
+  }
+
+  // todo: chatroom id를 parameter로 받기
+  Stream<DatabaseEvent> getChats() {
+    return _repository.getChats(chatroomID: chatroomID);
   }
 }
 
@@ -33,37 +64,21 @@ class ChatroomDataModel {
     chatsRef = chatroomsRef.child("chats");
   }
 
-  Future<Chatroom> readChatroom() async {
-    final snapshot = await chatroomsRef.get();
-    if (snapshot.exists) {
-      return Chatroom.fromRealtimeDB(snapshot.value as Map);
-    } else {
-      throw 'No data available.';
-    }
-  }
-
   // todo : rename
-  Stream<DatabaseEvent> keepReadChats() {
-    final chatsQuery = chatsRef.limitToLast(10);
+  // Stream<DatabaseEvent> keepReadChats() {
+  //   final chatsQuery = chatsRef.limitToLast(10);
+  //
+  //   return chatsQuery.onChildAdded.listen(
+  //     (DatabaseEvent event) {
+  //       print('Child added: ${event.snapshot.value}');
+  //     },
+  //     onError: (Object o) {
+  //       final error = o as FirebaseException;
+  //       print('Error: ${error.code} ${error.message}');
+  //     },
+  //   );
+  // }
 
-    return chatsQuery.onChildAdded;
-    // .listen(
-    //   (DatabaseEvent event) {
-    //     print('Child added: ${event.snapshot.value}');
-    //   },
-    //   onError: (Object o) {
-    //     final error = o as FirebaseException;
-    //     print('Error: ${error.code} ${error.message}');
-    //   },
-    // );
-  }
-
-  addChat(String owner, DateTime createdAt, String content)  {
-    final chats = Chat(
-        createdAt: createdAt, owner: owner, content: content, reader: null);
-
-    chatroomsRef.child("chats").push().set(chats.toJson());
-  }
 }
 
 Map<String, dynamic> dynamicMapToString(Map<dynamic, dynamic> data) {

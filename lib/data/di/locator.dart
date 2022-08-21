@@ -1,3 +1,6 @@
+import 'package:donghaeng/data/repository/chatroom_repository.dart';
+import 'package:donghaeng/data/repository/impl/chatroom_repository_impl.dart';
+import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../view/navigation/navigation.dart';
@@ -18,7 +21,9 @@ void initLocator() {
   sl.registerLazySingleton<SignInViewModel>(() => SignInViewModel());
   sl.registerLazySingleton<SignUpViewModel>(() => SignUpViewModel());
   sl.registerLazySingleton<UserViewModel>(() => UserViewModel());
+  sl.registerLazySingleton<ChatroomViewModel>(() => ChatroomViewModel());
 
   /// Repository
   sl.registerFactory<UserRepository>(() => UserRepositoryImpl());
+  sl.registerFactory<ChatroomRepository>(() => ChatroomRepositoryImpl());
 }

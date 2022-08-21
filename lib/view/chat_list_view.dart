@@ -1,5 +1,5 @@
 import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
+import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,7 +88,7 @@ class _ChatListViewState extends State<ChatListView>
       );
 
   Widget _communities(BuildContext context) {
-    return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
+    return Consumer<ChatroomViewModel>(builder: (_, viewModel, ___) {
       return Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
