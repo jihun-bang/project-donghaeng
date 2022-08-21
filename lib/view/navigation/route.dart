@@ -1,3 +1,4 @@
+import 'package:donghaeng/view/chatroom_view.dart';
 import 'package:donghaeng/view/home_view.dart';
 import 'package:donghaeng/view/profile_edit_view.dart';
 import 'package:donghaeng/view/sign_in_view.dart';
@@ -9,4 +10,5 @@ Map<String, WidgetBuilder> routes(context) => {
       '/sign-in': (_) => const SignInView(),
       '/sign-up': (_) => const SignUpView(),
       '/profile-edit': (_) => const ProfileEditView(),
+      '/chatroom': (_) => const ChatroomView(),
     };

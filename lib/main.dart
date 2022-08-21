@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:donghaeng/view/chatroom_view.dart';
+import 'package:donghaeng/view/theme/color.dart';
 import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/view/navigation/route.dart';
-import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
+import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
 import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +55,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<UserViewModel>(
             create: (_) => sl<UserViewModel>()),
-        ChangeNotifierProvider<ChatViewModel>(create: (_) => ChatViewModel()),
+        ChangeNotifierProvider<ChatroomViewModel>(
+            create: (_) => sl<ChatroomViewModel>()),
         ChangeNotifierProvider<SignUpViewModel>(
             create: (_) => sl<SignUpViewModel>()),
       ],

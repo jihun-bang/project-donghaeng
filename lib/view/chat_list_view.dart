@@ -1,5 +1,5 @@
 import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/viewmodel/chat_viewmodel.dart';
+import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,7 +88,7 @@ class _ChatListViewState extends State<ChatListView>
       );
 
   Widget _communities(BuildContext context) {
-    return Consumer<ChatViewModel>(builder: (_, viewModel, ___) {
+    return Consumer<ChatroomViewModel>(builder: (_, viewModel, ___) {
       return Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
@@ -107,7 +107,7 @@ class _ChatListViewState extends State<ChatListView>
             itemBuilder: (_, index) {
               final chat = viewModel.chats[index];
               final country = _tabList.elementAt(_selectedTabIndex);
-              final tags = chat.tags.map((e) => '#$e').toList().join('');
+              final tags = chat.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -154,7 +154,8 @@ class _ChatListViewState extends State<ChatListView>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('${chat.start} - ${chat.end}',
+                              Text(
+                                  '${chat.travelDate.start} - ${chat.travelDate.end}',
                                   style: _cardSmallTextStyle.copyWith(
                                       fontSize: 12)),
                               Text(
