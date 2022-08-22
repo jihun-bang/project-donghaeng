@@ -27,6 +27,7 @@ class _ChatroomViewState extends State<ChatroomView> {
 
   // text edit
   final TextEditingController _textController = TextEditingController();
+
   sendMessage(String text) {
     viewModel.addChat(myID, text);
 
@@ -37,7 +38,6 @@ class _ChatroomViewState extends State<ChatroomView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: _appBar,
       body: Stack(
@@ -49,8 +49,7 @@ class _ChatroomViewState extends State<ChatroomView> {
     );
   }
 
-  PreferredSizeWidget get _appBar =>
-      AppBar(
+  PreferredSizeWidget get _appBar => AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -83,8 +82,7 @@ class _ChatroomViewState extends State<ChatroomView> {
                           return Center(child: Text(chatroom?.title ?? 'Fail'));
                         } else if (snapshot.hasError) {
                           print(
-                              'error : chatroom_view : FutureBuilder : ${snapshot
-                                  .error}');
+                              'error : chatroom_view : FutureBuilder : ${snapshot.error}');
                           return const Center(child: Text("Fail"));
                         }
                         return const Center(child: Text("loading"));
@@ -117,42 +115,51 @@ class _ChatroomViewState extends State<ChatroomView> {
   Widget get _chatMain =>
       Consumer<ChatroomViewModel>(builder: (context, viewModel, child) {
         return ListView.builder(
-          itemCount: chats.length,
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 10),
-              child: Align(
-                // todo: 사용자 id 받아서 위치 수정하기
-                alignment: (chats[index].owner == myID
-                    ? Alignment.topRight
-                    : Alignment.topLeft),
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 299),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.grey.shade200),
-                    color: (chats[index].owner == myID
-                        ? Colors.grey.shade200
-                        : Colors.white),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    '${chats[index].owner} = ${chats[index].content}',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                ),
-              ),
-            );
-          },
-        );
+            itemCount: chats.length,
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Row(
+                  // todo: 사용자 id 받아서 위치 수정하기
+                  mainAxisAlignment: (chats[index].owner == myID
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start),
+                  children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 12, top: 10, bottom: 10),
+                        child: (chats[index].owner != myID)
+                            ? const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://avatars.githubusercontent.com/u/38811086?v=4"),
+                                maxRadius: 20,
+                              )
+                            : null),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, top: 10, bottom: 10),
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 299),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey.shade200),
+                          color: (chats[index].owner == myID
+                              ? Colors.grey.shade200
+                              : Colors.white),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          chats[index].content,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    )
+                  ]);
+            });
       });
 
-  Widget get _sendBar =>
-      Align(
+  Widget get _sendBar => Align(
         alignment: Alignment.bottomLeft,
         child: Container(
           padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
@@ -202,12 +209,9 @@ class _ChatroomViewState extends State<ChatroomView> {
                 },
                 style: ElevatedButton.styleFrom(
                   // Foreground color
-                  onPrimary: Theme
-                      .of(context)
-                      .colorScheme
-                      .onPrimary,
+                  onPrimary: Theme.of(context).colorScheme.onPrimary,
                   // Background color
-                  primary: const Color(0x127287EA), // 배경색
+                  primary: const Color(0xFF7287EA).withOpacity(0.12), // 배경색
                   padding: const EdgeInsets.symmetric(
                       horizontal: 25, vertical: 20), // 사이즈
                   shape: const StadiumBorder(),
@@ -227,12 +231,6 @@ class _ChatroomViewState extends State<ChatroomView> {
         ),
       );
 }
-
-// // read data
-// Future<Chatroom> dbChat = _chatroomDataModel.readChatroom();
-// dbChat.then((value) => {print(value.toString())}).catchError((error) {
-// print(error);
-// });
 
 // todo: 원형 표시 - 프로필
 // const CircleAvatar(
