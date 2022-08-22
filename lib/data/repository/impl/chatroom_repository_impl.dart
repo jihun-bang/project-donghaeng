@@ -8,6 +8,17 @@ class ChatroomRepositoryImpl implements ChatroomRepository {
   ChatroomRepositoryImpl();
 
   @override
+  Future<bool> addChatroom({required Chatroom chatroom}) async {
+    try {
+      await chatroomRef.push().set(chatroom.toJson());
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  @override
   Future<Chatroom?> getChatroom({required String chatroomID}) async {
     final snapshot = await chatroomRef.child(chatroomID).get();
     if (snapshot.exists) {

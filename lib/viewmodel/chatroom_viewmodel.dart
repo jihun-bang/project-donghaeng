@@ -71,19 +71,6 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 }
 
-// todo: 위치 옮기기, rename
-class ChatroomDataModel {
-  late final String chatroomID;
-  late final DatabaseReference chatroomsRef;
-  late final DatabaseReference chatsRef;
-
-  ChatroomDataModel(String cID) {
-    chatroomID = cID;
-    chatroomsRef = FirebaseDatabase.instance.ref("chatrooms/$chatroomID");
-    chatsRef = chatroomsRef.child("chats");
-  }
-}
-
 Map<String, dynamic> dynamicMapToString(Map<dynamic, dynamic> data) {
   List<dynamic> _convertList(List<dynamic> src) {
     List<dynamic> dst = [];
@@ -110,17 +97,4 @@ Map<String, dynamic> dynamicMapToString(Map<dynamic, dynamic> data) {
     }
   }
   return retval;
-}
-
-createChatroom(String title, String start, String end, String owner) async {
-  final chat = Chatroom(
-      title: title,
-      createdAt: DateTime.now().toUtc(),
-      travelDate: TravelDate(start: start, end: end),
-      owner: owner,
-      members: [owner],
-      tags: ["tag1", "tag2"],
-      chats: null);
-
-  await FirebaseDatabase.instance.ref("chatrooms").push().set(chat.toJson());
 }
