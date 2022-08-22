@@ -98,14 +98,14 @@ class _ChatListViewState extends State<ChatListView>
                   height: 12,
                 ),
             padding: const EdgeInsets.only(top: 24),
-            itemCount: viewModel.chats
+            itemCount: viewModel.localChatrooms
                 .where((element) => element.title.contains(
                     _selectedTabIndex != 0
                         ? _tabList.elementAt(_selectedTabIndex)
                         : ''))
                 .length,
             itemBuilder: (_, index) {
-              final chat = viewModel.chats[index];
+              final chat = viewModel.localChatrooms[index];
               final country = _tabList.elementAt(_selectedTabIndex);
               final tags = chat.tags?.map((e) => '#$e').toList().join('');
               return Card(

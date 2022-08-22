@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:donghaeng/model/chat.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -17,16 +18,24 @@ class ChatroomViewModel extends ChangeNotifier {
   Chatroom? _chatroom;
   Chatroom? get chatroom => _chatroom;
 
-  final List<Chatroom> chats = [];
+  final List<Chatroom> localChatrooms = [];
+  
+  List<Chat> _chats = [];
+  List<Chat> get chats => _chats;
 
   ChatroomViewModel() {
     rootBundle.loadString('assets/data/chat.json').then((str) {
       final jsonString = json.decode(str) as List;
       for (final chat in jsonString) {
-        chats.add(Chatroom.fromJson(chat));
+        localChatrooms.add(Chatroom.fromJson(chat));
         notifyListeners();
       }
     });
+  }
+
+  List<Chat> getRealtimeChats() {
+    getChats();
+    return _chats;
   }
 
   // todo: chatroom id를 parameter로 받기
@@ -47,8 +56,18 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 
   // todo: chatroom id를 parameter로 받기
-  Stream<DatabaseEvent> getChats() {
-    return _repository.getChats(chatroomID: chatroomID);
+  void getChats() {
+    _repository.getChats(chatroomID: chatroomID).listen(
+      (DatabaseEvent event) {
+        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
+        _chats.add(Chat.fromJson(m));
+        notifyListeners();
+      },
+      onError: (Object o) {
+        final error = o as FirebaseException;
+        print('Error: ${error.code} ${error.message}');
+      },
+    );
   }
 }
 
@@ -63,22 +82,6 @@ class ChatroomDataModel {
     chatroomsRef = FirebaseDatabase.instance.ref("chatrooms/$chatroomID");
     chatsRef = chatroomsRef.child("chats");
   }
-
-  // todo : rename
-  // Stream<DatabaseEvent> keepReadChats() {
-  //   final chatsQuery = chatsRef.limitToLast(10);
-  //
-  //   return chatsQuery.onChildAdded.listen(
-  //     (DatabaseEvent event) {
-  //       print('Child added: ${event.snapshot.value}');
-  //     },
-  //     onError: (Object o) {
-  //       final error = o as FirebaseException;
-  //       print('Error: ${error.code} ${error.message}');
-  //     },
-  //   );
-  // }
-
 }
 
 Map<String, dynamic> dynamicMapToString(Map<dynamic, dynamic> data) {
