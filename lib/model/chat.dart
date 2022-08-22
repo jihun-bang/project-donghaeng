@@ -37,7 +37,7 @@ class Chatroom {
       json[key] = value;
     });
 
-    // todo: 아래부분 때문에 id를 추가할지 고민
+    // todo: 아래부분 때문에 id를 추가할지 고민 (구조가 chatroom/chats/{chat_id}/chat
     if (json.containsKey("chats")) {
       json['chats'] =
           Map<String, dynamic>.from(json["chats"] as Map).values.toList();
@@ -53,7 +53,6 @@ class Chatroom {
   }
 }
 
-// todo: JsonSerializable 없어도 될꺼같은데, 좀 더 고민해봄
 @JsonSerializable()
 class TravelDate {
   String start;
