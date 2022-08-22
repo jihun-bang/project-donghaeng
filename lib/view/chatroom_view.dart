@@ -22,16 +22,34 @@ class ChatroomView extends StatefulWidget {
 
 class _ChatroomViewState extends State<ChatroomView> {
   final viewModel = sl<ChatroomViewModel>();
+  late List<Chat> chats = viewModel.getRealtimeChats();
+  late Future<Chatroom?> chatroom = viewModel.getChatroom();
 
+  // text edit
   final TextEditingController _textController = TextEditingController();
+
+  sendMessage(String text) {
+    viewModel.addChat(myID, text);
+
+    _textController.clear();
+  }
+
   final myID = "junga...id"; // todo: for test
 
   @override
   Widget build(BuildContext context) {
-    Future<Chatroom?> chatroom = viewModel.getChatroom();
-
     return Scaffold(
-      appBar: AppBar(
+      appBar: _appBar,
+      body: Stack(
+        children: <Widget>[
+          _chatMain,
+          _sendBar,
+        ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget get _appBar => AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -92,74 +110,54 @@ class _ChatroomViewState extends State<ChatroomView> {
             ),
           ),
         ),
-      ),
-      body: Stack(
-        children: <Widget>[
-          // todo: 실시간으로 수정
-          FutureBuilder(
-              future: chatroom,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  Chatroom? chatroom = snapshot.data as Chatroom?;
-                  Column(
-                    children: [
-                      Expanded(
-                          child: ListView.builder(
-                        itemCount: chatroom?.chats?.length ?? 0,
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          print('index $index');
-                          return Container(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 10, bottom: 10),
-                            child: Align(
-                              // todo: 사용자 id 받아서 위치 수정하기
-                              alignment: (chatroom?.chats?[index].owner == myID
-                                  ? Alignment.topRight
-                                  : Alignment.topLeft),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 299),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border:
-                                      Border.all(color: Colors.grey.shade200),
-                                  color: (chatroom?.chats?[index].owner == myID
-                                      ? Colors.grey.shade200
-                                      : Colors.white),
-                                ),
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  '${chatroom?.chats?[index].owner} = ${chatroom?.chats?[index].content}',
-                                  style: const TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      )),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  print('error : chatroom_view : _chat : ${snapshot.error}');
-                  return const Center(child: Text("Fail"));
-                }
+      );
 
-                return const Center(child: Text("loading"));
-              }),
-          _sendBar,
-        ],
-      ),
-    );
-  }
-
-  sendMessage(String text) {
-    viewModel.addChat(myID, text);
-
-    _textController.clear();
-  }
+  Widget get _chatMain =>
+      Consumer<ChatroomViewModel>(builder: (context, viewModel, child) {
+        return ListView.builder(
+            itemCount: chats.length,
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Row(
+                  // todo: 사용자 id 받아서 위치 수정하기
+                  mainAxisAlignment: (chats[index].owner == myID
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start),
+                  children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 12, top: 10, bottom: 10),
+                        child: (chats[index].owner != myID)
+                            ? const CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://avatars.githubusercontent.com/u/38811086?v=4"),
+                                maxRadius: 20,
+                              )
+                            : null),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, top: 10, bottom: 10),
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 299),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey.shade200),
+                          color: (chats[index].owner == myID
+                              ? Colors.grey.shade200
+                              : Colors.white),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          chats[index].content,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    )
+                  ]);
+            });
+      });
 
   Widget get _sendBar => Align(
         alignment: Alignment.bottomLeft,
@@ -213,7 +211,7 @@ class _ChatroomViewState extends State<ChatroomView> {
                   // Foreground color
                   onPrimary: Theme.of(context).colorScheme.onPrimary,
                   // Background color
-                  primary: const Color(0x127287EA), // 배경색
+                  primary: const Color(0xFF7287EA).withOpacity(0.12), // 배경색
                   padding: const EdgeInsets.symmetric(
                       horizontal: 25, vertical: 20), // 사이즈
                   shape: const StadiumBorder(),
@@ -233,12 +231,6 @@ class _ChatroomViewState extends State<ChatroomView> {
         ),
       );
 }
-
-// // read data
-// Future<Chatroom> dbChat = _chatroomDataModel.readChatroom();
-// dbChat.then((value) => {print(value.toString())}).catchError((error) {
-// print(error);
-// });
 
 // todo: 원형 표시 - 프로필
 // const CircleAvatar(

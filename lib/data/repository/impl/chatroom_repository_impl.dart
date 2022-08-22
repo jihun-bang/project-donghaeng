@@ -29,6 +29,7 @@ class ChatroomRepositoryImpl implements ChatroomRepository {
     }
   }
 
+  @override
   Stream<DatabaseEvent> getChats({required String chatroomID}) {
     return chatroomRef.child('$chatroomID/chats').onChildAdded;
   }
