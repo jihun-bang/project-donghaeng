@@ -21,7 +21,6 @@ class NavigationServiceImpl implements NavigationService {
   @override
   Future<void> pushNamedAndRemoveAll(String routeName,
       {Object? arguments}) async {
-    print('pushNamedAndRemoveAll');
     navigatorKey.currentState?.pushNamedAndRemoveUntil(
         routeName, (Route<dynamic> route) => false,
         arguments: arguments);

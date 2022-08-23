@@ -25,10 +25,10 @@ class _SignInViewState extends State<SignInView> {
   Widget build(BuildContext context) {
     return Material(
       child: StreamBuilder<User?>(
-        initialData: FirebaseAuth.instance.currentUser,
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData &&
+              FirebaseAuth.instance.currentUser?.email != null) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
