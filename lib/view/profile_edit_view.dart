@@ -1,3 +1,4 @@
+import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:donghaeng/view/widget/text_form_filed.dart';
 import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +41,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           '취소',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        onPressed: () => viewModel.logout(),
+        onPressed: () => sl<NavigationService>().pop(),
       );
 
   Widget get _done => TextButton(

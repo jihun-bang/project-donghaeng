@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:donghaeng/view/chatroom_view.dart';
-import 'package:donghaeng/view/theme/color.dart';
 import 'package:donghaeng/data/di/locator.dart';
 import 'package:donghaeng/view/navigation/route.dart';
 import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';

@@ -28,7 +28,7 @@ class _SignInViewState extends State<SignInView> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (!snapshot.hasData &&
-              FirebaseAuth.instance.currentUser?.email != null) {
+              FirebaseAuth.instance.currentUser?.email == null) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
