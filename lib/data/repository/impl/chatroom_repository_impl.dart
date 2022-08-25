@@ -19,6 +19,18 @@ class ChatroomRepositoryImpl implements ChatroomRepository {
   }
 
   @override
+  Future<Map<String, dynamic>> getChatrooms() async {
+    final snapshot = await chatroomRef.get();
+    if (snapshot.exists) {
+      print("getChatrooms snapshot ${snapshot.value}");
+      return snapshot.value as Map<String, dynamic>;
+    } else {
+      // todo: 에러처리
+      throw 'No data available.';
+    }
+  }
+
+  @override
   Future<Chatroom?> getChatroom({required String chatroomID}) async {
     final snapshot = await chatroomRef.child(chatroomID).get();
     if (snapshot.exists) {

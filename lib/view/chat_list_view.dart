@@ -98,16 +98,12 @@ class _ChatListViewState extends State<ChatListView>
                   height: 12,
                 ),
             padding: const EdgeInsets.only(top: 24),
-            itemCount: viewModel.localChatrooms
-                .where((element) => element.title.contains(
-                    _selectedTabIndex != 0
-                        ? _tabList.elementAt(_selectedTabIndex)
-                        : ''))
-                .length,
+            itemCount: viewModel.chatRooms!.length,
             itemBuilder: (_, index) {
-              final chat = viewModel.localChatrooms[index];
+              final key = viewModel.chatRooms?.keys.elementAt(index);
+              final chat = viewModel.chatRooms?.values.elementAt(index);
               final country = _tabList.elementAt(_selectedTabIndex);
-              final tags = chat.tags?.map((e) => '#$e').toList().join('');
+              final tags = chat?.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -121,7 +117,7 @@ class _ChatListViewState extends State<ChatListView>
                       children: [
                         Expanded(
                             child: Text(
-                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chat.title}',
+                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chat?.title}',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -138,7 +134,7 @@ class _ChatListViewState extends State<ChatListView>
                                 size: 14,
                               ),
                               Text(
-                                '+${chat.members.length}명',
+                                '+${chat?.members.length}명',
                                 style: _cardSmallTextStyle,
                               ),
                             ],
@@ -155,7 +151,7 @@ class _ChatListViewState extends State<ChatListView>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  '${chat.travelDate.start} - ${chat.travelDate.end}',
+                                  '${chat?.travelDateStart} - ${chat?.travelDateEnd}',
                                   style: _cardSmallTextStyle.copyWith(
                                       fontSize: 12)),
                               Text(

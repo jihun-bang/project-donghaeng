@@ -15,6 +15,7 @@ class UserViewModel with ChangeNotifier {
 
   UserViewModel();
 
+  // todo: 유저정보 이걸로 받아오기
   Future<u.User?> getUser() async {
     _user = await _repository.getUser();
     notifyListeners();

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,23 +15,23 @@ class ChatroomViewModel extends ChangeNotifier {
   final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
 
   final _repository = sl<ChatroomRepository>();
+  final _chatRoomRepository = sl<ChatRoomRepository>();
 
   Chatroom? _chatroom;
   Chatroom? get chatroom => _chatroom;
 
-  final List<Chatroom> localChatrooms = [];
-  
   List<Chat> _chats = [];
   List<Chat> get chats => _chats;
 
+  Map<String, ChatRoom>? chatRooms = {};
+
   ChatroomViewModel() {
-    rootBundle.loadString('assets/data/chat.json').then((str) {
-      final jsonString = json.decode(str) as List;
-      for (final chat in jsonString) {
-        localChatrooms.add(Chatroom.fromJson(chat));
-        notifyListeners();
-      }
-    });
+    getChatList();
+  }
+
+  getChatList() async {
+    chatRooms = await _chatRoomRepository.getAllChatRooms();
+    notifyListeners();
   }
 
   List<Chat> getRealtimeChats() {
