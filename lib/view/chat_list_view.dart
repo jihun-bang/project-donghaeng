@@ -1,10 +1,14 @@
 import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
+import 'package:donghaeng/view/navigation/navigation.dart';
+import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+import '../utils/toast.dart';
 
 class ChatListView extends StatefulWidget {
   const ChatListView({Key? key}) : super(key: key);
@@ -24,7 +28,7 @@ class _ChatListViewState extends State<ChatListView>
   final _titleTextStyle = const TextStyle(
       fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white);
   final _cardSmallTextStyle =
-      const TextStyle(fontSize: 8, color: Color(0xFF646464));
+  const TextStyle(fontSize: 8, color: Color(0xFF646464));
 
   void _onTabTapped(int index) {
     setState(() {
@@ -44,7 +48,8 @@ class _ChatListViewState extends State<ChatListView>
     return _view;
   }
 
-  Widget get _view => Container(
+  Widget get _view =>
+      Container(
         decoration: BoxDecoration(
             color: Colors.white,
             image: DecorationImage(
@@ -94,20 +99,17 @@ class _ChatListViewState extends State<ChatListView>
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
         child: ListView.separated(
             shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 12,
-                ),
+            separatorBuilder: (context, index) =>
+            const SizedBox(
+              height: 12,
+            ),
             padding: const EdgeInsets.only(top: 24),
-            itemCount: viewModel.localChatrooms
-                .where((element) => element.title.contains(
-                    _selectedTabIndex != 0
-                        ? _tabList.elementAt(_selectedTabIndex)
-                        : ''))
-                .length,
+            itemCount: viewModel.chatRooms!.length,
             itemBuilder: (_, index) {
-              final chat = viewModel.localChatrooms[index];
+              final key = viewModel.chatRooms?.keys.elementAt(index);
+              final chatRoom = viewModel.chatRooms?.values.elementAt(index);
               final country = _tabList.elementAt(_selectedTabIndex);
-              final tags = chat.tags?.map((e) => '#$e').toList().join('');
+              final tags = chatRoom?.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -115,80 +117,87 @@ class _ChatListViewState extends State<ChatListView>
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
-                    onTap: () => {},
+                    onTap: () => {
+                      if (key == null || chatRoom == null)
+                        {showToast(message: "Error: No chat_room information")}
+                      else
+                        {viewModel.joinChatRoom(key, chatRoom)}
+                    },
                     title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Text(
-                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chat.title}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )),
-                        SizedBox(
-                          width: 78,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                CupertinoIcons.person,
-                                size: 14,
-                              ),
-                              Text(
-                                '+${chat.members.length}명',
-                                style: _cardSmallTextStyle,
-                              ),
-                            ],
-                          ),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                          child: Text(
+                            '${_selectedTabIndex != 0
+                                ? '[$country] '
+                                : ''}${chatRoom?.title}',
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      SizedBox(
+                        width: 78,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(
+                              CupertinoIcons.person,
+                              size: 14,
+                            ),
+                            Text(
+                              '+${chatRoom?.members.length}명',
+                              style: _cardSmallTextStyle,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  '${chat.travelDate.start} - ${chat.travelDate.end}',
-                                  style: _cardSmallTextStyle.copyWith(
-                                      fontSize: 12)),
-                              Text(
-                                '$tags\n$tags\n$tags',
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.black),
-                              ),
-                            ],
-                          ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                '${chatRoom?.travelDateStart} - ${chatRoom
+                                    ?.travelDateEnd}',
+                                style: _cardSmallTextStyle.copyWith(
+                                    fontSize: 12)),
+                            Text(
+                              '$tags\n$tags\n$tags',
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.black),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 78,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                Icons.circle,
-                                color: Color(0xFFFF8D3A),
-                                size: 6,
-                              ),
-                              Text(
-                                '실시간 대화 중',
-                                style: _cardSmallTextStyle,
-                              )
-                            ],
-                          ),
+                      ),
+                      SizedBox(
+                        width: 78,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              color: Color(0xFFFF8D3A),
+                              size: 6,
+                            ),
+                            Text(
+                              '실시간 대화 중',
+                              style: _cardSmallTextStyle,
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              );
+              ),);
             }),
       );
     });

@@ -1,6 +1,7 @@
 import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:donghaeng/view/widget/text_form_filed.dart';
 import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

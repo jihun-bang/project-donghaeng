@@ -1,8 +1,9 @@
 import 'dart:ui';
 
 import 'package:donghaeng/data/di/locator.dart';
+import 'package:donghaeng/view/chat_room_view.dart';
 import 'package:donghaeng/view/navigation/route.dart';
-import 'package:donghaeng/viewmodel/chatroom_viewmodel.dart';
+import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
 import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
