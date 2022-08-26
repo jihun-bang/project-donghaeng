@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../utils/datetime.dart';
+
 part 'chat.g.dart';
 
 @JsonSerializable()
 class ChatRoom {
-  String title;
-  @JsonKey(name: "created_at", fromJson: dateTimeFromTimestamp)
-  DateTime createdAt;
+  final String title;
+  @JsonKey(
+      name: "created_at",
+      fromJson: FromTimestamp,
+      toJson: toTimestamp)
+  final DateTime createdAt;
   @JsonKey(name: "travel_date_start")
-  String travelDateStart;
+  final String travelDateStart;
   @JsonKey(name: "travel_date_end")
-  String travelDateEnd;
-  String? country;
-  String owner;
-  List<String> members;
-  List<String>? tags;
+  final String travelDateEnd;
+  final String country;
+  final String owner;
+  final List<String> members;
+  final List<String>? tags;
 
   @override
   String toString() {
@@ -27,19 +32,35 @@ class ChatRoom {
       required this.createdAt,
       required this.travelDateStart,
       required this.travelDateEnd,
-      this.country,
+      required this.country,
       required this.owner,
       required this.members,
       this.tags});
+
+  ChatRoom copyWith(
+      {String? title,
+      DateTime? createdAt,
+      String? travelDateStart,
+      String? travelDateEnd,
+      String? country,
+      String? owner,
+      List<String>? members,
+      List<String>? tags}) {
+    return ChatRoom(
+        title: title ?? this.title,
+        createdAt: createdAt ?? this.createdAt,
+        travelDateEnd: travelDateStart ?? this.travelDateStart,
+        travelDateStart: travelDateStart ?? this.travelDateStart,
+        country: country ?? this.country,
+        owner: owner ?? this.owner,
+        members: members ?? this.members,
+        tags: tags ?? this.tags);
+  }
 
   factory ChatRoom.fromJson(Map<String, dynamic> json) =>
       _$ChatRoomFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatRoomToJson(this);
-}
-
-DateTime dateTimeFromTimestamp(Timestamp timestamp) {
-  return timestamp.toDate();
 }
 
 // todo: remove

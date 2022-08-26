@@ -3,24 +3,30 @@ import 'dart:async';
 
 import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:donghaeng/view/navigation/navigation.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../data/di/locator.dart';
 import '../data/repository/chatroom_repository.dart';
 
 class ChatroomViewModel extends ChangeNotifier {
-  final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
+  final userID = FirebaseAuth.instance.currentUser?.uid;
 
-  final _repository = sl<ChatroomRepository>();
+  final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
+  final _repository = sl<ChatroomRepository>(); // todo : remove
   final _chatRoomRepository = sl<ChatRoomRepository>();
 
   Chatroom? _chatroom;
+
   Chatroom? get chatroom => _chatroom;
 
   List<Chat> _chats = [];
+
   List<Chat> get chats => _chats;
 
   Map<String, ChatRoom>? chatRooms = {};
@@ -32,6 +38,28 @@ class ChatroomViewModel extends ChangeNotifier {
   getChatList() async {
     chatRooms = await _chatRoomRepository.getAllChatRooms();
     notifyListeners();
+  }
+
+  joinChatRoom(String chatRoomID, ChatRoom chatRoom) async {
+    print("join chat room");
+
+    // 처음 입장
+    if (!chatRoom.members.contains(userID)) {
+      chatRoom.members.add(userID!);
+
+      try {
+        await _chatRoomRepository.updateChatRoom(chatRoomID, chatRoom);
+      } on FirebaseException catch (e) {
+        print("joinChatRoom : FirebaseException ${e.toString()}");
+        return;
+      } catch (e) {
+        print("joinChatRoom : Exception ${e.toString()}");
+      }
+    }
+
+    // todo: users 정보에 chatroom id 추가하기
+
+    sl<NavigationService>().pushNamed("/chat-room");
   }
 
   List<Chat> getRealtimeChats() {
@@ -70,32 +98,4 @@ class ChatroomViewModel extends ChangeNotifier {
       },
     );
   }
-}
-
-Map<String, dynamic> dynamicMapToString(Map<dynamic, dynamic> data) {
-  List<dynamic> _convertList(List<dynamic> src) {
-    List<dynamic> dst = [];
-    for (int i = 0; i < src.length; ++i) {
-      if (src[i] is Map<dynamic, dynamic>) {
-        dst.add(dynamicMapToString(src[i]));
-      } else if (src[i] is List<dynamic>) {
-        dst.add(_convertList(src[i]));
-      } else {
-        dst.add(src[i]);
-      }
-    }
-    return dst;
-  }
-
-  Map<String, dynamic> retval = {};
-  for (dynamic key in data.keys) {
-    if (data[key] is Map<dynamic, dynamic>) {
-      retval[key.toString()] = dynamicMapToString(data[key]);
-    } else if (data[key] is List<dynamic>) {
-      retval[key.toString()] = _convertList(data[key]);
-    } else {
-      retval[key.toString()] = data[key];
-    }
-  }
-  return retval;
 }

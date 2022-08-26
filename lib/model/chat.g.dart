@@ -8,10 +8,10 @@ part of 'chat.dart';
 
 ChatRoom _$ChatRoomFromJson(Map<String, dynamic> json) => ChatRoom(
       title: json['title'] as String,
-      createdAt: dateTimeFromTimestamp(json['created_at'] as Timestamp),
+      createdAt: FromTimestamp(json['created_at'] as Timestamp),
       travelDateStart: json['travel_date_start'] as String,
       travelDateEnd: json['travel_date_end'] as String,
-      country: json['country'] as String?,
+      country: json['country'] as String,
       owner: json['owner'] as String,
       members:
           (json['members'] as List<dynamic>).map((e) => e as String).toList(),
@@ -20,7 +20,7 @@ ChatRoom _$ChatRoomFromJson(Map<String, dynamic> json) => ChatRoom(
 
 Map<String, dynamic> _$ChatRoomToJson(ChatRoom instance) => <String, dynamic>{
       'title': instance.title,
-      'created_at': instance.createdAt.toIso8601String(),
+      'created_at': toTimestamp(instance.createdAt),
       'travel_date_start': instance.travelDateStart,
       'travel_date_end': instance.travelDateEnd,
       'country': instance.country,

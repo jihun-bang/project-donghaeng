@@ -19,6 +19,11 @@ class User {
       this.description = '',
       this.instagram = ''});
 
+  @override
+  String toString() {
+    return 'User{id: $id, name: $name, imagePath: $imagePath, description: $description, instagram: $instagram}';
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
