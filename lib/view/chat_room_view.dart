@@ -1,17 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:donghaeng/data/repository/user_repository.dart';
 import 'package:donghaeng/model/chat.dart';
-import 'package:donghaeng/model/user.dart' as u;
 import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutterfire_ui/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../data/di/locator.dart';
@@ -25,35 +18,47 @@ class ChatroomView extends StatefulWidget {
 
 class _ChatroomViewState extends State<ChatroomView> {
   final viewModel = sl<ChatroomViewModel>();
+  late Future<ChatRoom?> chatroom = viewModel.getChatroom();
   late List<Chat> chats = viewModel.getRealtimeChats();
-  late Future<Chatroom?> chatroom = viewModel.getChatroom();
-  final Future<u.User?> auth = sl<UserViewModel>().getUser();
-  final _userID =  firebase_auth.FirebaseAuth.instance.currentUser?.uid;
+  late User user;
 
   // text edit
-  final TextEditingController _textController = TextEditingController();
+  late TextEditingController _textController;
 
   sendMessage(String text) async {
-    viewModel.addChat(_userID!, text);
+    viewModel.addChat(user.uid, text);
 
     _textController.clear();
   }
 
   @override
+  void initState() {
+    _textController = TextEditingController();
+
+    user = FirebaseAuth.instance.currentUser!;
+    print('user $user');
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textController.removeListener(() {});
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<u.User?>(
-      future: auth,
-      builder: (context, snapshot) {
-        return Scaffold(
-          appBar: _appBar,
-          body: Stack(
-            children: <Widget>[
-              _chatMain,
-              _sendBar,
-            ],
-          ),
-        );
-      },
+    return Consumer<ChatroomViewModel>(
+      builder: (_, __, ___) => Scaffold(
+        appBar: _appBar,
+        body: Stack(
+          children: <Widget>[
+            _chatMain,
+            _sendBar,
+          ],
+        ),
+      ),
     );
   }
 
@@ -86,7 +91,7 @@ class _ChatroomViewState extends State<ChatroomView> {
                       future: chatroom,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          Chatroom? chatroom = snapshot.data as Chatroom?;
+                          ChatRoom? chatroom = snapshot.data as ChatRoom?;
                           return Center(child: Text(chatroom?.title ?? 'Fail'));
                         } else if (snapshot.hasError) {
                           print(
@@ -126,14 +131,14 @@ class _ChatroomViewState extends State<ChatroomView> {
       padding: const EdgeInsets.all(10),
       itemBuilder: (context, index) {
         return Row(
-            mainAxisAlignment: (chats[index].owner == _userID
+            mainAxisAlignment: (chats[index].owner == user.uid
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start),
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.only(
                       left: 16, right: 12, top: 10, bottom: 10),
-                  child: (chats[index].owner != _userID)
+                  child: (chats[index].owner != user.uid)
                       ? const CircleAvatar(
                           backgroundImage: NetworkImage(
                               "https://avatars.githubusercontent.com/u/38811086?v=4"),
@@ -148,7 +153,7 @@ class _ChatroomViewState extends State<ChatroomView> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.grey.shade200),
-                    color: (chats[index].owner == _userID
+                    color: (chats[index].owner == user.uid
                         ? Colors.grey.shade200
                         : Colors.white),
                   ),

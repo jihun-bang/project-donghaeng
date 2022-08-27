@@ -27,6 +27,6 @@ void initLocator() {
 
   /// Repository
   sl.registerFactory<UserRepository>(() => UserRepositoryImpl());
-  sl.registerFactory<ChatroomRepository>(() => ChatroomRepositoryImpl());
+  sl.registerFactory<ChatRepository>(() => ChatRepositoryImpl());
   sl.registerFactory<ChatRoomRepository>(() => ChatRoomRepositoryImpl());
 }

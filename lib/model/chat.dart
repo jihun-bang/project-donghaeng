@@ -8,10 +8,7 @@ part 'chat.g.dart';
 @JsonSerializable()
 class ChatRoom {
   final String title;
-  @JsonKey(
-      name: "created_at",
-      fromJson: FromTimestamp,
-      toJson: toTimestamp)
+  @JsonKey(name: "created_at", fromJson: FromTimestamp, toJson: toTimestamp)
   final DateTime createdAt;
   @JsonKey(name: "travel_date_start")
   final String travelDateStart;
@@ -141,7 +138,7 @@ class Chat {
       {required this.createdAt,
       required this.owner,
       required this.content,
-      required this.reader});
+      this.reader});
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 
