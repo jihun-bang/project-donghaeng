@@ -2,44 +2,10 @@ import 'package:donghaeng/data/repository/chatroom_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class ChatroomRepositoryImpl implements ChatroomRepository {
+class ChatRepositoryImpl implements ChatRepository {
   final chatroomRef = FirebaseDatabase.instance.ref("chatrooms");
 
-  ChatroomRepositoryImpl();
-
-  @override
-  Future<bool> addChatroom({required Chatroom chatroom}) async {
-    try {
-      await chatroomRef.push().set(chatroom.toJson());
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> getChatrooms() async {
-    final snapshot = await chatroomRef.get();
-    if (snapshot.exists) {
-      print("getChatrooms snapshot ${snapshot.value}");
-      return snapshot.value as Map<String, dynamic>;
-    } else {
-      // todo: 에러처리
-      throw 'No data available.';
-    }
-  }
-
-  @override
-  Future<Chatroom?> getChatroom({required String chatroomID}) async {
-    final snapshot = await chatroomRef.child(chatroomID).get();
-    if (snapshot.exists) {
-      return Chatroom.fromRealtimeDB(snapshot.value as Map);
-    } else {
-      // todo: 에러처리
-      throw 'No data available.';
-    }
-  }
+  ChatRepositoryImpl();
 
   @override
   Future<bool> addChat({required String chatroomID, required Chat chat}) async {
@@ -53,7 +19,7 @@ class ChatroomRepositoryImpl implements ChatroomRepository {
   }
 
   @override
-  Stream<DatabaseEvent> getChats({required String chatroomID}) {
+  Stream<DatabaseEvent> getChatStream({required String chatroomID}) {
     return chatroomRef.child('$chatroomID/chats').onChildAdded;
   }
 }
