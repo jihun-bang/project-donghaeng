@@ -24,9 +24,14 @@ class MyColors {
   MyColors._();
 
   static Color get primary => const Color(0xFF414141);
+
   static Color get subPrimary => const Color(0xFFACAEB2);
+
   static Color get grey_1 => const Color(0xFF9C9C9C);
+
   static Color get grey_2 => const Color(0xFFD9D9D9);
+
   static Color get grey_3 => const Color(0xFF757575);
+
   static Color get grey_200 => const Color(0xFFEBEBEB);
 }

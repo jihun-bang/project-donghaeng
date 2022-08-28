@@ -1,13 +1,12 @@
 import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/model/user.dart' as u;
 import 'package:donghaeng/view/home_view.dart';
 import 'package:donghaeng/view/profile_edit_view.dart';
 import 'package:donghaeng/view/sign_up_view.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../viewmodel/sign_in_viewmodel.dart';
 
@@ -19,7 +18,8 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  final viewModel = sl<SignInViewModel>();
+  final signInViewModel = sl<SignInViewModel>();
+  final userViewModel = sl<UserViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,44 +37,35 @@ class _SignInViewState extends State<SignInView> {
               ],
             );
           } else {
-            return FutureBuilder<u.User?>(
-                future: sl<UserViewModel>().getUser(),
-                builder: (_, snapshot) {
-                  if (snapshot.hasData ||
-                      snapshot.connectionState == ConnectionState.done) {
-                    final user = snapshot.data;
-                    if (user == null) {
-                      return const SignUpView();
-                    } else {
-                      if (user.name.isEmpty) {
-                        return const ProfileEditView();
-                      } else {
-                        return const HomeView();
-                      }
-                    }
+            userViewModel.getUser();
+            return Consumer<UserViewModel>(builder: (_, userViewModel, __) {
+              if (userViewModel.getUserLoading) {
+                return _loading;
+              } else {
+                final user = userViewModel.user;
+                if (user != null) {
+                  if (user.name.isEmpty) {
+                    return const ProfileEditView();
+                  } else {
+                    return const HomeView();
                   }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          '로딩 중 🚴‍',
-                          textScaleFactor: 2,
-                        ),
-                      ),
-                      SizedBox(
-                          width: 150,
-                          height: 150,
-                          child: CircularProgressIndicator(strokeWidth: 10)),
-                    ],
-                  );
-                });
+                } else {
+                  return const SignUpView();
+                }
+              }
+            });
           }
         },
       ),
     );
   }
+
+  Widget get _loading => const Center(
+        child: SizedBox(
+            width: 150,
+            height: 150,
+            child: CircularProgressIndicator(strokeWidth: 10)),
+      );
 
   Widget get _logo => const Expanded(
         flex: 3,
@@ -89,7 +80,7 @@ class _SignInViewState extends State<SignInView> {
 
   Widget get _signInList {
     Widget button(SignInType type) {
-      final info = viewModel.getButtonInfo(type);
+      final info = signInViewModel.getButtonInfo(type);
 
       return Padding(
         padding: const EdgeInsets.only(bottom: 11),
@@ -103,7 +94,7 @@ class _SignInViewState extends State<SignInView> {
                   BorderSide(width: 0.5, color: Colors.black.withOpacity(0.3)),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30))),
-          onPressed: () async => await viewModel.signIn(type),
+          onPressed: () async => await signInViewModel.signIn(type),
           child: Stack(
             children: [
               Align(

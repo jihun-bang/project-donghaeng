@@ -41,7 +41,7 @@ class ChatRoomRepositoryImpl implements ChatRoomRepository {
   }
 
   @override
-  Future updateChatRoom(String chatRoomID, ChatRoom chatRoom) async {
+  void updateChatRoom(String chatRoomID, ChatRoom chatRoom) async {
     await chatRoomsCol.doc(chatRoomID).update(chatRoom.toJson());
   }
 }
