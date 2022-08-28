@@ -10,4 +10,7 @@ ThemeData get themeDate => ThemeData(
     fontFamily: 'Noto_Sans_KR');
 
 const _appbarThem = AppBarTheme(
-    backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0);
+    titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+    backgroundColor: Colors.white,
+    foregroundColor: Colors.black,
+    elevation: 0);

@@ -42,7 +42,6 @@ class _ChatListViewState extends State<ChatListView>
 
   @override
   Widget build(BuildContext context) {
-    print(sl<UserViewModel>().user?.toJson());
     return _view;
   }
 

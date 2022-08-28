@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donghaeng/data/repository/user_repository.dart';
 import 'package:donghaeng/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../utils/toast.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final auth = firebase_auth.FirebaseAuth.instance;
-  final fireStore = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance.ref('/profile');
   final users = FirebaseFirestore.instance.collection('users');
 
   UserRepositoryImpl();
@@ -33,6 +38,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<String?> getUserImagePath() async {
+    try {
+      final imageUrl =
+          await storage.child("${auth.currentUser?.uid}.png").getDownloadURL();
+      print(imageUrl);
+      return imageUrl;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
   Future<bool> updateUser({required User user}) async {
     try {
       await users.doc(auth.currentUser?.uid).update(user.toJson());
@@ -40,6 +58,26 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  @override
+  Future<String?> updateProfileImage({required XFile image}) async {
+    try {
+      final metadata = SettableMetadata(
+        contentType: 'image/png',
+      );
+      final ref = storage.child('/${auth.currentUser?.uid}.png');
+      if (kIsWeb) {
+        await ref.putData(await image.readAsBytes(), metadata);
+      } else {
+        await ref.putFile(File(image.path), metadata);
+      }
+      return await getUserImagePath();
+    } catch (e) {
+      print(e);
+      showToast(message: '프로필 이미지 업데이트를 실패했습니다.. 😭');
+      return null;
     }
   }
 

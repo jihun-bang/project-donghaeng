@@ -7,14 +7,12 @@ import '../data/repository/user_repository.dart';
 import '../utils/toast.dart';
 
 class UserViewModel with ChangeNotifier {
-  final _repository = sl<UserRepository>();
+  final repository = sl<UserRepository>();
 
   bool _getUserLoading = false;
-
   bool get getUserLoading => _getUserLoading;
 
   u.User? _user;
-
   u.User? get user => _user;
 
   final List<User> users = [];
@@ -22,7 +20,7 @@ class UserViewModel with ChangeNotifier {
   UserViewModel();
 
   Future<bool> addUser(String id) async {
-    return await _repository.addUser(user: u.User(id: id)).then((result) {
+    return await repository.addUser(user: u.User(id: id)).then((result) {
       if (!result) {
         showToast(message: '회원 가입를 실패하였습니다.. 😥');
       }
@@ -32,16 +30,18 @@ class UserViewModel with ChangeNotifier {
 
   void getUser() {
     _getUserLoading = true;
-    _repository.getUser().listen((user) {
-      print('${hashCode} listen = ${user?.toJson()}');
-      _user = user;
-      _getUserLoading = false;
-      notifyListeners();
+    repository.getUser().listen((user) {
+      if (user?.toJson().toString() != _user?.toJson().toString()) {
+        print('[UserViewModel] ${user?.toJson()}');
+        _user = user;
+        _getUserLoading = false;
+        notifyListeners();
+      }
     });
   }
 
   Future<bool> updateUser({u.User? user}) async {
-    return await _repository.updateUser(user: user ?? _user!).then((result) {
+    return await repository.updateUser(user: user ?? _user!).then((result) {
       if (!result) {
         showToast(message: '프로필 업데이트를 실패하였습니다.. 😥');
       }
@@ -50,6 +50,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   void logout() {
-    _repository.logOut();
+    repository.logOut();
   }
 }

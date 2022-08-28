@@ -1,8 +1,9 @@
 import 'package:donghaeng/view/theme/color.dart';
+import 'package:donghaeng/view/widget/profile_image.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data/di/locator.dart';
 import '../model/user.dart' as u;
@@ -17,22 +18,21 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   late u.User user;
-  final viewModel = sl<UserViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    if (viewModel.user != null) {
-      user = viewModel.user!;
-
-      return Container(
-        alignment: Alignment.topLeft,
-        color: MyColors.grey_2,
-        child: Column(
-          children: [const SizedBox(height: 123), _profile, _badge, _feed],
-        ),
-      );
-    }
-    return const Center(child: CircularProgressIndicator());
+    return Consumer<UserViewModel>(builder: (_, viewModel, __) {
+      if (viewModel.user != null) {
+        user = viewModel.user!;
+        return Container(
+            alignment: Alignment.topLeft,
+            color: MyColors.grey_2,
+            child: Column(
+              children: [const SizedBox(height: 123), _profile, _badge, _feed],
+            ));
+      }
+      return const Center(child: CircularProgressIndicator());
+    });
   }
 
   Widget get _profile => Stack(children: [
@@ -41,17 +41,11 @@ class _ProfileViewState extends State<ProfileView> {
       ]);
 
   Widget get _image => Container(
-        width: 95,
-        height: 95,
-        margin: const EdgeInsets.only(left: 33),
-        decoration:
-            const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-        padding: const EdgeInsets.all(4),
-        child: CircleAvatar(
-          foregroundImage:
-              NetworkImage(FirebaseAuth.instance.currentUser?.photoURL ?? ''),
-        ),
-      );
+      margin: const EdgeInsets.only(left: 33),
+      decoration:
+          const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+      padding: const EdgeInsets.all(4),
+      child: ProfileImage(url: user.imagePath, size: 95));
 
   Widget get _info {
     final header = Column(

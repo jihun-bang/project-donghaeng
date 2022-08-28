@@ -5,6 +5,7 @@ import 'label.dart';
 class DhTextFormFiled extends StatelessWidget {
   final TextEditingController? controller;
   final String label;
+  final String? initValue;
   final String hint;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChange;
@@ -15,6 +16,7 @@ class DhTextFormFiled extends StatelessWidget {
     Key? key,
     this.controller,
     required this.label,
+    this.initValue,
     this.hint = '',
     this.enabled = true,
     this.validator,
@@ -29,6 +31,7 @@ class DhTextFormFiled extends StatelessWidget {
         Label(text: label),
         TextFormField(
           controller: controller,
+          initialValue: initValue,
           enabled: enabled,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
