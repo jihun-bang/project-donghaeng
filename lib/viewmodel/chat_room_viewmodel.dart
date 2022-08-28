@@ -12,7 +12,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../data/di/locator.dart';
-import '../data/repository/chatroom_repository.dart';
+import '../data/repository/chat_repository.dart';
 
 class ChatroomViewModel extends ChangeNotifier {
   final userID = FirebaseAuth.instance.currentUser?.uid;
