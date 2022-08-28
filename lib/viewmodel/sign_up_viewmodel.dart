@@ -5,43 +5,33 @@ import '../model/user.dart';
 import '../view/navigation/navigation.dart';
 
 class SignUpViewModel extends UserViewModel {
+  final _userViewModel = sl<UserViewModel>();
+
   String id = '';
   String name = '';
   String description = '';
   String instagram = '';
 
   bool _loading = false;
+
   bool get loading => _loading;
 
   SignUpViewModel();
 
   @override
-  Future<bool> addUser(String id) async {
-    _loading = true;
-    notifyListeners();
-    if (validateId(id) == null && await super.addUser(id)) {
-      _loading = false;
-      sl<NavigationService>().pushNamedAndRemoveAll('/profile-edit');
-    }
-    _loading = false;
-    notifyListeners();
-    return true;
-  }
-
-  Future<bool> updateProfile() async {
+  Future<bool> updateUser({User? user}) async {
     _loading = true;
     notifyListeners();
 
-    await super.getUser();
+    final user = _userViewModel.user;
     if (user != null) {
       final updateUser = User(
-          id: user!.id,
+          id: user.id,
           name: name,
           description: description,
           instagram: instagram);
 
-      if (validateId(user!.id) == null && await super.updateUser(updateUser)) {
-        _loading = false;
+      if (await super.updateUser(user: updateUser)) {
         sl<NavigationService>().pushNamedAndRemoveAll('/home');
       }
     }

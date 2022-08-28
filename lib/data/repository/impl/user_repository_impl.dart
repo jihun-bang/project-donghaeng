@@ -25,16 +25,11 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<User?> getUser() async {
-    try {
-      return await users
-          .doc(auth.currentUser?.uid)
-          .get()
-          .then((value) => value.toUser());
-    } catch (e) {
-      print(e);
-      return null;
-    }
+  Stream<User?> getUser() {
+    return users
+        .doc(auth.currentUser?.uid)
+        .snapshots()
+        .map((event) => event.toUser());
   }
 
   @override
@@ -73,7 +68,10 @@ class UserRepositoryImpl implements UserRepository {
 }
 
 extension DocumentSnapX on DocumentSnapshot<Map<String, dynamic>> {
-  User toUser() {
-    return User.fromJson(data()!);
+  User? toUser() {
+    if (data() != null) {
+      return User?.fromJson(data()!);
+    }
+    return null;
   }
 }

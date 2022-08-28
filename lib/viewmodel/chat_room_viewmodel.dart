@@ -1,15 +1,13 @@
-import 'dart:convert';
 import 'dart:async';
 import 'dart:developer';
 
 import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/view/navigation/navigation.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../data/di/locator.dart';
 import '../data/repository/chat_repository.dart';
@@ -22,9 +20,11 @@ class ChatroomViewModel extends ChangeNotifier {
   final _chatRoomRepository = sl<ChatRoomRepository>();
 
   ChatRoom? _chatroom;
+
   ChatRoom? get chatroom => _chatroom;
 
   final List<Chat> _chats = [];
+
   List<Chat> get chats => _chats;
 
   Map<String, ChatRoom>? chatRooms = {};
@@ -46,7 +46,7 @@ class ChatroomViewModel extends ChangeNotifier {
       chatRoom.members.add(userID!);
 
       try {
-        await _chatRoomRepository.updateChatRoom(chatRoomID, chatRoom);
+        _chatRoomRepository.updateChatRoom(chatRoomID, chatRoom);
       } on FirebaseException catch (e) {
         print("joinChatRoom : FirebaseException ${e.toString()}");
         return;

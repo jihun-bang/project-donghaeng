@@ -52,7 +52,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
     authDomain: 'project-donghaeng.firebaseapp.com',
-    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
     measurementId: 'G-4HCCZRPTVB',
   );
@@ -62,7 +63,8 @@ class DefaultFirebaseOptions {
     appId: '1:968695725622:android:b3cfbb9c26a539ff45a297',
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
-    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
   );
 
@@ -71,9 +73,11 @@ class DefaultFirebaseOptions {
     appId: '1:968695725622:ios:1c17b41fae4b415645a297',
     messagingSenderId: '968695725622',
     projectId: 'project-donghaeng',
-    databaseURL: 'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
+    databaseURL:
+        'https://project-donghaeng-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'project-donghaeng.appspot.com',
-    iosClientId: '968695725622-scr95oo3710fj2g4skcia0jrpfcbg3f4.apps.googleusercontent.com',
+    iosClientId:
+        '968695725622-scr95oo3710fj2g4skcia0jrpfcbg3f4.apps.googleusercontent.com',
     iosBundleId: 'com.donghaeng.donghaeng',
   );
 }

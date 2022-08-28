@@ -4,30 +4,49 @@ import 'package:flutter/cupertino.dart';
 
 import '../data/di/locator.dart';
 import '../data/repository/user_repository.dart';
+import '../utils/toast.dart';
 
 class UserViewModel with ChangeNotifier {
   final _repository = sl<UserRepository>();
 
+  bool _getUserLoading = false;
+
+  bool get getUserLoading => _getUserLoading;
+
   u.User? _user;
+
   u.User? get user => _user;
 
   final List<User> users = [];
 
   UserViewModel();
 
-  // todo: 유저정보 이걸로 받아오기
-  Future<u.User?> getUser() async {
-    _user = await _repository.getUser();
-    notifyListeners();
-    return user;
-  }
-
   Future<bool> addUser(String id) async {
-    return await _repository.addUser(user: u.User(id: id));
+    return await _repository.addUser(user: u.User(id: id)).then((result) {
+      if (!result) {
+        showToast(message: '회원 가입를 실패하였습니다.. 😥');
+      }
+      return result;
+    });
   }
 
-  Future<bool> updateUser(u.User user) async {
-    return await _repository.updateUser(user: user);
+  void getUser() {
+    _getUserLoading = true;
+    _repository.getUser().listen((user) {
+      print('${hashCode} listen = ${user?.toJson()}');
+      _user = user;
+      _getUserLoading = false;
+      notifyListeners();
+    });
+  }
+
+  Future<bool> updateUser({u.User? user}) async {
+    return await _repository.updateUser(user: user ?? _user!).then((result) {
+      if (!result) {
+        showToast(message: '프로필 업데이트를 실패하였습니다.. 😥');
+      }
+      return result;
+    });
   }
 
   void logout() {

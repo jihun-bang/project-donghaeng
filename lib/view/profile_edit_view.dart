@@ -1,8 +1,6 @@
 import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:donghaeng/view/widget/text_form_filed.dart';
 import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +44,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       );
 
   Widget get _done => TextButton(
-      onPressed: viewModel.loading ? null : () => viewModel.updateProfile(),
+      onPressed: viewModel.loading ? null : () => viewModel.updateUser(),
       child: viewModel.loading
           ? const CircularProgressIndicator()
           : const Text(

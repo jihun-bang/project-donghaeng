@@ -1,10 +1,10 @@
 import 'package:donghaeng/view/theme/color.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data/di/locator.dart';
-import '../data/repository/user_repository.dart';
 import '../model/user.dart' as u;
 import 'navigation/navigation.dart';
 
@@ -17,30 +17,22 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   late u.User user;
-  final _repository = sl<UserRepository>();
+  final viewModel = sl<UserViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<u.User?>(
-        future: _repository.getUser(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            user = snapshot.data!;
-            return Container(
-              alignment: Alignment.topLeft,
-              color: MyColors.grey_2,
-              child: Column(
-                children: [
-                  const SizedBox(height: 123),
-                  _profile,
-                  _badge,
-                  _feed
-                ],
-              ),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        });
+    if (viewModel.user != null) {
+      user = viewModel.user!;
+
+      return Container(
+        alignment: Alignment.topLeft,
+        color: MyColors.grey_2,
+        child: Column(
+          children: [const SizedBox(height: 123), _profile, _badge, _feed],
+        ),
+      );
+    }
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget get _profile => Stack(children: [
