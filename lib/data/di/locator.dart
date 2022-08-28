@@ -1,7 +1,7 @@
 import 'package:donghaeng/data/repository/chat_room_repository.dart';
-import 'package:donghaeng/data/repository/chatroom_repository.dart';
+import 'package:donghaeng/data/repository/chat_repository.dart';
 import 'package:donghaeng/data/repository/impl/chat_room_repository_impl.dart';
-import 'package:donghaeng/data/repository/impl/chatroom_repository_impl.dart';
+import 'package:donghaeng/data/repository/impl/chat_repository_impl.dart';
 import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 

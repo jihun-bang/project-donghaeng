@@ -1,4 +1,4 @@
-import 'package:donghaeng/data/repository/chatroom_repository.dart';
+import 'package:donghaeng/data/repository/chat_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:firebase_database/firebase_database.dart';
 
