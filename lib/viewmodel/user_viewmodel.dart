@@ -44,7 +44,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   getMemberImagePath({required List<String>? memberIDs}) {
-    print("memberIDs $memberIDs");
     if (memberIDs == null) {
       return;
     }
@@ -53,7 +52,7 @@ class UserViewModel with ChangeNotifier {
       getImagePath(userID: memberID);
     }
 
-    notifyListeners();
+    // notifyListeners(); todo: 이걸 빼도 되는지 모르겠네여.
   }
 
   getImagePath({required String userID}) async {

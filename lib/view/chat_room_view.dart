@@ -45,10 +45,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     super.initState();
   }
 
-  // todo: 이걸 chatRoomViewModel.chatRoom이 업데이트 되면 호출해야하는데, 어떻게 할지 모르곘어요.
-  // todo: 이것저것 하는데도 작동이 안되요ㅠㅠ
-  // userViewModel.getMemberImagePath(memberIDs: chatRoomViewModel.chatRoom?.members);
-
   @override
   void dispose() {
     _textController.removeListener(() {});
@@ -57,16 +53,21 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatroomViewModel>(
-      builder: (_, __, ___) => Scaffold(
-        appBar: _appBar,
-        body: Column(
-          children: <Widget>[
-            _chatMain,
-            _sendBar,
-          ],
-        ),
-      ),
+    return Consumer2<ChatroomViewModel, UserViewModel>(
+      builder: (_, __, ___, ____) {
+        userViewModel.getMemberImagePath(
+            memberIDs: chatRoomViewModel.chatRoom?.members);
+
+        return Scaffold(
+          appBar: _appBar,
+          body: Column(
+            children: <Widget>[
+              _chatMain,
+              _sendBar,
+            ],
+          ),
+        );
+      },
     );
   }
 
