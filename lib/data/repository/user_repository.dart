@@ -6,6 +6,8 @@ abstract class UserRepository {
 
   Stream<u.User?> getUser();
 
+  Future<u.User?> getUserByID({required String userID});
+
   Future<String?> getUserImagePath();
 
   Future<bool> updateUser({required u.User user});

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,24 +11,25 @@ import 'package:provider/provider.dart';
 
 import '../data/di/locator.dart';
 
-class ChatroomView extends StatefulWidget {
-  const ChatroomView({Key? key}) : super(key: key);
+class ChatRoomView extends StatefulWidget {
+  const ChatRoomView({Key? key}) : super(key: key);
 
   @override
-  State<ChatroomView> createState() => _ChatroomViewState();
+  State<ChatRoomView> createState() => _ChatRoomViewState();
 }
 
-class _ChatroomViewState extends State<ChatroomView> {
-  final viewModel = sl<ChatroomViewModel>();
-  late Future<ChatRoom?> chatroom = viewModel.getChatroom();
-  late List<Chat> chats = viewModel.getRealtimeChats();
+class _ChatRoomViewState extends State<ChatRoomView> {
+  final chatRoomViewModel = sl<ChatroomViewModel>();
+  final userViewModel = sl<UserViewModel>();
+
+  late List<Chat> chats = chatRoomViewModel.getRealtimeChats();
   late User user;
 
   // text edit
   late TextEditingController _textController;
 
   sendMessage(String text) async {
-    viewModel.addChat(user.uid, text);
+    chatRoomViewModel.addChat(user.uid, text);
 
     _textController.clear();
   }
@@ -36,10 +39,15 @@ class _ChatroomViewState extends State<ChatroomView> {
     _textController = TextEditingController();
 
     user = FirebaseAuth.instance.currentUser!;
-    print('user $user');
+    chatRoomViewModel.getChatroom();
+
 
     super.initState();
   }
+
+  // todo: 이걸 chatRoomViewModel.chatRoom이 업데이트 되면 호출해야하는데, 어떻게 할지 모르곘어요.
+  // todo: 이것저것 하는데도 작동이 안되요ㅠㅠ
+  // userViewModel.getMemberImagePath(memberIDs: chatRoomViewModel.chatRoom?.members);
 
   @override
   void dispose() {
@@ -87,20 +95,9 @@ class _ChatroomViewState extends State<ChatroomView> {
                   width: 12,
                 ),
                 Expanded(
-                  child: FutureBuilder(
-                      future: chatroom,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          ChatRoom? chatroom = snapshot.data as ChatRoom?;
-                          return Center(child: Text(chatroom?.title ?? 'Fail'));
-                        } else if (snapshot.hasError) {
-                          print(
-                              'error : chatroom_view : FutureBuilder : ${snapshot.error}');
-                          return const Center(child: Text("Fail"));
-                        }
-                        return const Center(child: Text("loading"));
-                      }),
-                ),
+                    child: Center(
+                        child:
+                        Text(chatRoomViewModel.chatRoom?.title ?? 'loading'))),
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -140,9 +137,11 @@ class _ChatroomViewState extends State<ChatroomView> {
                         padding: const EdgeInsets.only(
                             left: 16, right: 12, top: 10, bottom: 10),
                         child: (chats[index].owner != user.uid)
-                            ? const CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "https://avatars.githubusercontent.com/u/38811086?v=4"),
+                            ? CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                    userViewModel.userImagePathMap[
+                                            chats[index].owner] ??
+                                        "https://avatars.githubusercontent.com/u/38811086?v=4"),
                                 maxRadius: 20,
                               )
                             : null),
@@ -241,10 +240,3 @@ class _ChatroomViewState extends State<ChatroomView> {
         ),
       );
 }
-
-// todo: 원형 표시 - 프로필
-// const CircleAvatar(
-// backgroundImage: NetworkImage(
-// "<https://randomuser.me/api/portraits/men/5.jpg>"),
-// maxRadius: 20,
-// ),

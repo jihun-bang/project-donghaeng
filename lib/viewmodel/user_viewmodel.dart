@@ -15,6 +15,9 @@ class UserViewModel with ChangeNotifier {
   u.User? _user;
   u.User? get user => _user;
 
+  final Map<String, String> _userImagePathMap = {};
+  Map<String, String> get userImagePathMap => _userImagePathMap;
+
   final List<User> users = [];
 
   UserViewModel();
@@ -38,6 +41,32 @@ class UserViewModel with ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  getMemberImagePath({required List<String>? memberIDs}) {
+    print("memberIDs $memberIDs");
+    if (memberIDs == null) {
+      return;
+    }
+
+    for (var memberID in memberIDs) {
+      getImagePath(userID: memberID);
+    }
+
+    notifyListeners();
+  }
+
+  getImagePath({required String userID}) async {
+    const defaultImagePath = 'https://avatars.githubusercontent.com/u/38811086?v=4';
+
+    if (! _userImagePathMap.containsKey(userID)) {
+      final user = await repository.getUserByID(userID: userID);
+      if (user?.imagePath == "") {
+        _userImagePathMap[userID] = defaultImagePath;
+      } else {
+        _userImagePathMap[userID] = user?.imagePath ?? defaultImagePath;
+      }
+    }
   }
 
   Future<bool> updateUser({u.User? user}) async {

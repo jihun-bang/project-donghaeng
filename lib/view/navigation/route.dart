@@ -10,5 +10,5 @@ Map<String, WidgetBuilder> routes(context) => {
       '/sign-in': (_) => const SignInView(),
       '/sign-up': (_) => const SignUpView(),
       '/profile-edit': (_) => const ProfileEditView(),
-      '/chat-room': (_) => const ChatroomView(),
+      '/chat-room': (_) => const ChatRoomView(),
     };

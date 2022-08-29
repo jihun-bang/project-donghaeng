@@ -5,7 +5,6 @@ import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -19,9 +18,9 @@ class ChatroomViewModel extends ChangeNotifier {
   final _chatRepository = sl<ChatRepository>();
   final _chatRoomRepository = sl<ChatRoomRepository>();
 
-  ChatRoom? _chatroom;
+  ChatRoom? _chatRoom;
 
-  ChatRoom? get chatroom => _chatroom;
+  ChatRoom? get chatRoom => _chatRoom;
 
   final List<Chat> _chats = [];
 
@@ -68,10 +67,10 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 
   // todo: chatroom id를 parameter로 받기
-  Future<ChatRoom?> getChatroom() async {
+  void getChatroom() async {
     // todo : 에러처리
-    _chatroom = await _chatRoomRepository.getChatRoom(chatRoomID: chatroomID);
-    return _chatroom;
+    _chatRoom = await _chatRoomRepository.getChatRoom(chatRoomID: chatroomID);
+    notifyListeners();
   }
 
   Future<bool> addChat(String owner, String content) async {
@@ -87,7 +86,6 @@ class ChatroomViewModel extends ChangeNotifier {
   void getChats(String chatroomID) {
     chatUpdates = _chatRepository.getChatStream(chatroomID: chatroomID).listen(
       (DatabaseEvent event) {
-        print(event.snapshot.value);
         final m = Map<String, dynamic>.from(event.snapshot.value as Map);
         _chats.add(Chat.fromJson(m));
         notifyListeners();

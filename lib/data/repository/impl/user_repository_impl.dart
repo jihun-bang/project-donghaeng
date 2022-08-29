@@ -38,6 +38,17 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<User?> getUserByID({required String userID}) async {
+    final snapshot = await users.doc(userID).get();
+    if (snapshot.exists) {
+      return snapshot.toUser();
+    } else {
+      // todo: 에러 처리
+      return null;
+    }
+  }
+
+  @override
   Future<String?> getUserImagePath() async {
     try {
       final imageUrl =
