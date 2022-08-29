@@ -19,17 +19,17 @@ class ChatRoomView extends StatefulWidget {
 }
 
 class _ChatRoomViewState extends State<ChatRoomView> {
-  final chatRoomViewModel = sl<ChatroomViewModel>();
-  final userViewModel = sl<UserViewModel>();
+  final _chatRoomViewModel = sl<ChatroomViewModel>();
+  final _userViewModel = sl<UserViewModel>();
 
-  late List<Chat> chats = chatRoomViewModel.getRealtimeChats();
+  late List<Chat> chats = _chatRoomViewModel.getRealtimeChats();
   late User user;
 
   // text edit
   late TextEditingController _textController;
 
   sendMessage(String text) async {
-    chatRoomViewModel.addChat(user.uid, text);
+    _chatRoomViewModel.addChat(user.uid, text);
 
     _textController.clear();
   }
@@ -39,8 +39,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _textController = TextEditingController();
 
     user = FirebaseAuth.instance.currentUser!;
-    chatRoomViewModel.getChatroom();
-
+    _chatRoomViewModel.getChatroom();
 
     super.initState();
   }
@@ -55,9 +54,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   Widget build(BuildContext context) {
     return Consumer2<ChatroomViewModel, UserViewModel>(
       builder: (_, __, ___, ____) {
-        userViewModel.getMemberImagePath(
-            memberIDs: chatRoomViewModel.chatRoom?.members);
-
         return Scaffold(
           appBar: _appBar,
           body: Column(
@@ -97,8 +93,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 ),
                 Expanded(
                     child: Center(
-                        child:
-                        Text(chatRoomViewModel.chatRoom?.title ?? 'loading'))),
+                        child: Text(
+                            _chatRoomViewModel.chatRoom?.title ?? 'loading'))),
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -140,7 +136,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         child: (chats[index].owner != user.uid)
                             ? CircleAvatar(
                                 backgroundImage: CachedNetworkImageProvider(
-                                    userViewModel.userImagePathMap[
+                                    _userViewModel.userImagePathMap[
                                             chats[index].owner] ??
                                         "https://avatars.githubusercontent.com/u/38811086?v=4"),
                                 maxRadius: 20,

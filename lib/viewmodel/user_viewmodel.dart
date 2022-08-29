@@ -44,6 +44,7 @@ class UserViewModel with ChangeNotifier {
   }
 
   getMemberImagePath({required List<String>? memberIDs}) {
+    print("memberIDs $memberIDs");
     if (memberIDs == null) {
       return;
     }
@@ -52,13 +53,14 @@ class UserViewModel with ChangeNotifier {
       getImagePath(userID: memberID);
     }
 
-    // notifyListeners(); todo: 이걸 빼도 되는지 모르겠네여.
+    notifyListeners();
   }
 
   getImagePath({required String userID}) async {
-    const defaultImagePath = 'https://avatars.githubusercontent.com/u/38811086?v=4';
+    const defaultImagePath =
+        'https://avatars.githubusercontent.com/u/38811086?v=4';
 
-    if (! _userImagePathMap.containsKey(userID)) {
+    if (!_userImagePathMap.containsKey(userID)) {
       final user = await repository.getUserByID(userID: userID);
       if (user?.imagePath == "") {
         _userImagePathMap[userID] = defaultImagePath;

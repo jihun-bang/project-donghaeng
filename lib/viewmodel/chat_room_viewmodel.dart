@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/view/navigation/navigation.dart';
+import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,8 @@ import '../data/di/locator.dart';
 import '../data/repository/chat_repository.dart';
 
 class ChatroomViewModel extends ChangeNotifier {
+  final _userViewModel = sl<UserViewModel>();
+
   final userID = FirebaseAuth.instance.currentUser?.uid;
 
   final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
@@ -69,6 +72,7 @@ class ChatroomViewModel extends ChangeNotifier {
   void getChatroom() async {
     // todo : 에러처리
     _chatRoom = await _chatRoomRepository.getChatRoom(chatRoomID: chatroomID);
+    _userViewModel.getMemberImagePath(memberIDs: _chatRoom?.members);
     notifyListeners();
   }
 
