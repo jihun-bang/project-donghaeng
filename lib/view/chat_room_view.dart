@@ -21,7 +21,7 @@ class SendChatController extends TextEditingController {
   final _chatRoomViewModel = sl<ChatroomViewModel>();
 
   sendChat(String chatRoomID, String userUID) {
-    _chatRoomViewModel.addChat(userUID, text);
+    _chatRoomViewModel.addChat(chatRoomID, userUID, text);
     clear();
   }
 }
@@ -31,10 +31,9 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _userViewModel = sl<UserViewModel>();
 
   late String chatRoomID;
-  late List<Chat> chats = _chatRoomViewModel.getRealtimeChats();
+  late List<Chat> chats;
   late User user;
 
-  // text edit
   late SendChatController _textController;
 
   @override
@@ -59,6 +58,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     chatRoomID = arguments['chatRoomID'];
 
     _chatRoomViewModel.getChatroom(chatRoomID);
+    chats = _chatRoomViewModel.getRealtimeChats(chatRoomID);
 
     return Consumer2<ChatroomViewModel, UserViewModel>(
       builder: (_, __, ___, ____) {

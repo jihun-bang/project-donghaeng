@@ -17,7 +17,6 @@ class ChatroomViewModel extends ChangeNotifier {
 
   final userID = FirebaseAuth.instance.currentUser?.uid;
 
-  final chatroomID = "-N9MFEaBgdhFATRXFDxr"; // todo: for test
   final _chatRepository = sl<ChatRepository>();
   final _chatRoomRepository = sl<ChatRoomRepository>();
 
@@ -64,8 +63,8 @@ class ChatroomViewModel extends ChangeNotifier {
         .pushNamed("/chat-room", arguments: {'chatRoomID': chatRoomID});
   }
 
-  List<Chat> getRealtimeChats() {
-    getChats(chatroomID);
+  List<Chat> getRealtimeChats(String chatRoomID) {
+    getChats(chatRoomID);
     return _chats;
   }
 
@@ -77,9 +76,9 @@ class ChatroomViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addChat(String owner, String content) async {
+  Future<bool> addChat(String chatRoomID, String owner, String content) async {
     return await _chatRepository.addChat(
-        chatroomID: chatroomID,
+        chatroomID: chatRoomID,
         chat: Chat(
             createdAt: DateTime.now().toUtc(),
             owner: owner,
