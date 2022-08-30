@@ -1,6 +1,8 @@
 import 'package:donghaeng/model/chat.dart';
 
 abstract class ChatRoomRepository {
+  void add({required ChatRoom chatRoom});
+
   Future<Map<String, ChatRoom>?> getAllChatRooms();
 
   Future<ChatRoom?> getChatRoom({required String chatRoomID});

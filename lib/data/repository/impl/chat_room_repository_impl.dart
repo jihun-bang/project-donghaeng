@@ -3,8 +3,7 @@ import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 
 class ChatRoomRepositoryImpl implements ChatRoomRepository {
-  final chatRoomsCol =
-      FirebaseFirestore.instance.collection('chat_rooms');
+  final chatRoomsCol = FirebaseFirestore.instance.collection('chat_rooms');
 
   final chatRoomRef =
       FirebaseFirestore.instance.collection('chat_rooms').withConverter(
@@ -14,16 +13,20 @@ class ChatRoomRepositoryImpl implements ChatRoomRepository {
 
   ChatRoomRepositoryImpl();
 
+  @override
+  void add({required ChatRoom chatRoom}) {
+    chatRoomRef.add(chatRoom);
+  }
+
   // todo: 에러처리 viewmodel에서 하기
   @override
   Future<Map<String, ChatRoom>?> getAllChatRooms() async {
     try {
       Map<String, ChatRoom> result = {};
 
-      await chatRoomsCol.get().then((QuerySnapshot querySnapshot) {
-        for (var doc in querySnapshot.docs) {
-          result[doc.id] =
-              ChatRoom.fromJson(doc.data() as Map<String, dynamic>);
+      await chatRoomRef.get().then((value) {
+        for (var doc in value.docs) {
+          result[doc.id] = doc.data();
         }
       });
 
@@ -42,6 +45,6 @@ class ChatRoomRepositoryImpl implements ChatRoomRepository {
 
   @override
   void updateChatRoom(String chatRoomID, ChatRoom chatRoom) async {
-    await chatRoomsCol.doc(chatRoomID).update(chatRoom.toJson());
+    await chatRoomRef.doc(chatRoomID).update(chatRoom.toJson());
   }
 }
