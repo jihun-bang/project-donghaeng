@@ -26,8 +26,6 @@ class ChatroomViewModel extends ChangeNotifier {
 
   final List<Chat> _chats = [];
 
-  List<Chat> get chats => _chats;
-
   Map<String, ChatRoom>? chatRooms = {};
 
   late StreamSubscription<DatabaseEvent> chatUpdates; // todo: close해주기
@@ -66,6 +64,10 @@ class ChatroomViewModel extends ChangeNotifier {
   List<Chat> getRealtimeChats(String chatRoomID) {
     getChats(chatRoomID);
     return _chats;
+  }
+
+  void clearChats() {
+    _chats.clear();
   }
 
   // todo: chatroom id를 parameter로 받기

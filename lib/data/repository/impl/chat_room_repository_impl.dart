@@ -3,8 +3,6 @@ import 'package:donghaeng/data/repository/chat_room_repository.dart';
 import 'package:donghaeng/model/chat.dart';
 
 class ChatRoomRepositoryImpl implements ChatRoomRepository {
-  final chatRoomsCol = FirebaseFirestore.instance.collection('chat_rooms');
-
   final chatRoomRef =
       FirebaseFirestore.instance.collection('chat_rooms').withConverter(
             fromFirestore: (snapshot, _) => ChatRoom.fromJson(snapshot.data()!),

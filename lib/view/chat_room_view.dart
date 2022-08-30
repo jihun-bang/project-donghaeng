@@ -58,6 +58,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     chatRoomID = arguments['chatRoomID'];
 
     _chatRoomViewModel.getChatroom(chatRoomID);
+    _chatRoomViewModel.clearChats();
     chats = _chatRoomViewModel.getRealtimeChats(chatRoomID);
 
     return Consumer2<ChatroomViewModel, UserViewModel>(
@@ -105,18 +106,14 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         child: Text(
                             _chatRoomViewModel.chatRoom?.title ?? 'loading'))),
                 IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.more_horiz,
                     color: Colors.black,
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.share,
                     color: Colors.black,
