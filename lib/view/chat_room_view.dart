@@ -17,6 +17,15 @@ class ChatRoomView extends StatefulWidget {
   State<ChatRoomView> createState() => _ChatRoomViewState();
 }
 
+class SendChatController extends TextEditingController {
+  final _chatRoomViewModel = sl<ChatroomViewModel>();
+
+  sendChat(String chatRoomID, String userUID) {
+    _chatRoomViewModel.addChat(userUID, text);
+    clear();
+  }
+}
+
 class _ChatRoomViewState extends State<ChatRoomView> {
   final _chatRoomViewModel = sl<ChatroomViewModel>();
   final _userViewModel = sl<UserViewModel>();
@@ -26,17 +35,11 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   late User user;
 
   // text edit
-  late TextEditingController _textController;
-
-  sendMessage(String text) async {
-    _chatRoomViewModel.addChat(user.uid, text);
-
-    _textController.clear();
-  }
+  late SendChatController _textController;
 
   @override
   void initState() {
-    _textController = TextEditingController();
+    _textController = SendChatController();
 
     user = FirebaseAuth.instance.currentUser!;
 
@@ -45,7 +48,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   @override
   void dispose() {
-    _textController.removeListener(() {});
+    _textController.dispose();
     super.dispose();
   }
 
@@ -204,7 +207,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 child: TextField(
                   controller: _textController,
                   onSubmitted: (text) {
-                    sendMessage(text);
+                    _textController.sendChat(chatRoomID, user.uid);
                   },
                   decoration: const InputDecoration(
                       hintText: "Write message...",
@@ -217,7 +220,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  sendMessage(_textController.text);
+                  _textController.sendChat(chatRoomID, user.uid);
                 },
                 style: ElevatedButton.styleFrom(
                   // Foreground color
