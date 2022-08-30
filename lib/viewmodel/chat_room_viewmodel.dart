@@ -60,7 +60,8 @@ class ChatroomViewModel extends ChangeNotifier {
     // todo: users 정보에 chatroom id 추가하기
 
     // 이동
-    sl<NavigationService>().pushNamed("/chat-room");
+    sl<NavigationService>()
+        .pushNamed("/chat-room", arguments: {'chatRoomID': chatRoomID});
   }
 
   List<Chat> getRealtimeChats() {
@@ -69,9 +70,9 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 
   // todo: chatroom id를 parameter로 받기
-  void getChatroom() async {
+  void getChatroom(String chatRoomID) async {
     // todo : 에러처리
-    _chatRoom = await _chatRoomRepository.getChatRoom(chatRoomID: chatroomID);
+    _chatRoom = await _chatRoomRepository.getChatRoom(chatRoomID: chatRoomID);
     _userViewModel.getMemberImagePath(memberIDs: _chatRoom?.members);
     notifyListeners();
   }

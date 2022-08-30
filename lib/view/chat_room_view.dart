@@ -1,11 +1,10 @@
-import 'dart:async';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donghaeng/model/chat.dart';
 import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
 import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +21,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _chatRoomViewModel = sl<ChatroomViewModel>();
   final _userViewModel = sl<UserViewModel>();
 
+  late String chatRoomID;
   late List<Chat> chats = _chatRoomViewModel.getRealtimeChats();
   late User user;
 
@@ -39,7 +39,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _textController = TextEditingController();
 
     user = FirebaseAuth.instance.currentUser!;
-    _chatRoomViewModel.getChatroom();
 
     super.initState();
   }
@@ -52,8 +51,15 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    chatRoomID = arguments['chatRoomID'];
+
+    _chatRoomViewModel.getChatroom(chatRoomID);
+
     return Consumer2<ChatroomViewModel, UserViewModel>(
       builder: (_, __, ___, ____) {
+        log('build chat_room_view');
         return Scaffold(
           appBar: _appBar,
           body: Column(
