@@ -36,6 +36,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   late SendChatController _textController;
 
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
     _textController = SendChatController();
@@ -130,7 +132,16 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             itemCount: chats.length,
             shrinkWrap: true,
             padding: const EdgeInsets.all(10),
+            controller: _scrollController,
             itemBuilder: (context, index) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                if (_scrollController.hasClients) {
+                  _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent,
+                      duration: const Duration(microseconds: 300),
+                      curve: Curves.easeIn);
+                }
+              });
               return Row(
                   mainAxisAlignment: (chats[index].owner == user.uid
                       ? MainAxisAlignment.end
