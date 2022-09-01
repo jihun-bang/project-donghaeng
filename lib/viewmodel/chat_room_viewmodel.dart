@@ -15,7 +15,7 @@ import '../data/repository/chat_repository.dart';
 class ChatroomViewModel extends ChangeNotifier {
   final _userViewModel = sl<UserViewModel>();
 
-  final userID = FirebaseAuth.instance.currentUser?.uid;
+  final user = FirebaseAuth.instance.currentUser!;
 
   final _chatRepository = sl<ChatRepository>();
   final _chatRoomRepository = sl<ChatRoomRepository>();
@@ -28,7 +28,7 @@ class ChatroomViewModel extends ChangeNotifier {
 
   Map<String, ChatRoom>? chatRooms = {};
 
-  late StreamSubscription<DatabaseEvent> chatUpdates; // todo: close해주기
+  late StreamSubscription<DatabaseEvent> chatUpdates;
 
   ChatroomViewModel() {
     getChatList();
@@ -41,8 +41,8 @@ class ChatroomViewModel extends ChangeNotifier {
 
   joinChatRoom(String chatRoomID, ChatRoom chatRoom) async {
     // 처음 입장
-    if (!chatRoom.members.contains(userID)) {
-      chatRoom.members.add(userID!);
+    if (!chatRoom.members.contains(user.uid)) {
+      chatRoom.members.add(user.uid);
 
       try {
         _chatRoomRepository.updateChatRoom(chatRoomID, chatRoom);

@@ -30,22 +30,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _chatRoomViewModel = sl<ChatroomViewModel>();
   final _userViewModel = sl<UserViewModel>();
 
+  final User user = FirebaseAuth.instance.currentUser!;
   late String chatRoomID;
   late List<Chat> chats;
-  late User user;
 
-  late SendChatController _textController;
+  final SendChatController _textController = SendChatController();
 
   final _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    _textController = SendChatController();
-
-    user = FirebaseAuth.instance.currentUser!;
-
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -55,12 +46,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   @override
   Widget build(BuildContext context) {
+    _chatRoomViewModel.clearChats();
+
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     chatRoomID = arguments['chatRoomID'];
 
     _chatRoomViewModel.getChatroom(chatRoomID);
-    _chatRoomViewModel.clearChats();
     chats = _chatRoomViewModel.getRealtimeChats(chatRoomID);
 
     return Consumer2<ChatroomViewModel, UserViewModel>(
@@ -142,6 +134,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                       curve: Curves.easeIn);
                 }
               });
+
               return Row(
                   mainAxisAlignment: (chats[index].owner == user.uid
                       ? MainAxisAlignment.end
