@@ -34,13 +34,15 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   late String chatRoomID;
   late List<Chat> chats;
 
-  final SendChatController _textController = SendChatController();
+  final _textController = SendChatController();
+  final _focusNode = FocusNode();
 
   final _scrollController = ScrollController();
 
   @override
   void dispose() {
     _textController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -207,8 +209,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               Expanded(
                 child: TextField(
                   controller: _textController,
+                  focusNode: _focusNode,
                   onSubmitted: (text) {
                     _textController.sendChat(chatRoomID, user.uid);
+                    _focusNode.requestFocus();
                   },
                   decoration: const InputDecoration(
                       hintText: "Write message...",
