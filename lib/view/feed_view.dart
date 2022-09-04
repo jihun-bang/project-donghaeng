@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:donghaeng/data/di/locator.dart';
+import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 
 class FeedView extends StatefulWidget {
@@ -11,8 +12,13 @@ class FeedView extends StatefulWidget {
 class _FeedViewState extends State<FeedView> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('피드 서비스 준비중'),
+    return Scaffold(
+      appBar: AppBar(title: const Text('피드')),
+      body: const Text('피드 서비스 준비중'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
