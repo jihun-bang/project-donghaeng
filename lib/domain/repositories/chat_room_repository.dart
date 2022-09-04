@@ -3,9 +3,9 @@ import '../models/chat.dart';
 abstract class ChatRoomRepository {
   void add({required ChatRoom chatRoom});
 
-  Future<Map<String, ChatRoom>?> getAllChatRooms();
+  Future<ChatRoom?> get({required String id});
 
-  Future<ChatRoom?> getChatRoom({required String chatRoomID});
+  Future<Map<String, ChatRoom>?> getAll();
 
-  void updateChatRoom(String chatRoomID, ChatRoom chatRoom);
+  void update(String chatRoomID, ChatRoom chatRoom);
 }

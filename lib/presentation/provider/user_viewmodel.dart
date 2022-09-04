@@ -23,7 +23,7 @@ class UserViewModel with ChangeNotifier {
   UserViewModel();
 
   Future<bool> addUser(String id) async {
-    return await repository.addUser(user: u.User(id: id)).then((result) {
+    return await repository.add(user: u.User(id: id)).then((result) {
       if (!result) {
         showToast(message: '회원 가입를 실패하였습니다.. 😥');
       }
@@ -33,7 +33,7 @@ class UserViewModel with ChangeNotifier {
 
   void getUser() {
     _getUserLoading = true;
-    repository.getUser().listen((user) {
+    repository.getByStream().listen((user) {
       if (user?.toJson().toString() != _user?.toJson().toString()) {
         print('[UserViewModel] ${user?.toJson()}');
         _user = user;
@@ -61,7 +61,7 @@ class UserViewModel with ChangeNotifier {
         'https://avatars.githubusercontent.com/u/38811086?v=4';
 
     if (!_userImagePathMap.containsKey(userID)) {
-      final user = await repository.getUserByID(userID: userID);
+      final user = await repository.get(id: userID);
       if (user?.imagePath == "") {
         _userImagePathMap[userID] = defaultImagePath;
       } else {
@@ -71,7 +71,7 @@ class UserViewModel with ChangeNotifier {
   }
 
   Future<bool> updateUser({u.User? user}) async {
-    return await repository.updateUser(user: user ?? _user!).then((result) {
+    return await repository.update(user: user ?? _user!).then((result) {
       if (!result) {
         showToast(message: '프로필 업데이트를 실패하였습니다.. 😥');
       }
@@ -80,6 +80,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   void logout() {
-    repository.logOut();
+    FirebaseAuth.instance.signOut();
   }
 }

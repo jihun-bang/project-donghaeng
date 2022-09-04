@@ -1,3 +1,9 @@
+import 'package:donghaeng/data/datasources/database_remote_data_source.dart';
+import 'package:donghaeng/data/datasources/impl/database_remote_data_source_impl.dart';
+import 'package:donghaeng/data/datasources/impl/storage_remote_data_source_impl.dart';
+import 'package:donghaeng/data/datasources/impl/store_remote_data_source_impl.dart';
+import 'package:donghaeng/data/datasources/storage_remote_data_source.dart';
+import 'package:donghaeng/data/datasources/store_remote_data_source.dart';
 import 'package:donghaeng/data/repository/chat_repository_impl.dart';
 import 'package:donghaeng/data/repository/chat_room_repository_impl.dart';
 import 'package:donghaeng/data/repository/user_repository_impl.dart';
@@ -26,7 +32,22 @@ void initLocator() {
   sl.registerLazySingleton<ChatroomViewModel>(() => ChatroomViewModel());
 
   /// Repository
-  sl.registerFactory<UserRepository>(() => UserRepositoryImpl());
-  sl.registerFactory<ChatRepository>(() => ChatRepositoryImpl());
-  sl.registerFactory<ChatRoomRepository>(() => ChatRoomRepositoryImpl());
+  sl.registerFactory<UserRepository>(() => UserRepositoryImpl(
+        storeRemoteDataSource: sl(),
+        storageRemoteDataSource: sl(),
+      ));
+  sl.registerFactory<ChatRepository>(() => ChatRepositoryImpl(
+        databaseRemoteDataSource: sl(),
+      ));
+  sl.registerFactory<ChatRoomRepository>(() => ChatRoomRepositoryImpl(
+        storeRemoteDataSource: sl(),
+      ));
+
+  /// Data Resource
+  sl.registerLazySingleton<DatabaseRemoteDataSource>(
+      () => DatabaseRemoteDataSourceImpl());
+  sl.registerLazySingleton<StorageRemoteDataSource>(
+      () => StorageRemoteDataSourceImpl());
+  sl.registerLazySingleton<StoreRemoteDataSource>(
+      () => StoreRemoteDataSourceImpl());
 }

@@ -34,7 +34,7 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 
   getChatList() async {
-    chatRooms = await _chatRoomRepository.getAllChatRooms();
+    chatRooms = await _chatRoomRepository.getAll();
     notifyListeners();
   }
 
@@ -44,7 +44,7 @@ class ChatroomViewModel extends ChangeNotifier {
       chatRoom.members.add(user.uid);
 
       try {
-        _chatRoomRepository.updateChatRoom(chatRoomID, chatRoom);
+        _chatRoomRepository.update(chatRoomID, chatRoom);
       } on FirebaseException catch (e) {
         print("joinChatRoom : FirebaseException ${e.toString()}");
         return;
@@ -72,14 +72,14 @@ class ChatroomViewModel extends ChangeNotifier {
   // todo: chatroom id를 parameter로 받기
   void getChatroom(String chatRoomID) async {
     // todo : 에러처리
-    _chatRoom = await _chatRoomRepository.getChatRoom(chatRoomID: chatRoomID);
+    _chatRoom = await _chatRoomRepository.get(id: chatRoomID);
     _userViewModel.getMemberImagePath(memberIDs: _chatRoom?.members);
     notifyListeners();
   }
 
   Future<bool> addChat(String chatRoomID, String owner, String content) async {
     return await _chatRepository.addChat(
-        chatroomID: chatRoomID,
+        id: chatRoomID,
         chat: Chat(
             createdAt: DateTime.now().toUtc(),
             owner: owner,
@@ -88,7 +88,7 @@ class ChatroomViewModel extends ChangeNotifier {
   }
 
   void getChats(String chatroomID) {
-    chatUpdates = _chatRepository.getChatStream(chatroomID: chatroomID).listen(
+    chatUpdates = _chatRepository.getChatStream(id: chatroomID).listen(
       (DatabaseEvent event) {
         final m = Map<String, dynamic>.from(event.snapshot.value as Map);
         _chats.add(Chat.fromJson(m));

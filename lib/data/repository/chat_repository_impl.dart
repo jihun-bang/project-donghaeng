@@ -2,17 +2,17 @@ import 'package:donghaeng/domain/repositories/chat_repository.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../../domain/models/chat.dart';
+import '../datasources/database_remote_data_source.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
-  final chatroomRef = FirebaseDatabase.instance.ref("chatrooms");
+  final DatabaseRemoteDataSource databaseRemoteDataSource;
 
-  ChatRepositoryImpl();
+  ChatRepositoryImpl({required this.databaseRemoteDataSource});
 
   @override
-  Future<bool> addChat({required String chatroomID, required Chat chat}) async {
+  Future<bool> addChat({required String id, required Chat chat}) async {
     try {
-      await chatroomRef.child('$chatroomID/chats').push().set(chat.toJson());
-      return true;
+      return databaseRemoteDataSource.addChat(chatroomID: id, chat: chat);
     } catch (e) {
       print(e);
       return false;
@@ -20,7 +20,7 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Stream<DatabaseEvent> getChatStream({required String chatroomID}) {
-    return chatroomRef.child('$chatroomID/chats').onChildAdded;
+  Stream<DatabaseEvent> getChatStream({required String id}) {
+    return databaseRemoteDataSource.getChatByStream(chatroomID: id);
   }
 }

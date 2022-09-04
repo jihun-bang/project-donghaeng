@@ -3,19 +3,17 @@ import 'package:image_picker/image_picker.dart';
 import '../models/user.dart';
 
 abstract class UserRepository {
-  Future<bool> addUser({required User user});
+  Future<bool> add({required User user});
 
-  Stream<User?> getUser();
+  Stream<User?> getByStream();
 
-  Future<User?> getUserByID({required String userID});
+  Future<User?> get({required String id});
 
-  Future<String?> getUserImagePath();
+  Future<String?> getImagePath({required String id});
 
-  Future<bool> updateUser({required User user});
+  Future<bool> update({required User user});
 
   Future<String?> updateProfileImage({required XFile image});
 
-  Future<bool> deleteUser();
-
-  Future<void> logOut();
+  Future<bool> delete();
 }

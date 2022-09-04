@@ -11,7 +11,6 @@ class User {
   String description;
   String instagram;
 
-
   User(
       {required this.id,
       this.name = '',

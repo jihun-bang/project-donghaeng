@@ -1,126 +1,77 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
+import 'package:donghaeng/data/datasources/store_remote_data_source.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../utils/toast.dart';
 import '../../domain/models/user.dart';
 import '../../domain/repositories/user_repository.dart';
+import '../datasources/storage_remote_data_source.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final auth = firebase_auth.FirebaseAuth.instance;
-  final storage = FirebaseStorage.instance.ref('/profile');
-  final users = FirebaseFirestore.instance.collection('users');
+  final StoreRemoteDataSource storeRemoteDataSource;
+  final StorageRemoteDataSource storageRemoteDataSource;
 
-  UserRepositoryImpl();
+  UserRepositoryImpl(
+      {required this.storeRemoteDataSource,
+      required this.storageRemoteDataSource});
 
   @override
-  Future<bool> addUser({required User user}) async {
+  Future<bool> add({required User user}) async {
     try {
-      await users.doc(auth.currentUser?.uid).set(user.toJson());
+      await storeRemoteDataSource.addUser(user: user);
       return true;
     } catch (e) {
-      print(e);
-      showToast(message: '회원가입에 실패했습니다.. 😭');
       return false;
     }
   }
 
   @override
-  Stream<User?> getUser() {
-    return users
-        .doc(auth.currentUser?.uid)
-        .snapshots()
-        .map((event) => event.toUser());
+  Stream<User?> getByStream() {
+    return storeRemoteDataSource.getUserByStream();
   }
 
   @override
-  Future<User?> getUserByID({required String userID}) async {
-    final snapshot = await users.doc(userID).get();
-    if (snapshot.exists) {
-      return snapshot.toUser();
-    } else {
-      // todo: 에러 처리
-      return null;
-    }
-  }
-
-  @override
-  Future<String?> getUserImagePath() async {
+  Future<User?> get({String? id}) async {
     try {
-      final imageUrl =
-          await storage.child("${auth.currentUser?.uid}.png").getDownloadURL();
-      print(imageUrl);
-      return imageUrl;
+      return await storeRemoteDataSource.getUser();
     } catch (e) {
-      print(e);
       return null;
     }
   }
 
   @override
-  Future<bool> updateUser({required User user}) async {
+  Future<bool> update({required User user}) async {
     try {
-      await users.doc(auth.currentUser?.uid).update(user.toJson());
+      await storeRemoteDataSource.updateUser(user: user);
       return true;
     } catch (e) {
-      print(e);
       return false;
+    }
+  }
+
+  @override
+  Future<bool> delete() async {
+    try {
+      await storeRemoteDataSource.deleteUser();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<String?> getImagePath({required String id}) async {
+    try {
+      return await storageRemoteDataSource.getUserImagePath(id: id);
+    } catch (e) {
+      return null;
     }
   }
 
   @override
   Future<String?> updateProfileImage({required XFile image}) async {
     try {
-      final metadata = SettableMetadata(
-        contentType: 'image/png',
-      );
-      final ref = storage.child('/${auth.currentUser?.uid}.png');
-      if (kIsWeb) {
-        await ref.putData(await image.readAsBytes(), metadata);
-      } else {
-        await ref.putFile(File(image.path), metadata);
-      }
-      return await getUserImagePath();
+      return await storageRemoteDataSource.updateProfileImage(image: image);
     } catch (e) {
-      print(e);
-      showToast(message: '프로필 이미지 업데이트를 실패했습니다.. 😭');
       return null;
     }
-  }
-
-  @override
-  Future<bool> deleteUser() async {
-    try {
-      await auth.currentUser?.delete();
-      await users.doc(auth.currentUser?.uid).delete();
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
-  @override
-  Future<bool> logOut() async {
-    try {
-      auth.signOut();
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-}
-
-extension DocumentSnapX on DocumentSnapshot<Map<String, dynamic>> {
-  User? toUser() {
-    if (data() != null) {
-      return User?.fromJson(data()!);
-    }
-    return null;
   }
 }
