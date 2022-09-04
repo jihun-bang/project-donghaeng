@@ -1,13 +1,13 @@
-import 'package:donghaeng/view/theme/color.dart';
-import 'package:donghaeng/view/widget/profile_image.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/di/locator.dart';
-import '../model/user.dart' as u;
-import 'navigation/navigation.dart';
+import '../../domain/models/user.dart' as u;
+import '../../injection.dart';
+import '../navigation/navigation.dart';
+import '../provider/user_viewmodel.dart';
+import '../theme/color.dart';
+import '../widgets/profile_image.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);

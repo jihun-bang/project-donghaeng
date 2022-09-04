@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donghaeng/data/repository/user_repository.dart';
-import 'package:donghaeng/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../utils/toast.dart';
+import '../../domain/models/user.dart';
+import '../../domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final auth = firebase_auth.FirebaseAuth.instance;

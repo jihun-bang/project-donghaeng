@@ -1,5 +1,6 @@
-import 'package:donghaeng/view/theme/color.dart';
 import 'package:flutter/material.dart';
+
+import '../theme/color.dart';
 
 class ChatRoomPostView extends StatefulWidget {
   const ChatRoomPostView({Key? key}) : super(key: key);

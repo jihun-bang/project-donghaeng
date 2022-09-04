@@ -1,9 +1,9 @@
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
+import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../data/di/locator.dart';
-import '../model/user.dart' as u;
-import '../view/navigation/navigation.dart';
+import '../../domain/models/user.dart';
+import '../../injection.dart';
+import '../navigation/navigation.dart';
 
 class SignUpViewModel extends UserViewModel {
   final _userViewModel = sl<UserViewModel>();
@@ -33,7 +33,7 @@ class SignUpViewModel extends UserViewModel {
   }
 
   @override
-  Future<bool> updateUser({u.User? user}) async {
+  Future<bool> updateUser({User? user}) async {
     _loading = true;
     notifyListeners();
 
@@ -42,7 +42,7 @@ class SignUpViewModel extends UserViewModel {
       String imagePath = _profileImage != null
           ? await repository.updateProfileImage(image: _profileImage!) ?? ''
           : user.imagePath;
-      final updateUser = u.User(
+      final updateUser = User(
           id: user.id,
           name: name ?? user.name,
           imagePath: imagePath,

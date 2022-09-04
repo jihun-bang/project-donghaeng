@@ -1,12 +1,12 @@
-import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/toast.dart';
+import '../../injection.dart';
+import '../../utils/toast.dart';
+import '../provider/chat_room_viewmodel.dart';
+import '../provider/user_viewmodel.dart';
 
 class ChatListView extends StatefulWidget {
   const ChatListView({Key? key}) : super(key: key);

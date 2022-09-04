@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:donghaeng/data/repository/chat_room_repository.dart';
-import 'package:donghaeng/model/chat.dart';
-import 'package:donghaeng/view/navigation/navigation.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
+import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../data/di/locator.dart';
-import '../data/repository/chat_repository.dart';
+import '../../domain/models/chat.dart';
+import '../../domain/repositories/chat_repository.dart';
+import '../../domain/repositories/chat_room_repository.dart';
+import '../../injection.dart';
+import '../navigation/navigation.dart';
 
 class ChatroomViewModel extends ChangeNotifier {
   final _userViewModel = sl<UserViewModel>();
@@ -21,7 +21,6 @@ class ChatroomViewModel extends ChangeNotifier {
   final _chatRoomRepository = sl<ChatRoomRepository>();
 
   ChatRoom? _chatRoom;
-
   ChatRoom? get chatRoom => _chatRoom;
 
   final List<Chat> _chats = [];

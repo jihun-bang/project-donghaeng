@@ -1,10 +1,9 @@
-import 'package:donghaeng/view/widget/text_form_filed.dart';
-import 'package:donghaeng/viewmodel/sign_up_viewmodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/di/locator.dart';
+import '../../injection.dart';
+import '../provider/sign_up_viewmodel.dart';
+import '../widgets/text_form_filed.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);

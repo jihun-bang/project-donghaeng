@@ -1,10 +1,10 @@
-import 'package:donghaeng/model/user.dart' as u;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../data/di/locator.dart';
-import '../data/repository/user_repository.dart';
-import '../utils/toast.dart';
+import '../../domain/models/user.dart' as u;
+import '../../domain/repositories/user_repository.dart';
+import '../../injection.dart';
+import '../../utils/toast.dart';
 
 class UserViewModel with ChangeNotifier {
   final repository = sl<UserRepository>();

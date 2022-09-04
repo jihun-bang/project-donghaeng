@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../utils/datetime.dart';
+import '../../utils/datetime.dart';
 
 part 'chat.g.dart';
 

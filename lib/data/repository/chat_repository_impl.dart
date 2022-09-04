@@ -1,6 +1,7 @@
-import 'package:donghaeng/data/repository/chat_repository.dart';
-import 'package:donghaeng/model/chat.dart';
+import 'package:donghaeng/domain/repositories/chat_repository.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import '../../domain/models/chat.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   final chatroomRef = FirebaseDatabase.instance.ref("chatrooms");

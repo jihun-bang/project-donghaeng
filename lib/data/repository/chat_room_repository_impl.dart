@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:donghaeng/data/repository/chat_room_repository.dart';
-import 'package:donghaeng/model/chat.dart';
+
+import '../../domain/models/chat.dart';
+import '../../domain/repositories/chat_room_repository.dart';
 
 class ChatRoomRepositoryImpl implements ChatRoomRepository {
   final chatRoomRef =

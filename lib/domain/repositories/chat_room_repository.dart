@@ -1,4 +1,4 @@
-import 'package:donghaeng/model/chat.dart';
+import '../models/chat.dart';
 
 abstract class ChatRoomRepository {
   void add({required ChatRoom chatRoom});

@@ -1,6 +1,7 @@
-import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/view/navigation/navigation.dart';
 import 'package:flutter/material.dart';
+
+import '../../injection.dart';
+import '../navigation/navigation.dart';
 
 class FeedView extends StatefulWidget {
   const FeedView({Key? key}) : super(key: key);

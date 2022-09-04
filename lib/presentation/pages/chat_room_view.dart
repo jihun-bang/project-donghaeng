@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:donghaeng/model/chat.dart';
-import 'package:donghaeng/viewmodel/chat_room_viewmodel.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/di/locator.dart';
+import '../../domain/models/chat.dart';
+import '../../injection.dart';
+import '../provider/chat_room_viewmodel.dart';
+import '../provider/user_viewmodel.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({Key? key}) : super(key: key);

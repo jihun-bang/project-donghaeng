@@ -1,10 +1,11 @@
-import 'package:donghaeng/view/chat_room_post_view.dart';
-import 'package:donghaeng/view/chat_room_view.dart';
-import 'package:donghaeng/view/home_view.dart';
-import 'package:donghaeng/view/profile_edit_view.dart';
-import 'package:donghaeng/view/sign_in_view.dart';
-import 'package:donghaeng/view/sign_up_view.dart';
 import 'package:flutter/material.dart';
+
+import '../pages/chat_room_post_view.dart';
+import '../pages/chat_room_view.dart';
+import '../pages/home_view.dart';
+import '../pages/profile_edit_view.dart';
+import '../pages/sign_in_view.dart';
+import '../pages/sign_up_view.dart';
 
 Map<String, WidgetBuilder> routes(context) => {
       '/home': (_) => const HomeView(),

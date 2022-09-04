@@ -1,11 +1,11 @@
-import 'package:donghaeng/view/chat_list_view.dart';
-import 'package:donghaeng/view/feed_view.dart';
-import 'package:donghaeng/view/map_view.dart';
-import 'package:donghaeng/view/profile_view.dart';
+import 'package:donghaeng/presentation/pages/profile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'theme/color.dart';
+import '../theme/color.dart';
+import 'chat_list_view.dart';
+import 'feed_view.dart';
+import 'map_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);

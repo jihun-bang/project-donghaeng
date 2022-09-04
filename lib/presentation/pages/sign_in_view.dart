@@ -1,14 +1,14 @@
-import 'package:donghaeng/data/di/locator.dart';
-import 'package:donghaeng/view/home_view.dart';
-import 'package:donghaeng/view/profile_edit_view.dart';
-import 'package:donghaeng/view/sign_up_view.dart';
-import 'package:donghaeng/viewmodel/user_viewmodel.dart';
+import 'package:donghaeng/presentation/pages/profile_edit_view.dart';
+import 'package:donghaeng/presentation/pages/sign_up_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../viewmodel/sign_in_viewmodel.dart';
+import '../../injection.dart';
+import '../provider/sign_in_viewmodel.dart';
+import '../provider/user_viewmodel.dart';
+import 'home_view.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({Key? key}) : super(key: key);
