@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-DateTime FromTimestamp(Timestamp timestamp) {
+DateTime fromTimestamp(Timestamp timestamp) {
   return timestamp.toDate();
 }
 

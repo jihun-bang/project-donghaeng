@@ -53,8 +53,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<UserViewModel>(
             create: (_) => sl<UserViewModel>()),
-        ChangeNotifierProvider<ChatroomViewModel>(
-            create: (_) => sl<ChatroomViewModel>()),
+        ChangeNotifierProvider<ChatRoomViewModel>(
+            create: (_) => sl<ChatRoomViewModel>()),
         ChangeNotifierProvider<SignUpViewModel>(
             create: (_) => sl<SignUpViewModel>()),
       ],

@@ -29,7 +29,7 @@ void initLocator() {
   sl.registerLazySingleton<SignInViewModel>(() => SignInViewModel());
   sl.registerLazySingleton<SignUpViewModel>(() => SignUpViewModel());
   sl.registerLazySingleton<UserViewModel>(() => UserViewModel());
-  sl.registerLazySingleton<ChatroomViewModel>(() => ChatroomViewModel());
+  sl.registerLazySingleton<ChatRoomViewModel>(() => ChatRoomViewModel());
 
   /// Repository
   sl.registerFactory<UserRepository>(() => UserRepositoryImpl(

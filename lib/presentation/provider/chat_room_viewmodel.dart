@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../domain/models/chat.dart';
 import '../../domain/repositories/chat_repository.dart';
@@ -12,7 +12,7 @@ import '../../domain/repositories/chat_room_repository.dart';
 import '../../injection.dart';
 import '../navigation/navigation.dart';
 
-class ChatroomViewModel extends ChangeNotifier {
+class ChatRoomViewModel extends ChangeNotifier {
   final _userViewModel = sl<UserViewModel>();
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -29,7 +29,7 @@ class ChatroomViewModel extends ChangeNotifier {
 
   late StreamSubscription<DatabaseEvent> chatUpdates;
 
-  ChatroomViewModel() {
+  ChatRoomViewModel() {
     getChatList();
   }
 
@@ -69,7 +69,6 @@ class ChatroomViewModel extends ChangeNotifier {
     _chats.clear();
   }
 
-  // todo: chatroom id를 parameter로 받기
   void getChatroom(String chatRoomID) async {
     // todo : 에러처리
     _chatRoom = await _chatRoomRepository.get(id: chatRoomID);
@@ -99,5 +98,20 @@ class ChatroomViewModel extends ChangeNotifier {
         log(error.toString());
       },
     );
+  }
+
+  void addChatRoom(
+      {required String title,
+      required DateTimeRange? travelDate,
+      required String? country}) {
+    _chatRoomRepository.add(
+        chatRoom: ChatRoom(
+            title: title,
+            createdAt: DateTime.now().toUtc(),
+            travelDateStart: travelDate!.start.toString(),
+            travelDateEnd: travelDate.end.toString(),
+            country: country!,
+            owner: user.uid,
+            members: [user.uid]));
   }
 }

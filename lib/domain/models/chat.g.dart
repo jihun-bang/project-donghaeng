@@ -8,7 +8,7 @@ part of 'chat.dart';
 
 ChatRoom _$ChatRoomFromJson(Map<String, dynamic> json) => ChatRoom(
       title: json['title'] as String,
-      createdAt: FromTimestamp(json['created_at'] as Timestamp),
+      createdAt: fromTimestamp(json['created_at'] as Timestamp),
       travelDateStart: json['travel_date_start'] as String,
       travelDateEnd: json['travel_date_end'] as String,
       country: json['country'] as String,

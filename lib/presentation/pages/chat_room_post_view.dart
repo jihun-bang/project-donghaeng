@@ -1,5 +1,9 @@
+import 'package:donghaeng/presentation/navigation/navigation.dart';
+import 'package:donghaeng/presentation/provider/chat_room_viewmodel.dart';
+import 'package:donghaeng/utils/toast.dart';
 import 'package:flutter/material.dart';
 
+import '../../injection.dart';
 import '../theme/color.dart';
 
 class ChatRoomPostView extends StatefulWidget {
@@ -12,8 +16,16 @@ class ChatRoomPostView extends StatefulWidget {
 const List<String> countries = <String>['영국', '프라하', '크로아티아'];
 
 class _ChatRoomPostView extends State<ChatRoomPostView> {
+  final _chatRoomViewModel = sl<ChatRoomViewModel>();
   String? country;
   DateTimeRange? travelDate;
+  final TextEditingController _titleController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +62,21 @@ class _ChatRoomPostView extends State<ChatRoomPostView> {
                   width: 12,
                 ),
                 const Expanded(child: Center(child: Text('채팅방 만들기'))),
-                TextButton(onPressed: () {}, child: const Text('완료')),
+                TextButton(
+                    onPressed: () {
+                      if (travelDate != null &&
+                          country != null &&
+                          _titleController.text != "") {
+                        _chatRoomViewModel.addChatRoom(
+                            title: _titleController.text,
+                            travelDate: travelDate,
+                            country: country);
+                        sl<NavigationService>().pushNamed('/');
+                      } else {
+                        showToast(message: "잘못된 값이 입력됐습니다.");
+                      }
+                    },
+                    child: const Text('완료')),
               ],
             ),
           ),
@@ -69,11 +95,12 @@ class _ChatRoomPostView extends State<ChatRoomPostView> {
           const SizedBox(
             height: 20,
           ),
-          const TextField(
-              decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "제목을 입력해주세요. (20자 이내)",
-          )),
+          TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "제목을 입력해주세요. (20자 이내)",
+              )),
           const SizedBox(
             height: 20,
           ),

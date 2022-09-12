@@ -89,7 +89,7 @@ class _ChatListViewState extends State<ChatListView>
       );
 
   Widget _communities(BuildContext context) {
-    return Consumer<ChatroomViewModel>(builder: (_, viewModel, ___) {
+    return Consumer<ChatRoomViewModel>(builder: (_, viewModel, ___) {
       return Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),

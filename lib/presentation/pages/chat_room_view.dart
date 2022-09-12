@@ -18,7 +18,7 @@ class ChatRoomView extends StatefulWidget {
 }
 
 class SendChatController extends TextEditingController {
-  final _chatRoomViewModel = sl<ChatroomViewModel>();
+  final _chatRoomViewModel = sl<ChatRoomViewModel>();
 
   sendChat(String chatRoomID, String userUID) {
     _chatRoomViewModel.addChat(chatRoomID, userUID, text);
@@ -27,7 +27,7 @@ class SendChatController extends TextEditingController {
 }
 
 class _ChatRoomViewState extends State<ChatRoomView> {
-  final _chatRoomViewModel = sl<ChatroomViewModel>();
+  final _chatRoomViewModel = sl<ChatRoomViewModel>();
   final _userViewModel = sl<UserViewModel>();
 
   final User user = FirebaseAuth.instance.currentUser!;
@@ -57,7 +57,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _chatRoomViewModel.getChatroom(chatRoomID);
     chats = _chatRoomViewModel.getRealtimeChats(chatRoomID);
 
-    return Consumer2<ChatroomViewModel, UserViewModel>(
+    return Consumer2<ChatRoomViewModel, UserViewModel>(
       builder: (_, __, ___, ____) {
         log('build chat_room_view');
         return Scaffold(
