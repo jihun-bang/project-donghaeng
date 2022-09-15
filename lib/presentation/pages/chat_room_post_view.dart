@@ -71,7 +71,7 @@ class _ChatRoomPostView extends State<ChatRoomPostView> {
                             title: _titleController.text,
                             travelDate: travelDate,
                             country: country);
-                        sl<NavigationService>().pushNamed('/');
+                        Navigator.pop(context);
                       } else {
                         showToast(message: "잘못된 값이 입력됐습니다.");
                       }
