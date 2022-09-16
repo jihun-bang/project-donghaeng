@@ -53,7 +53,9 @@ class ChatRoomViewModel extends ChangeNotifier {
       }
     }
 
-    // todo: users 정보에 chatroom id 추가하기
+    if (_userViewModel.user?.addChatRoomID(chatRoomID) ?? false) {
+      _userViewModel.updateUser();
+    }
 
     // 이동
     sl<NavigationService>()

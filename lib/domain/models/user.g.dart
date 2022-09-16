@@ -12,6 +12,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       imagePath: json['image_path'] as String? ?? '',
       description: json['description'] as String? ?? '',
       instagram: json['instagram'] as String? ?? '',
+      chatRooms: (json['chat_rooms'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -20,4 +23,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'image_path': instance.imagePath,
       'description': instance.description,
       'instagram': instance.instagram,
+      'chat_rooms': instance.chatRooms,
     };

@@ -44,7 +44,6 @@ class UserViewModel with ChangeNotifier {
   }
 
   getMemberImagePath({required List<String>? memberIDs}) {
-    print("memberIDs $memberIDs");
     if (memberIDs == null) {
       return;
     }
