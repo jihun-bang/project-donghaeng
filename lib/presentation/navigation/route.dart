@@ -1,3 +1,4 @@
+import 'package:donghaeng/presentation/pages/chat_room_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/chat_room_post_view.dart';
@@ -14,4 +15,5 @@ Map<String, WidgetBuilder> routes(context) => {
       '/profile-edit': (_) => const ProfileEditView(),
       '/chat-room': (_) => const ChatRoomView(),
       '/chat-room-post': (_) => const ChatRoomPostView(),
+      '/chat-room-list': (_) => const ChatRoomListView(),
     };
