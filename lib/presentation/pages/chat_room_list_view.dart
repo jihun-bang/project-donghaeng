@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:donghaeng/domain/models/user.dart';
 import 'package:donghaeng/injection.dart';
+import 'package:donghaeng/presentation/navigation/navigation.dart';
 import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,10 +72,13 @@ class _ChatRoomListViewState extends State<ChatRoomListView> {
       shrinkWrap: true,
       padding: const EdgeInsets.all(10),
       itemBuilder: (context, index) {
-        return Row(
-          children: <Widget>[
-            Text(_userViewModel.user?.chatRooms?[index] ?? 'fail')
-          ],
+        return Card(
+          child: ListTile(
+              onTap: () => sl<NavigationService>().pushNamed("/chat-room",
+                      arguments: {
+                        'chatRoomID': _userViewModel.user?.chatRooms?[index]
+                      }),
+              title: Text(_userViewModel.user?.chatRooms?[index] ?? 'fail')),
         );
       });
 }

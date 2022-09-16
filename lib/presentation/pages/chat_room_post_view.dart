@@ -83,33 +83,36 @@ class _ChatRoomPostView extends State<ChatRoomPostView> {
         ),
       );
 
-  Widget get _body => Column(
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _countryDropdownButton,
-              _travelDatePicker,
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "제목을 입력해주세요. (20자 이내)",
-              )),
-          const SizedBox(
-            height: 20,
-          ),
-          const TextField(
-              decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "내용을 입력해주세요. (20자 이내)",
-          )),
-        ],
+  Widget get _body => Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _countryDropdownButton,
+                _travelDatePicker,
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "제목을 입력해주세요. (20자 이내)",
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            const TextField(
+                decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "내용을 입력해주세요. (20자 이내)",
+            )),
+          ],
+        ),
       );
 
   void showDateRangePickerPop() async {

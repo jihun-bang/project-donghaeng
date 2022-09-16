@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:donghaeng/injection.dart';
+import 'package:donghaeng/presentation/navigation/navigation.dart';
 import 'package:donghaeng/presentation/pages/profile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,12 +29,15 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    log('build home view');
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: _appbar,
       body: _body.elementAt(_selectedIndex),
       bottomNavigationBar: _bottomNavigationBar,
+      floatingActionButton: _floatingActionButton,
     );
   }
 
@@ -51,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
       icon: Icon(Icons.mail_outline_rounded, color: MyColors.subPrimary),
       iconSize: 28,
       padding: EdgeInsets.zero,
-      onPressed: () => {},
+      onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
     );
 
     return AppBar(
@@ -106,5 +113,12 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ],
+      );
+
+  // todo: 이거 화면에 안뜸..
+  Widget get _floatingActionButton => FloatingActionButton(
+        onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),
+        tooltip: "create chat room",
+        child: const Icon(Icons.add),
       );
 }
