@@ -1,5 +1,3 @@
-import 'package:donghaeng/presentation/pages/profile_edit_view.dart';
-import 'package:donghaeng/presentation/pages/sign_up_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +7,8 @@ import '../../injection.dart';
 import '../provider/sign_in_viewmodel.dart';
 import '../provider/user_viewmodel.dart';
 import 'home_view.dart';
+import 'profile_edit_view.dart';
+import 'sign_up_view.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({Key? key}) : super(key: key);
@@ -38,16 +38,20 @@ class _SignInViewState extends State<SignInView> {
             );
           } else {
             userViewModel.getUser();
-            return Consumer<UserViewModel>(builder: (_, userViewModel, __) {
+            return Consumer<UserViewModel>(builder: (_, __, ___) {
               final user = userViewModel.user;
-              if (user != null) {
-                if (user.name.isEmpty) {
-                  return const ProfileEditView();
-                } else {
-                  return const HomeView();
-                }
+              if (userViewModel.getUserLoading) {
+                return _loading;
               } else {
-                return const SignUpView();
+                if (user != null) {
+                  if (user.name.isEmpty) {
+                    return const ProfileEditView();
+                  } else {
+                    return const HomeView();
+                  }
+                } else {
+                  return const SignUpView();
+                }
               }
             });
           }

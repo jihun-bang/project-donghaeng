@@ -6,7 +6,6 @@ import 'package:donghaeng/presentation/pages/profile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../theme/color.dart';
 import 'chat_list_view.dart';
 import 'feed_view.dart';
 import 'map_view.dart';
@@ -34,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: _appbar,
+      appBar: _buildAppBar,
       body: _body.elementAt(_selectedIndex),
       bottomNavigationBar: _buildBottomNavigationBar,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -42,21 +41,21 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  PreferredSizeWidget get _appbar {
-    final _menu = IconButton(
-      icon: Icon(Icons.menu_rounded, color: MyColors.subPrimary),
+  PreferredSizeWidget get _buildAppBar {
+    final menu = IconButton(
+      icon: const Icon(Icons.menu_rounded, color: Colors.white),
       iconSize: 28,
       padding: EdgeInsets.zero,
       onPressed: () => {},
     );
-    final _search = IconButton(
-      icon: Icon(CupertinoIcons.search, color: MyColors.subPrimary),
+    final search = IconButton(
+      icon: const Icon(CupertinoIcons.search, color: Colors.white),
       iconSize: 28,
       padding: EdgeInsets.zero,
       onPressed: () => {},
     );
-    final _message = IconButton(
-      icon: Icon(Icons.mail_outline_rounded, color: MyColors.subPrimary),
+    final message = IconButton(
+      icon: const Icon(Icons.mail_outline_rounded, color: Colors.white),
       iconSize: 28,
       padding: EdgeInsets.zero,
       onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
@@ -65,8 +64,8 @@ class _HomeViewState extends State<HomeView> {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
-      title: _menu,
-      actions: [_search, _message],
+      title: menu,
+      actions: [search, message],
     );
   }
 
