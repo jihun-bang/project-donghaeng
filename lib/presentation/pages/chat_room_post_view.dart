@@ -1,4 +1,4 @@
-import 'package:donghaeng/presentation/navigation/navigation.dart';
+import 'package:donghaeng/domain/resource/country.dart';
 import 'package:donghaeng/presentation/provider/chat_room_viewmodel.dart';
 import 'package:donghaeng/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +12,6 @@ class ChatRoomPostView extends StatefulWidget {
   @override
   State<ChatRoomPostView> createState() => _ChatRoomPostView();
 }
-
-const List<String> countries = <String>['영국', '프라하', '크로아티아'];
 
 class _ChatRoomPostView extends State<ChatRoomPostView> {
   final _chatRoomViewModel = sl<ChatRoomViewModel>();
@@ -184,7 +182,9 @@ class _ChatRoomPostView extends State<ChatRoomPostView> {
               country = value!;
             });
           },
-          items: countries.map<DropdownMenuItem<String>>((String value) {
+          items: Country.values
+              .map((e) => e.korean)
+              .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),

@@ -1,3 +1,4 @@
+import 'package:donghaeng/domain/resource/country.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class _ChatListViewState extends State<ChatListView>
   final currentUser = FirebaseAuth.instance.currentUser;
 
   late TabController _tabController;
-  final _tabList = const ['전체보기', '프랑스', '체코', '크로아티아'];
+  final List<String> _tabList = ['전체보기'];
+
   int _selectedTabIndex = 0;
 
   final _titleTextStyle = const TextStyle(
@@ -37,6 +39,9 @@ class _ChatListViewState extends State<ChatListView>
   @override
   void initState() {
     super.initState();
+    for (var element in Country.values) {
+      _tabList.add(element.korean);
+    }
     _tabController = TabController(length: 4, vsync: this);
   }
 
@@ -106,9 +111,8 @@ class _ChatListViewState extends State<ChatListView>
             itemCount: chatRooms!.length,
             itemBuilder: (_, index) {
               final key = viewModel.chatRooms?.keys.elementAt(index);
-              final selectedChatRoom = chatRooms.elementAt(index);
-              final tags =
-                  selectedChatRoom.tags?.map((e) => '#$e').toList().join('');
+              final chatRoom = chatRooms.elementAt(index);
+              final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -117,17 +121,17 @@ class _ChatListViewState extends State<ChatListView>
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: () => {
-                      if (key == null || selectedChatRoom == null)
+                      if (key == null)
                         {showToast(message: "Error: No chat_room information")}
                       else
-                        {viewModel.joinChatRoom(key, selectedChatRoom)}
+                        {viewModel.joinChatRoom(key, chatRoom)}
                     },
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                             child: Text(
-                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${selectedChatRoom?.title}',
+                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -144,7 +148,7 @@ class _ChatListViewState extends State<ChatListView>
                                 size: 14,
                               ),
                               Text(
-                                '+${selectedChatRoom?.members.length}명',
+                                '+${chatRoom.members.length}명',
                                 style: _cardSmallTextStyle,
                               ),
                             ],
@@ -161,7 +165,7 @@ class _ChatListViewState extends State<ChatListView>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  '${selectedChatRoom?.travelDateStart} - ${selectedChatRoom?.travelDateEnd}',
+                                  '${chatRoom.travelDateStart} - ${chatRoom.travelDateEnd}',
                                   style: _cardSmallTextStyle.copyWith(
                                       fontSize: 12)),
                               Text(
