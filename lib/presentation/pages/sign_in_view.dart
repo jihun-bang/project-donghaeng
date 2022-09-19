@@ -39,19 +39,15 @@ class _SignInViewState extends State<SignInView> {
           } else {
             userViewModel.getUser();
             return Consumer<UserViewModel>(builder: (_, userViewModel, __) {
-              if (userViewModel.getUserLoading) {
-                return _loading;
-              } else {
-                final user = userViewModel.user;
-                if (user != null) {
-                  if (user.name.isEmpty) {
-                    return const ProfileEditView();
-                  } else {
-                    return const HomeView();
-                  }
+              final user = userViewModel.user;
+              if (user != null) {
+                if (user.name.isEmpty) {
+                  return const ProfileEditView();
                 } else {
-                  return const SignUpView();
+                  return const HomeView();
                 }
+              } else {
+                return const SignUpView();
               }
             });
           }
