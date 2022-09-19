@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../injection.dart';
@@ -29,12 +30,21 @@ class _SignInViewState extends State<SignInView> {
         builder: (context, snapshot) {
           if (!snapshot.hasData &&
               FirebaseAuth.instance.currentUser?.email == null) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _logo,
-                _signInList,
-              ],
+            return Container(
+              alignment: Alignment.bottomCenter,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                        'assets/images/image_sign_in.png'),
+                    fit: BoxFit.cover),
+              ),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  _buildInfo,
+                  _buildSignInList,
+                ],
+              ),
             );
           } else {
             userViewModel.getUser();
@@ -67,31 +77,27 @@ class _SignInViewState extends State<SignInView> {
             child: CircularProgressIndicator(strokeWidth: 10)),
       );
 
-  Widget get _logo => const Expanded(
-        flex: 3,
-        child: Center(
-          child: Text(
-            '동행',
-            style: TextStyle(fontSize: 96, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
+  Widget get _buildInfo => const Padding(
+        padding: EdgeInsets.only(bottom: 28),
+        child: Text(
+          '로그인 하면 GiGi 이용약관에 동의하는 것으로 간주합니다.\n자세한 내용은 개인정보 처리방침 및 이용약관에서 확인해 보세요.',
+          style: TextStyle(
+              fontSize: 13, fontWeight: FontWeight.w500, color: Colors.white),
+          textAlign: TextAlign.center,
         ),
       );
 
-  Widget get _signInList {
+  Widget get _buildSignInList {
     Widget button(SignInType type) {
-      final info = signInViewModel.getButtonInfo(type);
-
       return Padding(
-        padding: const EdgeInsets.only(bottom: 11),
+        padding: const EdgeInsets.only(bottom: 16),
         child: OutlinedButton(
           style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.only(left: 18, right: 18),
-              backgroundColor: info.item3,
+              backgroundColor: Colors.transparent,
               minimumSize: const Size(300, 60),
               maximumSize: const Size(400, 60),
-              side:
-                  BorderSide(width: 0.5, color: Colors.black.withOpacity(0.3)),
+              side: const BorderSide(width: 2, color: Color(0xFFFEFFFF)),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30))),
           onPressed: () async => await signInViewModel.signIn(type),
@@ -111,10 +117,10 @@ class _SignInViewState extends State<SignInView> {
               Align(
                   alignment: Alignment.center,
                   child: Text(
-                    '${info.item1} 로그인',
-                    style: TextStyle(
+                    '${type.korean} 로그인',
+                    style: const TextStyle(
                         fontSize: 16,
-                        color: info.item2,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600),
                   ))
             ],
@@ -123,11 +129,25 @@ class _SignInViewState extends State<SignInView> {
       );
     }
 
-    return Expanded(
-        flex: 2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: SignInType.values.map((type) => button(type)).toList(),
-        ));
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 45),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: SignInType.values.map((type) => button(type)).toList()
+          ..add(_buildLoginQuestion),
+      ),
+    );
   }
+
+  Widget get _buildLoginQuestion => Padding(
+        padding: const EdgeInsets.only(top: 14, bottom: 42),
+        child: InkWell(
+          onTap: () {},
+          child: const Text(
+            '로그인이 안되나요?',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
+          ),
+        ),
+      );
 }
