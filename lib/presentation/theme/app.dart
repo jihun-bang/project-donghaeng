@@ -7,6 +7,7 @@ ThemeData get themeDate => ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primarySwatch: primary,
     appBarTheme: _appbarThem,
+    drawerTheme: _drawerTheme,
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
     fontFamily: 'Noto_Sans_KR');
 
@@ -15,6 +16,11 @@ const _appbarThem = AppBarTheme(
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
     elevation: 0);
+
+const _drawerTheme = DrawerThemeData(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topRight: Radius.circular(40))));
 
 final _bottomNavigationBarTheme = BottomNavigationBarThemeData(
     selectedItemColor: Colors.black,

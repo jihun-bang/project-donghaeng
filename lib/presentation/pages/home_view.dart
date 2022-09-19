@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:donghaeng/injection.dart';
 import 'package:donghaeng/presentation/navigation/navigation.dart';
 import 'package:donghaeng/presentation/pages/profile_view.dart';
+import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
+import 'package:donghaeng/presentation/widgets/profile_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +37,35 @@ class _HomeViewState extends State<HomeView> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: _buildAppBar,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              leading: ProfileImage(
+                  size: 49.5, url: sl<UserViewModel>().user?.imagePath),
+              title: Text(sl<UserViewModel>().user?.name ?? ''),
+              subtitle: Text(FirebaseAuth.instance.currentUser?.email ?? ''),
+            ),
+            ListTile(
+              title: const Text('공지사항'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: const Text('계정관리'),
+              onTap: () {},
+            ),
+            ListTile(
+              title: const Text('고객센터'),
+              onTap: () {},
+            ),
+            ListTile(
+              subtitle: const Text('로그아웃'),
+              onTap: () => sl<UserViewModel>().logout(),
+            ),
+          ],
+        ),
+      ),
       body: _body.elementAt(_selectedIndex),
       bottomNavigationBar: _buildBottomNavigationBar,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -42,12 +74,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   PreferredSizeWidget get _buildAppBar {
-    final menu = IconButton(
-      icon: const Icon(Icons.menu_rounded, color: Colors.white),
-      iconSize: 28,
-      padding: EdgeInsets.zero,
-      onPressed: () => {},
-    );
     final search = IconButton(
       icon: const Icon(CupertinoIcons.search, color: Colors.white),
       iconSize: 28,
@@ -64,7 +90,6 @@ class _HomeViewState extends State<HomeView> {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
-      title: menu,
       actions: [search, message],
     );
   }
