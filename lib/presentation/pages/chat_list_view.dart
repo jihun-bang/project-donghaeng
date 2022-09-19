@@ -20,7 +20,7 @@ class _ChatListViewState extends State<ChatListView>
   final currentUser = FirebaseAuth.instance.currentUser;
 
   late TabController _tabController;
-  final _tabList = const ['전체보기', '영국', '프라하', '크로아티아'];
+  final _tabList = const ['전체보기', '프랑스', '체코', '크로아티아'];
   int _selectedTabIndex = 0;
 
   final _titleTextStyle = const TextStyle(
@@ -90,6 +90,10 @@ class _ChatListViewState extends State<ChatListView>
 
   Widget _communities(BuildContext context) {
     return Consumer<ChatRoomViewModel>(builder: (_, viewModel, ___) {
+      final country = _tabList.elementAt(_selectedTabIndex);
+      final chatRooms = viewModel.chatRooms?.values.where((element) =>
+          country == _tabList[0] ? true : element.country == country);
+
       return Container(
         color: Colors.white,
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
@@ -99,12 +103,12 @@ class _ChatListViewState extends State<ChatListView>
                   height: 12,
                 ),
             padding: const EdgeInsets.only(top: 24),
-            itemCount: viewModel.chatRooms!.length,
+            itemCount: chatRooms!.length,
             itemBuilder: (_, index) {
               final key = viewModel.chatRooms?.keys.elementAt(index);
-              final chatRoom = viewModel.chatRooms?.values.elementAt(index);
-              final country = _tabList.elementAt(_selectedTabIndex);
-              final tags = chatRoom?.tags?.map((e) => '#$e').toList().join('');
+              final selectedChatRoom = chatRooms.elementAt(index);
+              final tags =
+                  selectedChatRoom.tags?.map((e) => '#$e').toList().join('');
               return Card(
                 color: const Color(0xFFD9D9D9),
                 shape: RoundedRectangleBorder(
@@ -113,17 +117,17 @@ class _ChatListViewState extends State<ChatListView>
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: () => {
-                      if (key == null || chatRoom == null)
+                      if (key == null || selectedChatRoom == null)
                         {showToast(message: "Error: No chat_room information")}
                       else
-                        {viewModel.joinChatRoom(key, chatRoom)}
+                        {viewModel.joinChatRoom(key, selectedChatRoom)}
                     },
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                             child: Text(
-                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom?.title}',
+                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${selectedChatRoom?.title}',
                           style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -140,7 +144,7 @@ class _ChatListViewState extends State<ChatListView>
                                 size: 14,
                               ),
                               Text(
-                                '+${chatRoom?.members.length}명',
+                                '+${selectedChatRoom?.members.length}명',
                                 style: _cardSmallTextStyle,
                               ),
                             ],
@@ -157,7 +161,7 @@ class _ChatListViewState extends State<ChatListView>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                  '${chatRoom?.travelDateStart} - ${chatRoom?.travelDateEnd}',
+                                  '${selectedChatRoom?.travelDateStart} - ${selectedChatRoom?.travelDateEnd}',
                                   style: _cardSmallTextStyle.copyWith(
                                       fontSize: 12)),
                               Text(
