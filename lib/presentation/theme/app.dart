@@ -7,6 +7,7 @@ ThemeData get themeDate => ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primarySwatch: primary,
     appBarTheme: _appbarThem,
+    bottomNavigationBarTheme: _bottomNavigationBarTheme,
     fontFamily: 'Noto_Sans_KR');
 
 const _appbarThem = AppBarTheme(
@@ -14,3 +15,11 @@ const _appbarThem = AppBarTheme(
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
     elevation: 0);
+
+final _bottomNavigationBarTheme = BottomNavigationBarThemeData(
+    selectedItemColor: Colors.black,
+    unselectedItemColor: Colors.black.withOpacity(0.2),
+    backgroundColor: Colors.white,
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
+    type: BottomNavigationBarType.fixed);

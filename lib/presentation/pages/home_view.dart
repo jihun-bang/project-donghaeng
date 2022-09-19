@@ -36,7 +36,7 @@ class _HomeViewState extends State<HomeView> {
       extendBody: true,
       appBar: _appbar,
       body: _body.elementAt(_selectedIndex),
-      bottomNavigationBar: _bottomNavigationBar,
+      bottomNavigationBar: _buildBottomNavigationBar,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _floatingActionButton,
     );
@@ -77,47 +77,17 @@ class _HomeViewState extends State<HomeView> {
         const ProfileView(),
       ];
 
-  Widget get _bottomNavigationBar => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x54000000),
-                  spreadRadius: 4,
-                  blurRadius: 20,
-                )
-              ],
-            ),
-          ),
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              currentIndex: _selectedIndex,
-              unselectedItemColor: MyColors.subPrimary,
-              onTap: _onItemTapped,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.place), label: ''),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.add_to_photos_rounded), label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
-              ],
-            ),
-          ),
+  Widget get _buildBottomNavigationBar => BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.place), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
         ],
       );
 
-  // todo: 지훈님 플로팅버튼이 위치가 안잡혀요.. _bottomNavigationBar 이거 없애면 제대로 작동하는데,
-  // 뭔가 네비게이션바랑 충돌이 나는거 같은데요
   Widget get _floatingActionButton => Padding(
         padding: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
