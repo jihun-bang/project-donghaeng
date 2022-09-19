@@ -37,7 +37,48 @@ class _HomeViewState extends State<HomeView> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: _buildAppBar,
-      drawer: Drawer(
+      drawer: _buildDrawer,
+      body: _buildBody.elementAt(_selectedIndex),
+      bottomNavigationBar: _buildBottomNavigationBar,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: _buildFloatingActionButton,
+    );
+  }
+
+  PreferredSizeWidget get _buildAppBar {
+    final search = IconButton(
+      icon: const Icon(CupertinoIcons.search),
+      padding: EdgeInsets.zero,
+      onPressed: () => {},
+    );
+    final message = IconButton(
+      icon: const Icon(Icons.mail_outline_rounded),
+      padding: EdgeInsets.zero,
+      onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
+    );
+
+    return AppBar(
+      centerTitle: true,
+      title: Image.asset(
+        'assets/icons/icon_logo.png',
+        width: 70,
+      ),
+      toolbarHeight: 114,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+              Color(0xFFFE7FA8),
+              Color(0xFFFCCE40),
+            ])),
+      ),
+      actions: [search, message],
+    );
+  }
+
+  Drawer get _buildDrawer => Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -65,36 +106,9 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-      ),
-      body: _body.elementAt(_selectedIndex),
-      bottomNavigationBar: _buildBottomNavigationBar,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _floatingActionButton,
-    );
-  }
+      );
 
-  PreferredSizeWidget get _buildAppBar {
-    final search = IconButton(
-      icon: const Icon(CupertinoIcons.search, color: Colors.white),
-      iconSize: 28,
-      padding: EdgeInsets.zero,
-      onPressed: () => {},
-    );
-    final message = IconButton(
-      icon: const Icon(Icons.mail_outline_rounded, color: Colors.white),
-      iconSize: 28,
-      padding: EdgeInsets.zero,
-      onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
-    );
-
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      actions: [search, message],
-    );
-  }
-
-  List<Widget> get _body => [
+  List<Widget> get _buildBody => [
         const ChatListView(),
         const MapView(),
         const FeedView(),
@@ -112,7 +126,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       );
 
-  Widget get _floatingActionButton => Padding(
+  Widget get _buildFloatingActionButton => Padding(
         padding: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
           onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),

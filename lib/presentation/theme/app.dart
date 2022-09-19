@@ -15,6 +15,7 @@ const _appbarThem = AppBarTheme(
     titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
+    iconTheme: IconThemeData(color: Colors.white),
     elevation: 0);
 
 const _drawerTheme = DrawerThemeData(
