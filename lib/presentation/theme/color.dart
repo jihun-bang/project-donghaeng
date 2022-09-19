@@ -23,9 +23,9 @@ const MaterialColor primary = MaterialColor(
 class MyColors {
   MyColors._();
 
-  static Color get primary => const Color(0xFF414141);
+  static Color get primary => const Color(0xFFFD80A8);
 
-  static Color get subPrimary => const Color(0xFFACAEB2);
+  static Color get subPrimary => const Color(0xFFFCCF42);
 
   static Color get grey_1 => const Color(0xFF9C9C9C);
 
