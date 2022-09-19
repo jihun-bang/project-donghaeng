@@ -2,45 +2,33 @@
 <html>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
-
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
-
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
     <base href="$FLUTTER_BASE_HREF">
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="동행">
+    <meta name="description" content="기기">
 
     <!-- iOS meta tags & icons -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="동행">
+    <meta name="apple-mobile-web-app-title" content="기기">
     <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png"/>
 
-    <title>동행</title>
+    <title>기기</title>
     <link rel="manifest" href="manifest.json">
 
-    <!--  Firebase-->
+    <!--  Firebase -->
     <meta name="google-signin-client_id"
           content="968695725622-iug3879dt7i9qfcr9dq46656p55ud2e6.apps.googleusercontent.com">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<!-- This script installs service_worker.js to provide PWA functionality to
-     application. For more information, see:
-     https://developers.google.com/web/fundamentals/primers/service-workers -->
+<img src="images/image_splash.png" class="center" style=""/>
 <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
@@ -104,7 +92,6 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
-
 </script>
 </body>
 </html>

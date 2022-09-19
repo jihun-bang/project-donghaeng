@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -70,12 +71,20 @@ class _SignInViewState extends State<SignInView> {
     );
   }
 
-  Widget get _loading => const Center(
-        child: SizedBox(
-            width: 150,
-            height: 150,
-            child: CircularProgressIndicator(strokeWidth: 10)),
-      );
+  Widget get _loading => Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/image_sign_in.png'),
+              fit: BoxFit.cover)),
+      child: Center(
+          child: SizedBox(
+              height: 100,
+              width: 100,
+              child: CircularProgressIndicator(
+                strokeWidth: 10,
+                backgroundColor: Colors.white,
+                valueColor: AlwaysStoppedAnimation<Color>(MyColors.primary),
+              ))));
 
   Widget get _buildInfo => const Padding(
         padding: EdgeInsets.only(bottom: 28),
