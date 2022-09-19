@@ -9,6 +9,7 @@ ThemeData get themeDate => ThemeData(
     appBarTheme: _appbarThem,
     drawerTheme: _drawerTheme,
     bottomNavigationBarTheme: _bottomNavigationBarTheme,
+    tabBarTheme: _tabBarTheme,
     fontFamily: 'Noto_Sans_KR');
 
 const _appbarThem = AppBarTheme(
@@ -30,3 +31,16 @@ final _bottomNavigationBarTheme = BottomNavigationBarThemeData(
     showSelectedLabels: false,
     showUnselectedLabels: false,
     type: BottomNavigationBarType.fixed);
+
+final _tabBarTheme = TabBarTheme(
+    labelColor: Colors.black,
+    unselectedLabelColor: Colors.black.withOpacity(0.4),
+    indicatorSize: TabBarIndicatorSize.tab,
+    labelStyle: const TextStyle(
+        fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+    unselectedLabelStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: Colors.black.withOpacity(0.4)),
+    indicator: const UnderlineTabIndicator(
+        borderSide: BorderSide(color: Colors.black, width: 2)));

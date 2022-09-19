@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../injection.dart';
 import '../../utils/toast.dart';
 import '../provider/chat_room_viewmodel.dart';
-import '../provider/user_viewmodel.dart';
 
 class ChatListView extends StatefulWidget {
   const ChatListView({Key? key}) : super(key: key);
@@ -25,8 +23,6 @@ class _ChatListViewState extends State<ChatListView>
 
   int _selectedTabIndex = 0;
 
-  final _titleTextStyle = const TextStyle(
-      fontSize: 22, fontWeight: FontWeight.w600, color: Colors.white);
   final _cardSmallTextStyle =
       const TextStyle(fontSize: 8, color: Color(0xFF646464));
 
@@ -50,47 +46,23 @@ class _ChatListViewState extends State<ChatListView>
     return _view;
   }
 
-  Widget get _view => Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/image_home_$_selectedTabIndex.png'),
-                alignment: Alignment.topCenter,
-                fit: BoxFit.cover)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 98, 32, 24),
-              child: Text(
-                '${sl<UserViewModel>().user?.name ?? ''} 님,\n함께할 여행자를 찾으세요?',
-                style: _titleTextStyle,
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: TabBar(
-                  onTap: (index) => _onTabTapped(index),
-                  controller: _tabController,
-                  labelStyle: _titleTextStyle,
-                  isScrollable: true,
-                  padding: EdgeInsets.zero,
-                  indicatorColor: Colors.transparent,
-                  tabs: _tabList.map((e) => Tab(text: e)).toList()),
-            ),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                ),
-                child: _communities(context),
-              ),
-            ),
-          ],
-        ),
+  Widget get _view => Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 114),
+            child: TabBar(
+                onTap: (index) => _onTabTapped(index),
+                controller: _tabController,
+                isScrollable: true,
+                padding: EdgeInsets.zero,
+                tabs: _tabList.map((e) => Tab(text: e)).toList()),
+          ),
+          Expanded(
+            child: _communities(context),
+          ),
+        ],
       );
 
   Widget _communities(BuildContext context) {
