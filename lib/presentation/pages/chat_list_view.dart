@@ -1,4 +1,5 @@
 import 'package:donghaeng/domain/resource/country.dart';
+import 'package:donghaeng/presentation/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,102 +73,107 @@ class _ChatListViewState extends State<ChatListView>
           country == _tabList[0] ? true : element.country == country);
 
       return Container(
-        color: Colors.white,
-        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 81),
+        padding: const EdgeInsets.only(bottom: 81),
+        margin: const EdgeInsets.symmetric(horizontal: 17),
         child: ListView.separated(
             shrinkWrap: true,
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 12,
-                ),
-            padding: const EdgeInsets.only(top: 24),
+            separatorBuilder: (context, index) => const SizedBox(height: 18),
+            padding: const EdgeInsets.only(top: 56),
             itemCount: chatRooms!.length,
             itemBuilder: (_, index) {
               final key = viewModel.chatRooms?.keys.elementAt(index);
               final chatRoom = chatRooms.elementAt(index);
               final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
-              return Card(
-                color: const Color(0xFFD9D9D9),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    onTap: () => {
-                      if (key == null)
-                        {showToast(message: "Error: No chat_room information")}
-                      else
-                        {viewModel.joinChatRoom(key, chatRoom)}
-                    },
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Text(
-                          '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )),
-                        SizedBox(
-                          width: 78,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
+              return InkWell(
+                onTap: () => {
+                  if (key == null)
+                    {showToast(message: "Error: No chat_room information")}
+                  else
+                    {viewModel.joinChatRoom(key, chatRoom)}
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFEAEAEA)),
+                  ),
+                  padding: const EdgeInsets.only(top: 16, left: 14, bottom: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              const Icon(
-                                CupertinoIcons.person,
-                                size: 14,
-                              ),
-                              Text(
-                                '+${chatRoom.members.length}명',
-                                style: _cardSmallTextStyle,
+                              const ProfileImage(size: 46),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Transform.translate(
+                                        offset: const Offset(0, 1),
+                                        child: Icon(
+                                          Icons.mail_outline_rounded,
+                                          color: Colors.black.withOpacity(0.4),
+                                          size: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        '실시간 대화',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Colors.black.withOpacity(0.4)),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  '${chatRoom.travelDateStart} - ${chatRoom.travelDateEnd}',
-                                  style: _cardSmallTextStyle.copyWith(
-                                      fontSize: 12)),
-                              Text(
-                                '$tags\n$tags\n$tags',
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.black),
-                              ),
-                            ],
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.bookmark,
+                                size: 24,
+                                color: Colors.black.withOpacity(0.3),
+                              )),
+                        ],
+                      ),
+                      const Divider(color: Color(0xFFEAEAEA)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              '${chatRoom.travelDateStart.substring(5, 10).replaceAll('-', '/')}'
+                              ' - ${chatRoom.travelDateEnd.substring(5, 10).replaceAll('-', '/')}',
+                              style: _cardSmallTextStyle.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black.withOpacity(0.9))),
+                          const SizedBox(height: 8),
+                          Text(
+                            '$tags\n$tags\n$tags',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black.withOpacity(0.6)),
                           ),
-                        ),
-                        SizedBox(
-                          width: 78,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Icon(
-                                Icons.circle,
-                                color: Color(0xFFFF8D3A),
-                                size: 6,
-                              ),
-                              Text(
-                                '실시간 대화 중',
-                                style: _cardSmallTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );
