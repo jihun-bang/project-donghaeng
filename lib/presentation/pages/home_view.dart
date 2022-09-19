@@ -118,15 +118,12 @@ class _HomeViewState extends State<HomeView> {
 
   // todo: 지훈님 플로팅버튼이 위치가 안잡혀요.. _bottomNavigationBar 이거 없애면 제대로 작동하는데,
   // 뭔가 네비게이션바랑 충돌이 나는거 같은데요
-  Widget get _floatingActionButton => Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: FloatingActionButton(
-            onPressed: () =>
-                sl<NavigationService>().pushNamed('/chat-room-post'),
-            tooltip: "new chat room",
-            child: const Icon(Icons.add),
-          ),
+  Widget get _floatingActionButton => Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: FloatingActionButton(
+          onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),
+          tooltip: "new chat room",
+          child: const Icon(Icons.add),
         ),
       );
 }
