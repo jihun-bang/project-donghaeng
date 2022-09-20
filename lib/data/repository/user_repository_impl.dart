@@ -31,7 +31,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<User?> get({String? id}) async {
     try {
-      return await storeRemoteDataSource.getUser();
+      return await storeRemoteDataSource.getUser(id: id);
     } catch (e) {
       return null;
     }

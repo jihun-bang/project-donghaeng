@@ -56,16 +56,9 @@ class UserViewModel with ChangeNotifier {
   }
 
   getImagePath({required String userID}) async {
-    const defaultImagePath =
-        'https://avatars.githubusercontent.com/u/38811086?v=4';
-
     if (!_userImagePathMap.containsKey(userID)) {
       final user = await repository.get(id: userID);
-      if (user?.imagePath == "") {
-        _userImagePathMap[userID] = defaultImagePath;
-      } else {
-        _userImagePathMap[userID] = user?.imagePath ?? defaultImagePath;
-      }
+      _userImagePathMap[userID] = user?.imagePath ?? "";
     }
   }
 

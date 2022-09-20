@@ -9,6 +9,7 @@ import '../../domain/models/chat.dart';
 import '../../injection.dart';
 import '../provider/chat_room_viewmodel.dart';
 import '../provider/user_viewmodel.dart';
+import '../widgets/profile_image.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           appBar: _appBar,
           body: Column(
             children: <Widget>[
-              _chatMain,
+              _chats,
               _sendBar,
             ],
           ),
@@ -121,7 +122,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         ),
       );
 
-  Widget get _chatMain => Expanded(
+  Widget get _chats => Expanded(
         child: ListView.builder(
             itemCount: chats.length,
             shrinkWrap: true,
@@ -137,23 +138,19 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 }
               });
 
+              final isMine = chats[index].owner == user.uid;
+              final image = _userViewModel.userImagePathMap[chats[index].owner];
+
               return Row(
-                  mainAxisAlignment: (chats[index].owner == user.uid
+                  mainAxisAlignment: (isMine
                       ? MainAxisAlignment.end
                       : MainAxisAlignment.start),
                   children: <Widget>[
                     Container(
                         padding: const EdgeInsets.only(
                             left: 16, right: 12, top: 10, bottom: 10),
-                        child: (chats[index].owner != user.uid)
-                            ? CircleAvatar(
-                                backgroundImage: CachedNetworkImageProvider(
-                                    _userViewModel.userImagePathMap[
-                                            chats[index].owner] ??
-                                        "https://avatars.githubusercontent.com/u/38811086?v=4"),
-                                maxRadius: 20,
-                              )
-                            : null),
+                        child:
+                            isMine ? null : ProfileImage(url: image, size: 40)),
                     Container(
                       padding: const EdgeInsets.only(
                           left: 16, right: 16, top: 10, bottom: 10),
@@ -162,9 +159,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.grey.shade200),
-                          color: (chats[index].owner == user.uid
-                              ? Colors.grey.shade200
-                              : Colors.white),
+                          color: (isMine ? Colors.grey.shade200 : Colors.white),
                         ),
                         padding: const EdgeInsets.all(16),
                         child: Text(
@@ -186,23 +181,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           color: Colors.white,
           child: Row(
             children: <Widget>[
-              GestureDetector(
-                // todo : 정해지면 수정
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
               const SizedBox(
                 width: 15,
               ),
