@@ -63,7 +63,7 @@ class _ProfileViewState extends State<ProfileView> {
               padding: EdgeInsets.zero,
               minWidth: 24,
               onPressed: () =>
-                  sl<NavigationService>().pushNamed('/chat-room-post'),
+                  sl<NavigationService>().pushNamed('/profile-edit'),
               shape: const CircleBorder(),
               child: const Icon(Icons.settings),
             )
