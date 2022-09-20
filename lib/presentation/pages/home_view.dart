@@ -132,13 +132,16 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
 
-  Widget get _buildFloatingActionButton => Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: FloatingActionButton(
-          onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),
-          tooltip: "new chat room",
-          backgroundColor: const Color(0xFFFE7FA8),
-          child: const Icon(Icons.add),
-        ),
-      );
+  Widget? get _buildFloatingActionButton => _selectedIndex == 0
+      ? Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: FloatingActionButton(
+            onPressed: () =>
+                sl<NavigationService>().pushNamed('/chat-room-post'),
+            tooltip: "new chat room",
+            backgroundColor: const Color(0xFFFE7FA8),
+            child: const Icon(Icons.add),
+          ),
+        )
+      : null;
 }
