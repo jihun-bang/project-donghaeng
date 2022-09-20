@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
       drawer: _buildDrawer,
       body: _buildBody.elementAt(_selectedIndex),
       bottomNavigationBar: _buildBottomNavigationBar,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: _buildFloatingActionButton,
     );
   }
@@ -131,6 +131,7 @@ class _HomeViewState extends State<HomeView> {
         child: FloatingActionButton(
           onPressed: () => sl<NavigationService>().pushNamed('/chat-room-post'),
           tooltip: "new chat room",
+          backgroundColor: const Color(0xFFFE7FA8),
           child: const Icon(Icons.add),
         ),
       );
