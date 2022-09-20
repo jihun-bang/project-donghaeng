@@ -4,6 +4,7 @@ import 'package:donghaeng/injection.dart';
 import 'package:donghaeng/presentation/navigation/navigation.dart';
 import 'package:donghaeng/presentation/pages/profile_view.dart';
 import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
+import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:donghaeng/presentation/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -113,15 +114,22 @@ class _HomeViewState extends State<HomeView> {
         const ProfileView(),
       ];
 
-  Widget get _buildBottomNavigationBar => BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.place), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
-        ],
+  Widget get _buildBottomNavigationBar => Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: MyColors.grey_2),
+          ),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.place), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.chat), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
+          ],
+        ),
       );
 
   Widget get _buildFloatingActionButton => Padding(

@@ -30,7 +30,8 @@ final _bottomNavigationBarTheme = BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
     showSelectedLabels: false,
     showUnselectedLabels: false,
-    type: BottomNavigationBarType.fixed);
+    type: BottomNavigationBarType.fixed,
+    elevation: 0);
 
 final _tabBarTheme = TabBarTheme(
     labelColor: Colors.black,
