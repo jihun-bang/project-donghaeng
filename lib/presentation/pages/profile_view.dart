@@ -134,6 +134,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget get _feed => GridView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: 20),
         itemCount: 50,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
