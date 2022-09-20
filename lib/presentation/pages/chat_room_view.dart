@@ -160,7 +160,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.grey.shade200),
-                          color: (isMine ? Colors.grey.shade200 : Colors.white),
+                          color:
+                              (isMine ? const Color(0xffFE7FA8) : Colors.white),
                         ),
                         padding: const EdgeInsets.all(16),
                         child: Text(
@@ -177,7 +178,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         alignment: Alignment.bottomLeft,
         child: Container(
           padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-          height: 60,
+          height: 76,
           width: double.infinity,
           color: Colors.white,
           child: Row(
@@ -216,7 +217,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                   shape: const StadiumBorder(),
                 ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                 child: const Text(
-                  "SEND",
+                  "전송",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Color(0xff7287EA)),
                   textAlign: TextAlign.center,
