@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +21,10 @@ class SendChatController extends TextEditingController {
   final _chatRoomViewModel = sl<ChatRoomViewModel>();
 
   sendChat(String chatRoomID, String userUID) {
-    _chatRoomViewModel.addChat(chatRoomID, userUID, text);
-    clear();
+    if (text != "") {
+      _chatRoomViewModel.addChat(chatRoomID, userUID, text);
+      clear();
+    }
   }
 }
 
