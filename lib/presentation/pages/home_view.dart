@@ -34,7 +34,6 @@ class _HomeViewState extends State<HomeView> {
     log('build home view');
 
     return Scaffold(
-      extendBody: true,
       appBar: _buildAppBar,
       drawer: _buildDrawer,
       body: _buildBody.elementAt(_selectedIndex),
@@ -50,10 +49,21 @@ class _HomeViewState extends State<HomeView> {
       padding: EdgeInsets.zero,
       onPressed: () => {},
     );
-    final message = IconButton(
-      icon: const Icon(Icons.mail_outline_rounded),
-      padding: EdgeInsets.zero,
-      onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
+    final message = Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: IconButton(
+        icon: const Icon(Icons.mail_outline_rounded),
+        padding: EdgeInsets.zero,
+        onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
+      ),
+    );
+    final profileSetting = Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: IconButton(
+        icon: const Icon(Icons.settings),
+        padding: EdgeInsets.zero,
+        onPressed: () => sl<NavigationService>().pushNamed('/profile-edit'),
+      ),
     );
 
     return AppBar(
@@ -62,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
         'assets/icons/icon_logo.png',
         width: 70,
       ),
-      actions: [search, message],
+      actions: _selectedIndex == 3 ? [profileSetting] : [search, message],
     );
   }
 

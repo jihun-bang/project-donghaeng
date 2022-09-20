@@ -11,21 +11,20 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(size / 2),
-            border: Border.all(color: const Color(0xFF9C9C9C))),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(size / 2),
-          child: url?.isNotEmpty == true
-              ? CachedNetworkImage(
-                  imageUrl: url!,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                )
-              : SvgPicture.asset('assets/icons/icon_default_profile.svg'),
-        ));
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 4),
+      ),
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        backgroundImage:
+            url?.isNotEmpty == true ? CachedNetworkImageProvider(url!) : null,
+        child: url?.isNotEmpty != true
+            ? SvgPicture.asset('assets/icons/icon_default_profile.svg')
+            : null,
+      ),
+    );
   }
 }

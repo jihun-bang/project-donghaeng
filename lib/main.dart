@@ -49,29 +49,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<UserViewModel>(
-            create: (_) => sl<UserViewModel>()),
-        ChangeNotifierProvider<ChatRoomViewModel>(
-            create: (_) => sl<ChatRoomViewModel>()),
-        ChangeNotifierProvider<SignUpViewModel>(
-            create: (_) => sl<SignUpViewModel>()),
-      ],
-      child: MaterialApp(
-        theme: themeDate,
-        scrollBehavior: const MaterialScrollBehavior().copyWith(
-          dragDevices: {
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.touch,
-            PointerDeviceKind.stylus,
-            PointerDeviceKind.unknown
-          },
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 640),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<UserViewModel>(
+                create: (_) => sl<UserViewModel>()),
+            ChangeNotifierProvider<ChatRoomViewModel>(
+                create: (_) => sl<ChatRoomViewModel>()),
+            ChangeNotifierProvider<SignUpViewModel>(
+                create: (_) => sl<SignUpViewModel>()),
+          ],
+          child: MaterialApp(
+            theme: themeDate,
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.unknown
+              },
+            ),
+            navigatorKey: sl<NavigationService>().key,
+            routes: routes(context),
+            home: const SignInView(),
+            debugShowCheckedModeBanner: false,
+          ),
         ),
-        navigatorKey: sl<NavigationService>().key,
-        routes: routes(context),
-        home: const SignInView(),
-        debugShowCheckedModeBanner: false,
       ),
     );
   }
