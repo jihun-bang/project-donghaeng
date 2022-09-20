@@ -12,11 +12,11 @@ ThemeData get themeDate => ThemeData(
     tabBarTheme: _tabBarTheme,
     fontFamily: 'Noto_Sans_KR');
 
-const _appbarThem = AppBarTheme(
-    titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-    backgroundColor: Colors.white,
+final _appbarThem = AppBarTheme(
+    titleTextStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+    backgroundColor: MyColors.primary,
     foregroundColor: Colors.black,
-    iconTheme: IconThemeData(color: Colors.white),
+    iconTheme: const IconThemeData(color: Colors.white),
     elevation: 0);
 
 const _drawerTheme = DrawerThemeData(

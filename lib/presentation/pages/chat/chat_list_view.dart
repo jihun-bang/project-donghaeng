@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/toast.dart';
-import '../provider/chat_room_viewmodel.dart';
+import '../../../utils/toast.dart';
+import '../../provider/chat_room_viewmodel.dart';
 
 class ChatListView extends StatefulWidget {
   const ChatListView({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class _ChatListViewState extends State<ChatListView>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 114),
+            padding: const EdgeInsets.only(left: 15),
             child: TabBar(
                 onTap: (index) => _onTabTapped(index),
                 controller: _tabController,

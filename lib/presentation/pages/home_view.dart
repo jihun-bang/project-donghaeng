@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'chat_list_view.dart';
+import 'chat/chat_list_view.dart';
 import 'feed_view.dart';
 import 'map_view.dart';
 
@@ -34,7 +34,6 @@ class _HomeViewState extends State<HomeView> {
     log('build home view');
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: _buildAppBar,
       drawer: _buildDrawer,
@@ -62,17 +61,6 @@ class _HomeViewState extends State<HomeView> {
       title: Image.asset(
         'assets/icons/icon_logo.png',
         width: 70,
-      ),
-      toolbarHeight: 114,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-              Color(0xFFFE7FA8),
-              Color(0xFFFCCE40),
-            ])),
       ),
       actions: [search, message],
     );

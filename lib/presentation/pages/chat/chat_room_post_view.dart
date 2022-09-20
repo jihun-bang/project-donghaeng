@@ -3,8 +3,8 @@ import 'package:donghaeng/presentation/provider/chat_room_viewmodel.dart';
 import 'package:donghaeng/utils/toast.dart';
 import 'package:flutter/material.dart';
 
-import '../../injection.dart';
-import '../theme/color.dart';
+import '../../../injection.dart';
+import '../../theme/color.dart';
 
 class ChatRoomPostView extends StatefulWidget {
   const ChatRoomPostView({Key? key}) : super(key: key);

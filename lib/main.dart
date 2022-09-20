@@ -59,18 +59,20 @@ class MyApp extends StatelessWidget {
             create: (_) => sl<SignUpViewModel>()),
       ],
       child: MaterialApp(
-          theme: themeDate,
-          scrollBehavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-              PointerDeviceKind.stylus,
-              PointerDeviceKind.unknown
-            },
-          ),
-          navigatorKey: sl<NavigationService>().key,
-          routes: routes(context),
-          home: const SignInView()),
+        theme: themeDate,
+        scrollBehavior: const MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown
+          },
+        ),
+        navigatorKey: sl<NavigationService>().key,
+        routes: routes(context),
+        home: const SignInView(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

@@ -1,8 +1,8 @@
-import 'package:donghaeng/presentation/pages/chat_room_list_view.dart';
+import 'package:donghaeng/presentation/pages/chat/chat_room_list_view.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/chat_room_post_view.dart';
-import '../pages/chat_room_view.dart';
+import '../pages/chat/chat_room_post_view.dart';
+import '../pages/chat/chat_room_view.dart';
 import '../pages/home_view.dart';
 import '../pages/profile_edit_view.dart';
 import '../pages/sign_in_view.dart';

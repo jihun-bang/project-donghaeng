@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/models/chat.dart';
-import '../../injection.dart';
-import '../provider/chat_room_viewmodel.dart';
-import '../provider/user_viewmodel.dart';
-import '../widgets/profile_image.dart';
+import '../../../domain/models/chat.dart';
+import '../../../injection.dart';
+import '../../provider/chat_room_viewmodel.dart';
+import '../../provider/user_viewmodel.dart';
+import '../../widgets/profile_image.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({Key? key}) : super(key: key);
