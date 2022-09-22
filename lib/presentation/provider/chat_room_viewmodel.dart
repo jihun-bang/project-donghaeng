@@ -24,6 +24,7 @@ class ChatRoomViewModel extends ChangeNotifier {
   ChatRoom? get chatRoom => _chatRoom;
 
   final List<Chat> _chats = [];
+  List<Chat> get chats => _chats;
 
   Map<String, ChatRoom>? chatRooms = {};
 
@@ -62,9 +63,18 @@ class ChatRoomViewModel extends ChangeNotifier {
         .pushNamed("/chat-room", arguments: {'chatRoomID': chatRoomID});
   }
 
-  List<Chat> getRealtimeChats(String chatRoomID) {
-    getChats(chatRoomID);
-    return _chats;
+  void getRealtimeChats(String chatRoomID) {
+    chatUpdates = _chatRepository.getChatStream(id: chatRoomID).listen(
+      (DatabaseEvent event) {
+        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
+        _chats.add(Chat.fromJson(m));
+        notifyListeners();
+      },
+      onError: (Object o) {
+        final error = o as FirebaseException;
+        log(error.toString());
+      },
+    );
   }
 
   void clearChats() {
@@ -86,20 +96,6 @@ class ChatRoomViewModel extends ChangeNotifier {
             owner: owner,
             content: content,
             reader: null));
-  }
-
-  void getChats(String chatroomID) {
-    chatUpdates = _chatRepository.getChatStream(id: chatroomID).listen(
-      (DatabaseEvent event) {
-        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
-        _chats.add(Chat.fromJson(m));
-        notifyListeners();
-      },
-      onError: (Object o) {
-        final error = o as FirebaseException;
-        log(error.toString());
-      },
-    );
   }
 
   void addChatRoom(

@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../domain/models/chat.dart';
 import '../../../injection.dart';
 import '../../provider/chat_room_viewmodel.dart';
 import '../../provider/user_viewmodel.dart';
@@ -33,8 +33,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _userViewModel = sl<UserViewModel>();
 
   final User user = FirebaseAuth.instance.currentUser!;
-  late String chatRoomID;
-  late List<Chat> chats;
+  String _chatRoomID = "";
 
   final _textController = SendChatController();
   final _focusNode = FocusNode();
@@ -46,10 +45,29 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadChatRoomID();
+  }
+
+  @override
   void dispose() {
     _textController.dispose();
     _focusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadChatRoomID() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _chatRoomID = prefs.getString('chatRoomID') ?? "";
+    });
+  }
+
+  Future<void> _saveChatRoomID(String chatRoomID) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("chatRoomID", chatRoomID);
   }
 
   @override
@@ -58,10 +76,18 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    chatRoomID = arguments['chatRoomID'];
+    if (arguments.isNotEmpty) {
+      final id = arguments['chatRoomID'];
+      _chatRoomID = id;
+      _saveChatRoomID(id);
+    }
 
-    _chatRoomViewModel.getChatroom(chatRoomID);
-    chats = _chatRoomViewModel.getRealtimeChats(chatRoomID);
+    if (_chatRoomID == "") {
+      return const Text("잘못된 접근입니다");
+    }
+
+    _chatRoomViewModel.getChatroom(_chatRoomID);
+    _chatRoomViewModel.getRealtimeChats(_chatRoomID);
 
     return Consumer2<ChatRoomViewModel, UserViewModel>(
       builder: (_, __, ___, ____) {
@@ -129,7 +155,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   Widget get _chats => Expanded(
         child: ListView.builder(
-            itemCount: chats.length,
+            itemCount: _chatRoomViewModel.chats.length,
             shrinkWrap: true,
             padding: const EdgeInsets.all(10),
             controller: _scrollController,
@@ -138,7 +164,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 scrollDown();
               });
 
-              final chat = chats[index];
+              final chat = _chatRoomViewModel.chats[index];
               final isMine = chat.owner == user.uid;
               final image = _userViewModel.userImagePathMap[chat.owner];
 
@@ -191,7 +217,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                   controller: _textController,
                   focusNode: _focusNode,
                   onSubmitted: (text) {
-                    _textController.sendChat(chatRoomID, user.uid);
+                    _textController.sendChat(_chatRoomID, user.uid);
                     _focusNode.requestFocus();
                   },
                   decoration: const InputDecoration(
@@ -205,7 +231,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _textController.sendChat(chatRoomID, user.uid);
+                  _textController.sendChat(_chatRoomID, user.uid);
                 },
                 style: ElevatedButton.styleFrom(
                   // Foreground color
