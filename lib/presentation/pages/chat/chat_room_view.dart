@@ -40,6 +40,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _focusNode = FocusNode();
 
   final _scrollController = ScrollController();
+  void scrollDown() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: const Duration(microseconds: 300), curve: Curves.easeIn);
+  }
 
   @override
   void dispose() {
@@ -130,17 +134,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             padding: const EdgeInsets.all(10),
             controller: _scrollController,
             itemBuilder: (context, index) {
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                if (_scrollController.hasClients) {
-                  _scrollController.animateTo(
-                      _scrollController.position.maxScrollExtent,
-                      duration: const Duration(microseconds: 300),
-                      curve: Curves.easeIn);
-                }
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                scrollDown();
               });
 
-              final isMine = chats[index].owner == user.uid;
-              final image = _userViewModel.userImagePathMap[chats[index].owner];
+              final chat = chats[index];
+              final isMine = chat.owner == user.uid;
+              final image = _userViewModel.userImagePathMap[chat.owner];
 
               return Row(
                   mainAxisAlignment: (isMine
@@ -165,7 +165,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         ),
                         padding: const EdgeInsets.all(16),
                         child: Text(
-                          chats[index].content,
+                          chat.content,
                           style: const TextStyle(fontSize: 15),
                         ),
                       ),
