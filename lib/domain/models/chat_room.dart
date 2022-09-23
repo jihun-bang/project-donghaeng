@@ -53,4 +53,8 @@ class ChatRoom {
       _$ChatRoomFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChatRoomToJson(this);
+
+  bool isMember(String userID) {
+    return members.contains(userID);
+  }
 }
