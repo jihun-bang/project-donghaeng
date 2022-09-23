@@ -1,4 +1,4 @@
-import '../models/chat.dart';
+import '../models/chat_room.dart';
 
 abstract class ChatRoomRepository {
   void add({required ChatRoom chatRoom});

@@ -1,4 +1,4 @@
-import '../../domain/models/chat.dart';
+import '../../domain/models/chat_room.dart';
 import '../../domain/models/user.dart';
 
 abstract class StoreRemoteDataSource {

@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/chat.dart';
+import '../../domain/models/chat_room.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../../domain/repositories/chat_room_repository.dart';
 import '../../injection.dart';

@@ -1,4 +1,5 @@
 import '../../domain/models/chat.dart';
+import '../../domain/models/chat_room.dart';
 import '../../domain/repositories/chat_room_repository.dart';
 import '../datasources/store_remote_data_source.dart';
 

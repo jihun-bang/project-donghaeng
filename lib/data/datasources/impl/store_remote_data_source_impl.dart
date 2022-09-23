@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donghaeng/data/mapper/mapper.dart';
-import 'package:donghaeng/domain/models/chat.dart';
 import 'package:donghaeng/domain/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
+import '../../../domain/models/chat_room.dart';
 import '../../../utils/toast.dart';
 import '../store_remote_data_source.dart';
 
