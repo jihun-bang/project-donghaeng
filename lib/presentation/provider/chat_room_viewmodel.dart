@@ -27,7 +27,9 @@ class ChatRoomViewModel extends ChangeNotifier {
   final List<Chat> _chats = [];
   List<Chat> get chats => _chats;
 
-  Map<String, ChatRoom>? chatRooms = {};
+  Map<String, ChatRoom> publicChatRooms = {};
+  Map<String, ChatRoom> myChatRooms = {};
+  Map<String, List<Chat>> myChats = {};
 
   late StreamSubscription<DatabaseEvent> chatUpdates;
 
@@ -36,8 +38,35 @@ class ChatRoomViewModel extends ChangeNotifier {
   }
 
   getChatList() async {
-    chatRooms = await _chatRoomRepository.getAll();
+    final chatRooms = await _chatRoomRepository.getAll();
+    if (chatRooms != null) {
+      chatRooms.forEach((key, value) {
+        // 오픈 채팅방 목록 추가
+        // todo: 오픈채팅방인지 확인하는 기능 추가
+        publicChatRooms[key] = value;
+
+        // 자신의 채팅방 목록 추가
+        if (value.isMember(user.uid)) {
+          myChatRooms[key] = value;
+        }
+      });
+    }
+
     notifyListeners();
+  }
+
+  void getRealtimeChats(String chatRoomID) {
+    chatUpdates = _chatRepository.getChatStream(id: chatRoomID).listen(
+      (DatabaseEvent event) {
+        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
+        _chats.add(Chat.fromJson(m));
+        notifyListeners();
+      },
+      onError: (Object o) {
+        final error = o as FirebaseException;
+        log(error.toString());
+      },
+    );
   }
 
   joinChatRoom(String chatRoomID, ChatRoom chatRoom) async {
@@ -59,31 +88,19 @@ class ChatRoomViewModel extends ChangeNotifier {
       _userViewModel.updateUser();
     }
 
+    myChatRooms[chatRoomID] = chatRoom;
+    notifyListeners();
+
     // 이동
     sl<NavigationService>()
         .pushNamed("/chat-room", arguments: {'chatRoomID': chatRoomID});
-  }
-
-  void getRealtimeChats(String chatRoomID) {
-    chatUpdates = _chatRepository.getChatStream(id: chatRoomID).listen(
-      (DatabaseEvent event) {
-        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
-        _chats.add(Chat.fromJson(m));
-        notifyListeners();
-      },
-      onError: (Object o) {
-        final error = o as FirebaseException;
-        log(error.toString());
-      },
-    );
   }
 
   void clearChats() {
     _chats.clear();
   }
 
-  void getChatroom(String chatRoomID) async {
-    // todo : 에러처리
+  void getChatroomImage(String chatRoomID) async {
     _chatRoom = await _chatRoomRepository.get(id: chatRoomID);
     _userViewModel.getMemberImagePath(memberIDs: _chatRoom?.members);
     notifyListeners();

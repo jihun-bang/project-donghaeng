@@ -67,25 +67,20 @@ class _ChatListViewState extends State<ChatListView>
   Widget _communities(BuildContext context) {
     return Consumer<ChatRoomViewModel>(builder: (_, viewModel, ___) {
       final country = _tabList.elementAt(_selectedTabIndex);
-      final chatRooms = viewModel.chatRooms?.values.where((element) =>
+      final chatRooms = viewModel.publicChatRooms.values.where((element) =>
           country == _tabList[0] ? true : element.country == country);
 
       return ListView.separated(
           shrinkWrap: true,
           separatorBuilder: (context, index) => const SizedBox(height: 18),
           padding: const EdgeInsets.all(17),
-          itemCount: chatRooms!.length,
+          itemCount: chatRooms.length,
           itemBuilder: (_, index) {
-            final key = viewModel.chatRooms?.keys.elementAt(index);
+            final key = viewModel.publicChatRooms.keys.elementAt(index);
             final chatRoom = chatRooms.elementAt(index);
             final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
             return InkWell(
-              onTap: () => {
-                if (key == null)
-                  {showToast(message: "Error: No chat_room information")}
-                else
-                  {viewModel.joinChatRoom(key, chatRoom)}
-              },
+              onTap: () => viewModel.joinChatRoom(key, chatRoom),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
