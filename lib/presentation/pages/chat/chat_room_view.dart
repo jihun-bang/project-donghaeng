@@ -90,7 +90,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _chatRoomViewModel.getRealtimeChats(_chatRoomID);
 
     if (_chatRoomViewModel.chatRoom != null &&
-        _chatRoomViewModel.chatRoom!.isMember(user.uid)) {
+        !_chatRoomViewModel.chatRoom!.isMember(user.uid)) {
       return const Text("잘못된 접근입니다2");
     }
 

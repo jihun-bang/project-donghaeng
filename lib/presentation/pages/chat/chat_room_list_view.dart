@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:donghaeng/injection.dart';
 import 'package:donghaeng/presentation/navigation/navigation.dart';
-import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
+import 'package:donghaeng/presentation/provider/chat_room_viewmodel.dart';
+import 'package:donghaeng/presentation/widgets/profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ class ChatRoomListView extends StatefulWidget {
 }
 
 class _ChatRoomListViewState extends State<ChatRoomListView> {
-  final _userViewModel = sl<UserViewModel>();
+  final _chatRoomViewModel = sl<ChatRoomViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +59,9 @@ class _ChatRoomListViewState extends State<ChatRoomListView> {
         ),
       );
 
-  Widget get _body => Consumer<UserViewModel>(builder: (_, __, ___) {
+  Widget get _body => Consumer<ChatRoomViewModel>(builder: (_, __, ___) {
         log('build chat_room_list_view_body');
-        return (_userViewModel.user?.chatRooms == null)
+        return (_chatRoomViewModel.myChatRooms.isEmpty)
             ? _noChatRoom
             : _chatRoomList;
       });
@@ -68,17 +69,28 @@ class _ChatRoomListViewState extends State<ChatRoomListView> {
   Widget get _noChatRoom => const Center(child: Text('채팅방 목록이 존재하지 않습니다.'));
 
   Widget get _chatRoomList => ListView.builder(
-      itemCount: _userViewModel.user?.chatRooms?.length ?? 0,
+      itemCount: _chatRoomViewModel.myChatRooms.length,
       shrinkWrap: true,
       padding: const EdgeInsets.all(10),
       itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-              onTap: () => sl<NavigationService>().pushNamed("/chat-room",
-                      arguments: {
-                        'chatRoomID': _userViewModel.user?.chatRooms?[index]
-                      }),
-              title: Text(_userViewModel.user?.chatRooms?[index] ?? 'fail')),
+        final chatRoomMap =
+            _chatRoomViewModel.myChatRooms.entries.elementAt(index);
+        final chatRoomID = chatRoomMap.key;
+        final chatRoom = chatRoomMap.value;
+
+        return InkWell(
+          onTap: () => sl<NavigationService>()
+              .pushNamed("/chat-room", arguments: {'chatRoomID': chatRoomID}),
+          child: Card(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const ProfileImage(size: 46),
+                const SizedBox(width: 10),
+                Text(chatRoom.title)
+              ],
+            ),
+          ),
         );
       });
 }

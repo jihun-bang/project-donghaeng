@@ -28,8 +28,9 @@ class ChatRoomViewModel extends ChangeNotifier {
   List<Chat> get chats => _chats;
 
   Map<String, ChatRoom> publicChatRooms = {};
+
   Map<String, ChatRoom> myChatRooms = {};
-  Map<String, List<Chat>> myChats = {};
+  Map<String, StreamSubscription<DatabaseEvent>> myChats = {};
 
   late StreamSubscription<DatabaseEvent> chatUpdates;
 
@@ -40,19 +41,38 @@ class ChatRoomViewModel extends ChangeNotifier {
   getChatList() async {
     final chatRooms = await _chatRoomRepository.getAll();
     if (chatRooms != null) {
-      chatRooms.forEach((key, value) {
+      chatRooms.forEach((chatRoomID, chatRoom) {
         // 오픈 채팅방 목록 추가
         // todo: 오픈채팅방인지 확인하는 기능 추가
-        publicChatRooms[key] = value;
+        publicChatRooms[chatRoomID] = chatRoom;
 
         // 자신의 채팅방 목록 추가
-        if (value.isMember(user.uid)) {
-          myChatRooms[key] = value;
+        if (chatRoom.isMember(user.uid)) {
+          addToMyChat(chatRoomID, chatRoom);
         }
       });
     }
 
     notifyListeners();
+  }
+
+  void addToMyChat(String chatRoomID, ChatRoom chatRoom) {
+    myChatRooms[chatRoomID] = chatRoom;
+    myChats[chatRoomID] = getChatStream(chatRoomID);
+  }
+
+  StreamSubscription<DatabaseEvent> getChatStream(String chatRoomID) {
+    return _chatRepository.getChatStream(id: chatRoomID).listen(
+      (DatabaseEvent event) {
+        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
+        _chats.add(Chat.fromJson(m));
+        notifyListeners();
+      },
+      onError: (Object o) {
+        final error = o as FirebaseException;
+        log(error.toString());
+      },
+    );
   }
 
   void getRealtimeChats(String chatRoomID) {
@@ -69,9 +89,11 @@ class ChatRoomViewModel extends ChangeNotifier {
     );
   }
 
-  joinChatRoom(String chatRoomID, ChatRoom chatRoom) async {
+  joinChatRoom(String chatRoomID) async {
+    final chatRoom = publicChatRooms[chatRoomID];
+
     // 처음 입장
-    if (!chatRoom.members.contains(user.uid)) {
+    if (!chatRoom!.members.contains(user.uid)) {
       chatRoom.members.add(user.uid);
 
       try {
@@ -88,7 +110,8 @@ class ChatRoomViewModel extends ChangeNotifier {
       _userViewModel.updateUser();
     }
 
-    myChatRooms[chatRoomID] = chatRoom;
+    _chatRoom = chatRoom; // todo: remove
+    addToMyChat(chatRoomID, chatRoom);
     notifyListeners();
 
     // 이동

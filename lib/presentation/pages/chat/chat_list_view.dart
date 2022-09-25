@@ -80,7 +80,7 @@ class _ChatListViewState extends State<ChatListView>
             final chatRoom = chatRooms.elementAt(index);
             final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
             return InkWell(
-              onTap: () => viewModel.joinChatRoom(key, chatRoom),
+              onTap: () => viewModel.joinChatRoom(key),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
