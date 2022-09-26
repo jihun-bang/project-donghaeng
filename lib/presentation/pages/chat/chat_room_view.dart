@@ -44,6 +44,9 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         duration: const Duration(microseconds: 300), curve: Curves.easeIn);
   }
 
+  bool _isLoadChatData = false;
+  bool _isFirstBuildList = true;
+
   @override
   void initState() {
     super.initState();
@@ -55,9 +58,14 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _textController.dispose();
     _focusNode.dispose();
     _scrollController.dispose();
+
+    _chatRoomViewModel.clearChats();
+    _chatRoomViewModel.cancelRealtimeChats();
+
     super.dispose();
   }
 
+  // chat room id를 메모리에서 불러옴
   Future<void> _loadChatRoomID() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -65,15 +73,22 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     });
   }
 
+  // chat room id를 메모리에 저장
   Future<void> _saveChatRoomID(String chatRoomID) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("chatRoomID", chatRoomID);
   }
 
+  void loadChatData() {
+    if (!_isLoadChatData) {
+      _isLoadChatData = true;
+      _chatRoomViewModel.getChatroomImage(_chatRoomID);
+      _chatRoomViewModel.getRealtimeChats(_chatRoomID);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    _chatRoomViewModel.clearChats();
-
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     if (arguments.isNotEmpty) {
@@ -86,8 +101,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       return const Text("잘못된 접근입니다");
     }
 
-    _chatRoomViewModel.getChatroomImage(_chatRoomID);
-    _chatRoomViewModel.getRealtimeChats(_chatRoomID);
+    loadChatData();
 
     if (_chatRoomViewModel.chatRoom != null &&
         !_chatRoomViewModel.chatRoom!.isMember(user.uid)) {
@@ -166,7 +180,16 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             controller: _scrollController,
             itemBuilder: (context, index) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                scrollDown();
+                if (_isFirstBuildList) {
+                  scrollDown();
+                  if (_chatRoomViewModel.chats.length - 1 == index) {
+                    _isFirstBuildList = false;
+                  }
+                }
+
+                if (_chatRoomViewModel.chats.length - 1 == index) {
+                  scrollDown();
+                }
               });
 
               final chat = _chatRoomViewModel.chats[index];

@@ -12,13 +12,12 @@ class DatabaseRemoteDataSourceImpl implements DatabaseRemoteDataSource {
       await chatRoomRef.child('$chatroomID/chats').push().set(chat.toJson());
       return true;
     } catch (e) {
-      print(e);
       throw Exception(e);
     }
   }
 
   @override
   Stream<DatabaseEvent> getChatByStream({required String chatroomID}) {
-    return chatRoomRef.child('$chatroomID/chats').onChildAdded;
+    return chatRoomRef.child('$chatroomID/chats').limitToLast(50).onChildAdded;
   }
 }

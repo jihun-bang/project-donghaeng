@@ -58,22 +58,22 @@ class ChatRoomViewModel extends ChangeNotifier {
 
   void addToMyChat(String chatRoomID, ChatRoom chatRoom) {
     myChatRooms[chatRoomID] = chatRoom;
-    myChats[chatRoomID] = getChatStream(chatRoomID);
+    // myChats[chatRoomID] = getChatStream(chatRoomID);
   }
 
-  StreamSubscription<DatabaseEvent> getChatStream(String chatRoomID) {
-    return _chatRepository.getChatStream(id: chatRoomID).listen(
-      (DatabaseEvent event) {
-        final m = Map<String, dynamic>.from(event.snapshot.value as Map);
-        _chats.add(Chat.fromJson(m));
-        notifyListeners();
-      },
-      onError: (Object o) {
-        final error = o as FirebaseException;
-        log(error.toString());
-      },
-    );
-  }
+  // StreamSubscription<DatabaseEvent> getChatStream(String chatRoomID) {
+  //   return _chatRepository.getChatStream(id: chatRoomID).listen(
+  //     (DatabaseEvent event) {
+  //       final m = Map<String, dynamic>.from(event.snapshot.value as Map);
+  //       // _chats.add(Chat.fromJson(m));
+  //       // notifyListeners();
+  //     },
+  //     onError: (Object o) {
+  //       final error = o as FirebaseException;
+  //       log(error.toString());
+  //     },
+  //   );
+  // }
 
   void getRealtimeChats(String chatRoomID) {
     chatUpdates = _chatRepository.getChatStream(id: chatRoomID).listen(
@@ -87,6 +87,10 @@ class ChatRoomViewModel extends ChangeNotifier {
         log(error.toString());
       },
     );
+  }
+
+  void cancelRealtimeChats() {
+    chatUpdates.cancel();
   }
 
   joinChatRoom(String chatRoomID) async {

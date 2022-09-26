@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:donghaeng/domain/repositories/chat_repository.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -14,7 +16,7 @@ class ChatRepositoryImpl implements ChatRepository {
     try {
       return databaseRemoteDataSource.addChat(chatroomID: id, chat: chat);
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }
