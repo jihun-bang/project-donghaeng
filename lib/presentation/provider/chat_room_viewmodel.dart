@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:donghaeng/presentation/provider/user_viewmodel.dart';
+import 'package:donghaeng/utils/datetime.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -134,27 +135,38 @@ class ChatRoomViewModel extends ChangeNotifier {
   }
 
   Future<bool> addChat(String chatRoomID, String owner, String content) async {
-    return await _chatRepository.addChat(
+    final nowUtc = DateTime.now().toUtc();
+    final result = await _chatRepository.addChat(
         id: chatRoomID,
         chat: Chat(
-            createdAt: DateTime.now().toUtc(),
-            owner: owner,
-            content: content,
-            reader: null));
+            createdAt: nowUtc, owner: owner, content: content, reader: null));
+
+    // update chatRoom.latestChatAt
+    final chatRoom =
+        publicChatRooms[chatRoomID]?.copyWith(latestChatAt: nowUtc);
+    if (chatRoom != null) {
+      publicChatRooms[chatRoomID] = chatRoom;
+      _chatRoomRepository.updateLatestChatAt(
+          chatRoomID, toTimestamp(chatRoom.latestChatAt));
+    }
+
+    return result;
   }
 
   void addChatRoom(
       {required String title,
       required DateTimeRange? travelDate,
       required String? country}) {
+    final nowUtc = DateTime.now().toUtc();
     _chatRoomRepository.add(
         chatRoom: ChatRoom(
             title: title,
-            createdAt: DateTime.now().toUtc(),
+            createdAt: nowUtc,
             travelDateStart: travelDate!.start.toString(),
             travelDateEnd: travelDate.end.toString(),
             country: country!,
             owner: user.uid,
-            members: [user.uid]));
+            members: [user.uid],
+            latestChatAt: nowUtc));
   }
 }

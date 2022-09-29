@@ -120,4 +120,14 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<void> updateLatestChatAt(
+      {required String id, required Timestamp timestamp}) async {
+    try {
+      await chatRoomCollection.doc(id).update({'latest_chat_at': timestamp});
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

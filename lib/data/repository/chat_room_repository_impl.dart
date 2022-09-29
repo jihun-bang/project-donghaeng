@@ -1,4 +1,5 @@
-import '../../domain/models/chat.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/models/chat_room.dart';
 import '../../domain/repositories/chat_room_repository.dart';
 import '../datasources/store_remote_data_source.dart';
@@ -43,6 +44,16 @@ class ChatRoomRepositoryImpl implements ChatRoomRepository {
           id: chatRoomID, chatRoom: chatRoom);
     } catch (e) {
       return null;
+    }
+  }
+
+  @override
+  Future<void> updateLatestChatAt(String id, Timestamp timestamp) async {
+    try {
+      return await storeRemoteDataSource.updateLatestChatAt(
+          id: id, timestamp: timestamp);
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

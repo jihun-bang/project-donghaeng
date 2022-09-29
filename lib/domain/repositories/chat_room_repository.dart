@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/chat_room.dart';
 
 abstract class ChatRoomRepository {
@@ -8,4 +10,6 @@ abstract class ChatRoomRepository {
   Future<Map<String, ChatRoom>?> getAll();
 
   void update(String chatRoomID, ChatRoom chatRoom);
+
+  Future<void> updateLatestChatAt(String id, Timestamp timestamp);
 }

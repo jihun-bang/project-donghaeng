@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/models/chat_room.dart';
 import '../../domain/models/user.dart';
 
@@ -16,4 +18,6 @@ abstract class StoreRemoteDataSource {
   Future<ChatRoom?> getChatRoom({required String id});
   Future<Map<String, ChatRoom>?> getAllChatRooms();
   Future<bool> updateChatRoom({required String id, required ChatRoom chatRoom});
+  Future<void> updateLatestChatAt(
+      {required String id, required Timestamp timestamp});
 }

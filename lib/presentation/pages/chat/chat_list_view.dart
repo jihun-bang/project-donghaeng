@@ -76,11 +76,14 @@ class _ChatListViewState extends State<ChatListView>
           padding: const EdgeInsets.all(17),
           itemCount: chatRooms.length,
           itemBuilder: (_, index) {
-            final key = viewModel.publicChatRooms.keys.elementAt(index);
+            final chatRoomID = viewModel.publicChatRooms.keys.elementAt(index);
             final chatRoom = chatRooms.elementAt(index);
             final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
+            final latestChat =
+                DateTime.now().difference(chatRoom.latestChatAt).inMinutes;
+
             return InkWell(
-              onTap: () => viewModel.joinChatRoom(key),
+              onTap: () => viewModel.joinChatRoom(chatRoomID),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -120,7 +123,7 @@ class _ChatListViewState extends State<ChatListView>
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
-                                      '실시간 대화',
+                                      '$latestChat분전 대화',
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500,

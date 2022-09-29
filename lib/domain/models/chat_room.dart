@@ -18,6 +18,8 @@ class ChatRoom {
   final String owner;
   final List<String> members;
   final List<String>? tags;
+  @JsonKey(name: "latest_chat_at", fromJson: fromTimestamp, toJson: toTimestamp)
+  final DateTime latestChatAt;
 
   ChatRoom(
       {required this.title,
@@ -27,7 +29,8 @@ class ChatRoom {
       required this.country,
       required this.owner,
       required this.members,
-      this.tags});
+      this.tags,
+      required this.latestChatAt});
 
   ChatRoom copyWith(
       {String? title,
@@ -37,7 +40,8 @@ class ChatRoom {
       String? country,
       String? owner,
       List<String>? members,
-      List<String>? tags}) {
+      List<String>? tags,
+      DateTime? latestChatAt}) {
     return ChatRoom(
         title: title ?? this.title,
         createdAt: createdAt ?? this.createdAt,
@@ -46,7 +50,8 @@ class ChatRoom {
         country: country ?? this.country,
         owner: owner ?? this.owner,
         members: members ?? this.members,
-        tags: tags ?? this.tags);
+        tags: tags ?? this.tags,
+        latestChatAt: this.latestChatAt);
   }
 
   factory ChatRoom.fromJson(Map<String, dynamic> json) =>
