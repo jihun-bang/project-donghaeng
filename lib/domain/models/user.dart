@@ -6,6 +6,8 @@ part 'user.g.dart';
 class User {
   String id;
   String name;
+  @JsonKey(name: 'background_image_path')
+  String backgroundImagePath;
   @JsonKey(name: 'image_path')
   String imagePath;
   String description;
@@ -18,6 +20,7 @@ class User {
   User(
       {required this.id,
       this.name = '',
+      this.backgroundImagePath = '',
       this.imagePath = '',
       this.description = '',
       this.instagram = '',

@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donghaeng/presentation/widgets/gigi_sliver_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,21 +24,37 @@ class _ProfileViewState extends State<ProfileView> {
     return Consumer<UserViewModel>(builder: (_, viewModel, __) {
       if (viewModel.user != null) {
         user = viewModel.user!;
-        return ListView(
-          children: [_header, _body, _feed],
+        return NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [_header, _body];
+          },
+          body: _feed,
         );
       }
       return const Center(child: CircularProgressIndicator());
     });
   }
 
-  Widget get _header => Container(
-        padding: const EdgeInsets.all(20),
-        color: MyColors.primary,
-        child: Column(children: [
-          _image,
-          _info,
-        ]),
+  Widget get _header => GiGiSliverAppBar(
+        pinned: true,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Container(
+            decoration: user.backgroundImagePath.isNotEmpty
+                ? BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            user.backgroundImagePath)))
+                : null,
+            padding: const EdgeInsets.all(20),
+            color: MyColors.primary,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              _image,
+              _info,
+            ]),
+          ),
+        ),
+        expandedHeight: MediaQuery.of(context).size.height / 2.5,
       );
 
   Widget get _image => ProfileImage(url: user.imagePath, size: 95);
@@ -102,33 +120,35 @@ class _ProfileViewState extends State<ProfileView> {
           ],
         );
 
-    return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.only(top: 21, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                topItem(CupertinoIcons.location_solid, '위치'),
-                const SizedBox(width: 41),
-                topItem(Icons.link_rounded, user.instagram),
-                const SizedBox(width: 41),
-                topItem(Icons.mail_outline_rounded, 'N분전 활동'),
-              ],
-            )),
-        SizedBox(
-            height: 48,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                bottomItem('12', '방문국가'),
-                line,
-                bottomItem('1.2M', '팔로워'),
-                line,
-                bottomItem('0', '게시물'),
-              ],
-            )),
-      ],
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(top: 21, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  topItem(CupertinoIcons.location_solid, '위치'),
+                  const SizedBox(width: 41),
+                  topItem(Icons.link_rounded, user.instagram),
+                  const SizedBox(width: 41),
+                  topItem(Icons.mail_outline_rounded, 'N분전 활동'),
+                ],
+              )),
+          SizedBox(
+              height: 48,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  bottomItem('12', '방문국가'),
+                  line,
+                  bottomItem('1.2M', '팔로워'),
+                  line,
+                  bottomItem('0', '게시물'),
+                ],
+              )),
+        ],
+      ),
     );
   }
 

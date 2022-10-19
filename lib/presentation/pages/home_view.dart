@@ -45,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  PreferredSizeWidget get _buildAppBar {
+  PreferredSizeWidget? get _buildAppBar {
     final search = IconButton(
       icon: const Icon(Icons.search),
       padding: EdgeInsets.zero,
@@ -68,14 +68,17 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
 
-    return AppBar(
-      centerTitle: true,
-      title: SvgPicture.asset(
-        'assets/icons/icon_logo.svg',
-        width: 65,
-      ),
-      actions: _selectedIndex == 3 ? [profileSetting] : [search, bookMark],
-    );
+    return _selectedIndex < 3
+        ? AppBar(
+            centerTitle: true,
+            title: SvgPicture.asset(
+              'assets/icons/icon_logo.svg',
+              width: 65,
+            ),
+            actions:
+                _selectedIndex == 3 ? [profileSetting] : [search, bookMark],
+          )
+        : null;
   }
 
   Drawer get _buildDrawer => Drawer(
