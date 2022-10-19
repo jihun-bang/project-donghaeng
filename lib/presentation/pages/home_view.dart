@@ -130,7 +130,7 @@ class _HomeViewState extends State<HomeView> {
             onPressed: () =>
                 sl<NavigationService>().pushNamed('/chat-room-post'),
             tooltip: "new chat room",
-            backgroundColor: const Color(0xFFFE7FA8),
+            backgroundColor: MyColors.primary,
             child: const Icon(Icons.add),
           ),
         )
