@@ -13,10 +13,11 @@ class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
   final profileRef = FirebaseStorage.instance.ref('/profile');
 
   @override
-  Future<String> getUserImagePath({String? id}) async {
+  Future<String> getUserImagePath({String? id, bool isProfile = true}) async {
     try {
       final imageUrl = await profileRef
-          .child('${id ?? auth.currentUser?.uid}.png')
+          .child(
+              '${auth.currentUser?.uid}/${isProfile ? 'profile' : 'background'}.png')
           .getDownloadURL();
       return imageUrl;
     } catch (e) {
@@ -26,18 +27,20 @@ class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
   }
 
   @override
-  Future<String> updateProfileImage({required XFile image}) async {
+  Future<String> updateProfileImage(
+      {required XFile image, required bool isProfile}) async {
     try {
       final metadata = SettableMetadata(
         contentType: 'image/png',
       );
-      final ref = profileRef.child('/${auth.currentUser?.uid}.png');
+      final ref = profileRef.child(
+          '${auth.currentUser?.uid}/${isProfile ? 'profile' : 'background'}.png');
       if (kIsWeb) {
         await ref.putData(await image.readAsBytes(), metadata);
       } else {
         await ref.putFile(File(image.path), metadata);
       }
-      return await getUserImagePath();
+      return await getUserImagePath(isProfile: isProfile);
     } catch (e) {
       print(e);
       showToast(message: '프로필 이미지 업데이트를 실패했습니다.. 😭');

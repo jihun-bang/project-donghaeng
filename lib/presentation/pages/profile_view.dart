@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/models/user.dart' as u;
+import '../../injection.dart';
+import '../navigation/navigation.dart';
 import '../provider/user_viewmodel.dart';
 import '../theme/color.dart';
 import '../widgets/profile_image.dart';
@@ -25,7 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
       if (viewModel.user != null) {
         user = viewModel.user!;
         return NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [_header, _body];
           },
           body: _feed,
@@ -35,18 +37,28 @@ class _ProfileViewState extends State<ProfileView> {
     });
   }
 
+  final _profileSetting = Padding(
+    padding: const EdgeInsets.only(right: 15),
+    child: IconButton(
+      icon: const Icon(Icons.settings),
+      padding: EdgeInsets.zero,
+      onPressed: () => sl<NavigationService>().pushNamed('/profile-edit'),
+    ),
+  );
+
   Widget get _header => GiGiSliverAppBar(
         pinned: true,
         flexibleSpace: FlexibleSpaceBar(
           background: Container(
             decoration: user.backgroundImagePath.isNotEmpty
                 ? BoxDecoration(
+                    color: MyColors.primary,
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(
-                            user.backgroundImagePath)))
+                            user.backgroundImagePath),
+                        fit: BoxFit.cover))
                 : null,
             padding: const EdgeInsets.all(20),
-            color: MyColors.primary,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               _image,
@@ -55,6 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
         expandedHeight: MediaQuery.of(context).size.height / 2.5,
+        actions: [_profileSetting],
       );
 
   Widget get _image => ProfileImage(url: user.imagePath, size: 95);

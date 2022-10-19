@@ -19,14 +19,21 @@ class SignUpViewModel extends UserViewModel {
   XFile? _profileImage;
   XFile? get profileImage => _profileImage;
 
+  XFile? _backgroundImage;
+  XFile? get backgroundImage => _backgroundImage;
+
   SignUpViewModel();
 
-  void getProfileImage() {
+  void getProfileImage({bool isProfile = true}) {
     ImagePicker()
         .pickImage(source: ImageSource.gallery, maxWidth: 500, maxHeight: 500)
         .then((image) {
       if (image != null) {
-        _profileImage = image;
+        if (isProfile) {
+          _profileImage = image;
+        } else {
+          _backgroundImage = image;
+        }
         notifyListeners();
       }
     });
@@ -40,12 +47,20 @@ class SignUpViewModel extends UserViewModel {
     final user = _userViewModel.user;
     if (user != null) {
       String imagePath = _profileImage != null
-          ? await repository.updateProfileImage(image: _profileImage!) ?? ''
+          ? await repository.updateProfileImage(
+                  image: _profileImage!, isProfile: true) ??
+              ''
           : user.imagePath;
+      String backgroundImagePath = _backgroundImage != null
+          ? await repository.updateProfileImage(
+                  image: _backgroundImage!, isProfile: false) ??
+              ''
+          : user.backgroundImagePath;
       final updateUser = User(
           id: user.id,
           name: name ?? user.name,
           imagePath: imagePath,
+          backgroundImagePath: backgroundImagePath,
           description: description ?? user.description,
           instagram: instagram ?? user.instagram);
 

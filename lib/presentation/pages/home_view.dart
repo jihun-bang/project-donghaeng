@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:donghaeng/injection.dart';
 import 'package:donghaeng/presentation/navigation/navigation.dart';
 import 'package:donghaeng/presentation/pages/profile_view.dart';
@@ -33,8 +31,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    log('build home view');
-
     return Scaffold(
       appBar: _buildAppBar,
       drawer: _buildDrawer,
@@ -59,14 +55,6 @@ class _HomeViewState extends State<HomeView> {
         onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
       ),
     );
-    final profileSetting = Padding(
-      padding: const EdgeInsets.only(right: 15),
-      child: IconButton(
-        icon: const Icon(Icons.settings),
-        padding: EdgeInsets.zero,
-        onPressed: () => sl<NavigationService>().pushNamed('/profile-edit'),
-      ),
-    );
 
     return _selectedIndex < 3
         ? AppBar(
@@ -75,8 +63,7 @@ class _HomeViewState extends State<HomeView> {
               'assets/icons/icon_logo.svg',
               width: 65,
             ),
-            actions:
-                _selectedIndex == 3 ? [profileSetting] : [search, bookMark],
+            actions: _selectedIndex == 3 ? [] : [search, bookMark],
           )
         : null;
   }

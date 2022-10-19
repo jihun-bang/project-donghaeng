@@ -13,7 +13,8 @@ abstract class UserRepository {
 
   Future<bool> update({required User user});
 
-  Future<String?> updateProfileImage({required XFile image});
+  Future<String?> updateProfileImage(
+      {required XFile image, required bool isProfile});
 
   Future<bool> delete();
 }

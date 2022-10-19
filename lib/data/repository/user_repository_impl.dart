@@ -67,9 +67,11 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<String?> updateProfileImage({required XFile image}) async {
+  Future<String?> updateProfileImage(
+      {required XFile image, required bool isProfile}) async {
     try {
-      return await storageRemoteDataSource.updateProfileImage(image: image);
+      return await storageRemoteDataSource.updateProfileImage(
+          image: image, isProfile: isProfile);
     } catch (e) {
       return null;
     }

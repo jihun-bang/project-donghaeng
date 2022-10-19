@@ -5,5 +5,6 @@ abstract class StorageRemoteDataSource {
 
   /// User
   Future<String> getUserImagePath({required String id});
-  Future<String> updateProfileImage({required XFile image});
+  Future<String> updateProfileImage(
+      {required XFile image, required bool isProfile});
 }
