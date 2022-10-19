@@ -14,9 +14,9 @@ ThemeData get themeDate => ThemeData(
 
 final _appbarThem = AppBarTheme(
     titleTextStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-    backgroundColor: MyColors.primary,
+    backgroundColor: Colors.white,
     foregroundColor: Colors.black,
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(color: Colors.black.withOpacity(0.6), size: 24),
     elevation: 0);
 
 const _drawerTheme = DrawerThemeData(

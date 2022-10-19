@@ -9,6 +9,7 @@ import 'package:donghaeng/presentation/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'chat/chat_list_view.dart';
 import 'feed_view.dart';
@@ -46,14 +47,14 @@ class _HomeViewState extends State<HomeView> {
 
   PreferredSizeWidget get _buildAppBar {
     final search = IconButton(
-      icon: const Icon(CupertinoIcons.search),
+      icon: const Icon(Icons.search),
       padding: EdgeInsets.zero,
       onPressed: () => {},
     );
-    final message = Padding(
+    final bookMark = Padding(
       padding: const EdgeInsets.only(right: 15),
       child: IconButton(
-        icon: const Icon(Icons.mail_outline_rounded),
+        icon: const Icon(Icons.bookmark_border_rounded),
         padding: EdgeInsets.zero,
         onPressed: () => {sl<NavigationService>().pushNamed('/chat-room-list')},
       ),
@@ -69,11 +70,11 @@ class _HomeViewState extends State<HomeView> {
 
     return AppBar(
       centerTitle: true,
-      title: Image.asset(
-        'assets/icons/icon_logo.png',
-        width: 70,
+      title: SvgPicture.asset(
+        'assets/icons/icon_logo.svg',
+        width: 65,
       ),
-      actions: _selectedIndex == 3 ? [profileSetting] : [search, message],
+      actions: _selectedIndex == 3 ? [profileSetting] : [search, bookMark],
     );
   }
 
