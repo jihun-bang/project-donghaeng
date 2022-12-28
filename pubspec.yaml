@@ -22,12 +22,12 @@ dependencies:
 
   # Firebase
   google_sign_in: ^5.4.1
-  firebase_core: ^1.20.0
-  firebase_auth: ^3.6.2
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.0
   flutterfire_ui: ^0.4.3+4
-  firebase_database: ^9.1.0
-  cloud_firestore: ^3.4.4
-  firebase_storage: ^10.3.7
+  firebase_database: ^10.0.7
+  cloud_firestore: ^4.2.0
+  firebase_storage: ^11.0.7
 
   # DI
   get_it: ^7.2.0

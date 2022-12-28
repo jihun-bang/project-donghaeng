@@ -1,8 +1,10 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
+import 'package:donghaeng/presentation/theme/color.dart';
 import '../../injection.dart';
 import '../provider/sign_in_viewmodel.dart';
 import '../provider/user_viewmodel.dart';
@@ -30,10 +32,7 @@ class _SignInViewState extends State<SignInView> {
           if (!snapshot.hasData &&
               FirebaseAuth.instance.currentUser?.email == null) {
             return Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color(0xFF85E2DA), Color(0xFF35B7AC)]),
-              ),
+              color: Colors.white,
               alignment: Alignment.bottomCenter,
               child: CustomScrollView(
                 slivers: [
@@ -44,8 +43,11 @@ class _SignInViewState extends State<SignInView> {
                   SliverList(
                       delegate: SliverChildListDelegate([
                     _buildLogo,
-                    _buildInfo,
+                    _signUp,
+                    _buildDivider,
+                    // _buildInfo,
                     _buildSignInList,
+                    _buildFooter
                   ]))
                 ],
               ),
@@ -75,97 +77,132 @@ class _SignInViewState extends State<SignInView> {
   }
 
   Widget get _loading => Container(
-      decoration: const BoxDecoration(
-        gradient:
-            LinearGradient(colors: [Color(0xFF85E2DA), Color(0xFF35B7AC)]),
-      ),
-      child: const Center(
-          child: SizedBox(
-              height: 100,
-              width: 100,
-              child: CircularProgressIndicator(
-                strokeWidth: 10,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ))));
+      color: MyColors.primeOrange,
+      alignment: Alignment.center,
+        child: SvgPicture.asset('assets/icons/main_logo.svg'),
+  );
 
   Widget get _buildLogo => Container(
         width: 352,
         height: 247,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Image.asset('assets/icons/icon_logo_3d.png'),
+        child: SvgPicture.asset('assets/icons/main_logo.svg'),
       );
 
-  Widget get _buildInfo => const Padding(
-        padding: EdgeInsets.only(bottom: 28),
-        child: Text(
-          '로그인 하면 GiGi 이용약관에 동의하는 것으로 간주합니다.\n자세한 내용은 개인정보 처리방침 및 이용약관에서 확인해 보세요.',
-          style: TextStyle(
-              fontSize: 13, fontWeight: FontWeight.w500, color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-      );
+  //! check if it should be removed or not
+  // Widget get _buildInfo => const Padding(
+  //       padding: EdgeInsets.only(bottom: 28),
+  //       child: Text(
+  //         '로그인 하면 GiGi 이용약관에 동의하는 것으로 간주합니다.\n자세한 내용은 개인정보 처리방침 및 이용약관에서 확인해 보세요.',
+  //         style: TextStyle(
+  //             fontSize: 13, fontWeight: FontWeight.w500, color: Colors.white),
+  //         textAlign: TextAlign.center,
+  //       ),
+  //     );
+
+  Widget get _signUp => Container(
+    // width: 10,
+    height: 54,
+    margin: const EdgeInsets.only(left: 24, right: 24, bottom: 20, top: 195),
+    child: OutlinedButton(
+      style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          // FIXME: minimumSize & maximumSize value doesn't work for some reason
+          // minimumSize: const Size(100, 54),
+          // maximumSize: const Size(342, 54),
+          side: BorderSide(width: 1.5, color: MyColors.systemSoftBlack),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6))),
+      // onPressed: () => {sl<NavigationService>().pushNamed('/sign-up')},
+      onPressed: () => {},
+      child: Text(
+        '휴대폰 번호로 시작하기',
+        style: TextStyle(
+          fontSize: 16, fontWeight: FontWeight.w500, color: MyColors.systemBlack),
+        textAlign: TextAlign.center,
+        )
+      )
+  );
+
+  Widget get _buildDivider => Container(
+    height: 18,
+    margin: const EdgeInsets.only(left: 24, right: 24, bottom: 20),
+    child: 
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const <Widget>[
+          Expanded(
+            child: Divider(
+              color: Colors.grey,
+            )
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text('간편 로그인', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey),)
+          ),
+          Expanded(
+            child: Divider(
+              color: Colors.grey,
+            )
+          ), 
+        ],
+      ),
+  );
 
   Widget get _buildSignInList {
     Widget button(SignInType type) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.only(left: 18, right: 18),
-              backgroundColor: Colors.transparent,
-              minimumSize: const Size(300, 60),
-              maximumSize: const Size(400, 60),
-              side: const BorderSide(width: 2, color: Color(0xFFFEFFFF)),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30))),
-          onPressed: () async => await signInViewModel.signIn(type),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                    alignment: Alignment.center,
-                    width: 40,
-                    height: 40,
-                    child: SvgPicture.asset(
-                      'assets/icons/icon_${type.name}.svg',
-                      fit: BoxFit.contain,
-                    )),
-              ),
-              Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${type.korean} 로그인',
-                    style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ))
-            ],
-          ),
-        ),
-      );
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child:
+                InkWell(
+                  onTap: () async => await signInViewModel.signIn(type),
+                  child: getSVGImage('assets/icons/icon_${type.name}.svg'),
+                ),
+            ),
+          ],
+        );
+      // );
     }
-
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 45),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      margin: const EdgeInsets.only(left: 45, right: 45, bottom: 22),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: SignInType.values.map((type) => button(type)).toList()
-          ..add(_buildLoginQuestion),
       ),
     );
   }
 
-  Widget get _buildLoginQuestion => Padding(
-        padding: const EdgeInsets.only(top: 14, bottom: 42),
-        child: InkWell(
-          onTap: () {},
-          child: const Text(
-            '로그인이 안되나요?',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13),
+  Widget getSVGImage(String assetName) {
+    final Widget logo = SvgPicture.asset(assetName);
+    return logo;
+  }
+
+  Widget get _buildFooter => SizedBox(
+    height: 22,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: TextButton(
+            style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 14)),
+            onPressed: () => {},
+            child: const Text('아이디 찾기', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
           ),
         ),
-      );
+        const Text('|', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Colors.grey)),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: TextButton(
+            style: TextButton.styleFrom(textStyle: const TextStyle(fontSize: 14)),
+            onPressed: () => {},
+            child: const Text('비밀번호 찾기', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
+          ),
+        ),
+      ],
+    ),
+  );
 }

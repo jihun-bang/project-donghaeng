@@ -34,9 +34,9 @@ class SignInViewModel extends ChangeNotifier {
 }
 
 enum SignInType {
-  google('구글'),
+  kakao('카카오'),
   naver('네이버'),
-  kakao('카카오');
+  google('구글');
 
   final String korean;
   const SignInType(this.korean);

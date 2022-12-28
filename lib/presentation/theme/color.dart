@@ -34,4 +34,26 @@ class MyColors {
   static Color get grey_3 => const Color(0xFF757575);
 
   static Color get grey_200 => const Color(0xFFEBEBEB);
+  
+  // New Color Palette
+  static Color get primeOrange => const Color(0xFFFF8266);
+
+  static Color get primeOrange_600 => const Color(0xFFF27255);
+
+  static Color get primeOrange_400 => const Color(0xFFFFB9A9);
+
+  static Color get primeOrange_300 => const Color(0xFFFFD5CC);
+
+  static Color get primeOrange_200 => const Color(0xFFFFE7E1);
+
+  static Color get systemBlack => const Color(0xFF000000);
+
+  static Color get systemSoftBlack => const Color(0xFF2B2B2B);
+
+  static Color get systemGrey_500 => const Color(0xFFB3B3B3);
+
+  static Color get systemGrey_300 => const Color(0xFFEBEBEB);
+
+  static Color get error => const Color(0xFFFF3232); 
+
 }
