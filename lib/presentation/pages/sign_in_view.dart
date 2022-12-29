@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -154,14 +152,21 @@ class _SignInViewState extends State<SignInView> {
       return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
+            if (type.name == 'google') ...[
+              Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                InkWell(
+              child: InkWell(
+                  onTap: () async => await signInViewModel.signIn(type),
+                  child: Image.asset('assets/icons/icon_${type.name}.png'),
+              ))
+            ] else ...[
+              Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
                   onTap: () async => await signInViewModel.signIn(type),
                   child: getSVGImage('assets/icons/icon_${type.name}.svg'),
-                ),
-            ),
+                ))
+            ]
           ],
         );
       // );
