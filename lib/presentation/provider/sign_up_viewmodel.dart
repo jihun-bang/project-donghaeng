@@ -90,4 +90,5 @@ class SignUpViewModel extends UserViewModel {
     }
     return null;
   }
+  
 }

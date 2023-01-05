@@ -5,6 +5,8 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
   String id;
+  String phoneNumber;
+  bool verified;
   String name;
   @JsonKey(name: 'background_image_path')
   String backgroundImagePath;
@@ -17,14 +19,18 @@ class User {
   // todo: chatRooms를 null을 허락하고 싶지 않은데, 아래 User()에서 초기화 하기도 애매하고,
   // 입장한 채팅방이 하나도 없다고 생각했을때, fire store에 기본값으로 "" 이게 하나 저장되서 깔끔하지가 않아서 고민
 
-  User(
-      {required this.id,
+  User({
+      required
+      this.id,
+      this.phoneNumber = '',
+      this.verified = false,
       this.name = '',
       this.backgroundImagePath = '',
       this.imagePath = '',
       this.description = '',
       this.instagram = '',
-      this.chatRooms});
+      this.chatRooms
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

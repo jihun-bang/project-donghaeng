@@ -36,6 +36,7 @@ class UserViewModel with ChangeNotifier {
     repository.getByStream().listen((user) {
       _getUserLoading = false;
       if (user?.toJson().toString() != _user?.toJson().toString()) {
+        // ignore: avoid_print
         print('[UserViewModel] ${user?.toJson()}');
         _user = user;
       }

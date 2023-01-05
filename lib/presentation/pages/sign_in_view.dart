@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:donghaeng/presentation/theme/color.dart';
+import 'package:donghaeng/presentation/navigation/navigation.dart';
 import '../../injection.dart';
 import '../provider/sign_in_viewmodel.dart';
 import '../provider/user_viewmodel.dart';
@@ -105,14 +106,10 @@ class _SignInViewState extends State<SignInView> {
     child: OutlinedButton(
       style: OutlinedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          // FIXME: minimumSize & maximumSize value doesn't work for some reason
-          // minimumSize: const Size(100, 54),
-          // maximumSize: const Size(342, 54),
           side: BorderSide(width: 1.5, color: MyColors.systemSoftBlack),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6))),
-      // onPressed: () => {sl<NavigationService>().pushNamed('/sign-up')},
-      onPressed: () => {},
+      onPressed: () => sl<NavigationService>().pushNamed("/sign-up"),
       child: Text(
         '휴대폰 번호로 시작하기',
         style: TextStyle(
