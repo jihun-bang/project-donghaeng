@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../injection.dart';
+import '../navigation/navigation.dart';
 import '../provider/sign_up_viewmodel.dart';
 import 'package:provider/provider.dart';
-import '../widgets/text_form_filed.dart';
+import 'dart:async';
+// import '../widgets/text_form_filed.dart';
 import 'package:donghaeng/presentation/theme/color.dart';
 
 class SignUpView extends StatefulWidget {
@@ -27,7 +30,7 @@ class _SignUpViewState extends State<SignUpView> {
     return Consumer<SignUpViewModel>(
       builder: (_, __, ___) => Scaffold(
         appBar: AppBar(
-          leading: _logout,
+          leading: _goBack,
           // actions: [_next],
         ),
         body: Column(
@@ -43,9 +46,9 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  Widget get _logout => IconButton(
+  Widget get _goBack => IconButton(
         icon: const Icon(Icons.arrow_back_rounded),
-        onPressed: () => viewModel.logout(),
+        onPressed: () => sl<NavigationService>().pop(),
       );
 
   // Widget get _next => TextButton(
@@ -126,7 +129,7 @@ class _SignUpViewState extends State<SignUpView> {
                     // hintText: '01012345678',
                     hintText: '전화번호',
                     validator: (String? number) {
-                      if (number != null && number.length < 10) {
+                      if (!isPhoneNumberValid) {
                       return '전화번호를 확인해주세요.';
                       }
                       return null;
@@ -173,7 +176,10 @@ class _SignUpViewState extends State<SignUpView> {
         OutlinedButton(
               // onPressed: () => formKey.currentState?.save(),
               onPressed:
-                !isPhoneNumberValid ? null : () => showModalBottomSheet(context: context, builder: (context) => _buildVerification)      
+                !isPhoneNumberValid ? null : () => {
+                  showModalBottomSheet(context: context, builder: (context) => _buildVerification),
+                  // startTimer()
+                }
               ,
               style: OutlinedButton.styleFrom(
                 disabledForegroundColor: MyColors.systemGrey_300,
@@ -198,7 +204,6 @@ class _SignUpViewState extends State<SignUpView> {
    );
 
    Widget get _buildVerification => Container(
-    // color: const Color(0xFF757575),
     decoration: BoxDecoration(
       border: Border.all(width: 0, color: Colors.transparent),
       color: const Color(0xFF757575),
@@ -211,8 +216,95 @@ class _SignUpViewState extends State<SignUpView> {
         topRight: Radius.circular(20),
         )
       ),
+      child: _buildCodeInput
     )
    );
+
+   Widget get _buildCodeInput => Padding(
+    padding: const EdgeInsets.only(top: 24, right: 28, left: 28),
+    child: 
+      Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Spacer(),
+              Column(
+                children: <Widget>[
+                  const Text('인증번호 입력', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 2),
+                  Text(phoneNumberInput ?? '',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: MyColors.systemGrey_500,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16
+                    )
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  height: 60,
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.refresh, size: 24),
+                    color: MyColors.systemSoftBlack
+                  ),
+                )
+              )
+            ],
+          ),
+          const SizedBox(height: 36),
+          TextField(
+            textAlign: TextAlign.center,
+            maxLength: 6,
+            autofocus: true,
+            decoration: const InputDecoration(hintText: '', counterText: '', isCollapsed: true, border: InputBorder.none),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            style: TextStyle(color: MyColors.systemBlack, fontWeight: FontWeight.w700, fontSize: 30),
+          ),
+          const SizedBox(height: 12),
+          Text('02:30', style: TextStyle(color: MyColors.systemBlack, fontWeight: FontWeight.w400,fontSize: 14))
+          // FIXME: state 관련
+          // Text(_start.toString(), style: TextStyle(color: MyColors.systemBlack, fontWeight: FontWeight.w400,fontSize: 14))
+        ],
+      ),
+   );
+
+  // FIXME: state 관련
+  //  Timer _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) => {});
+  //  int _start = 150;
+
+  //  void startTimer() {
+  //   _start = 150;
+  //   const oneSec = Duration(seconds: 1);
+  //   _timer = Timer.periodic(oneSec, (Timer timer) {
+  //     if (_start == 0) {
+  //       setState(() => timer.cancel());
+  //     } else {
+  //       print(_start);
+  //       setState(() => _start--);
+  //     }
+  //    });
+  // }
+
+  // String _showTimer(int time) {
+  //   String twoDigits(int n) => n.toString().padLeft(2, "0");
+  //   String twoDigitMinutes = twoDigits(Duration(seconds: time).inMinutes.remainder(60));
+  //   String twoDigitSeconds = twoDigits(Duration(seconds: time).inSeconds.remainder(60));
+  //   print(time);
+  //   print(Duration(seconds: time));
+  //   print(twoDigitMinutes);
+  //   print(twoDigitSeconds);
+  //   return '$twoDigitMinutes:$twoDigitSeconds';
+
+  // }
 
   void clearInput() {
     controller.clear();
@@ -231,6 +323,7 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   void dispose() {
     controller.dispose();
+    // _timer.cancel();
     super.dispose();
   }
 }
