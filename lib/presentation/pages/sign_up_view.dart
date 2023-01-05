@@ -308,7 +308,10 @@ class _SignUpViewState extends State<SignUpView> {
 
   void clearInput() {
     controller.clear();
-    phoneNumberInput = '';
+    setState((){
+      phoneNumberInput = '';
+      isPhoneNumberValid = false;
+    });
   }
 
   // void (String phoneNumber) async {
