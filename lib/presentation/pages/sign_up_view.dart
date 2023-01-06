@@ -9,6 +9,7 @@ import 'dart:async';
 // import '../widgets/text_form_filed.dart';
 import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:donghaeng/presentation/widgets/sign_up_main_button.dart';
+import 'package:donghaeng/presentation/widgets/progress_bar.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _SignUpViewState extends State<SignUpView> {
         appBar: AppBar(
           leading: _goBack,
           // actions: [_next],
+          bottom: ProgressBar(value: 0.1),
         ),
         body: Column(
             children: <Widget> [
@@ -147,13 +149,13 @@ class _SignUpViewState extends State<SignUpView> {
                       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                     ),
                     ignoreBlank: false,
-                    autoValidateMode: AutovalidateMode.always,
+                    // autoValidateMode: AutovalidateMode.always,
                     selectorTextStyle: const TextStyle(color: Colors.black),
                     initialValue: number,
                     textFieldController: controller,
                     formatInput: false,
                     locale: 'KR',
-                    autoFocus: true,
+                    autoFocus: false,
                     keyboardType:
                       const TextInputType.numberWithOptions(signed: true, decimal: true),
                     onSaved: (PhoneNumber number) {
@@ -161,7 +163,7 @@ class _SignUpViewState extends State<SignUpView> {
                     },
                   ),
                   Positioned(
-                    right: 10,
+                    right: 0,
                     top: 5,
                     child: IconButton(
                       onPressed: () => clearInput(),
