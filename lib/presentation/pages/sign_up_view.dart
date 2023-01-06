@@ -38,7 +38,6 @@ class _SignUpViewState extends State<SignUpView> {
             children: <Widget> [
               // _id,
               _numberInput,
-              // _expandedButton
               SignUpMainButton(text: '인증번호 발송', phoneNumberInput: phoneNumberInput, isEnabled: isPhoneNumberValid, type: 'verification')
             ]),
         // body: Padding(
@@ -81,6 +80,9 @@ class _SignUpViewState extends State<SignUpView> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const SizedBox(height: 45),
+              const Text ('가입을 위해 휴대폰 번호를 입력해주세요.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.black)),
+              const SizedBox(height: 32),
               const Text('휴대폰 번호', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
               _buildPhoneNumberInput,
               const SizedBox(height: 32),
@@ -170,7 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
                   )
                 ],
               );
-              
+
   // FIXME: state 관련
   //  Timer _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) => {});
   //  int _start = 150;
