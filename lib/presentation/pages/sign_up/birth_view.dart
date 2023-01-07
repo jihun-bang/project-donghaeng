@@ -45,9 +45,7 @@ class _BirthViewState extends State<BirthView> {
                               fontWeight: FontWeight.w400,
                               color: Colors.black)),
                       const SizedBox(height: 46),
-                      Row(
-                        children: <Widget>[buildBirthDayTextButton],
-                      ),
+                      Row(children: <Widget>[buildBirthDayTextButton],),
                     ])),
             SignUpMainButton(
               text: '다음',
@@ -67,7 +65,10 @@ class _BirthViewState extends State<BirthView> {
           onPressed: () {
             showModalBottomSheet(context: context, builder: (context) => _buildDatePicker);
           }, 
-          style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.transparent)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.all(0),
+            side: const BorderSide(color: Colors.transparent)
+            ),
           child: Row(
             children: birthDayArray.map(
               (date) => birthDayText(date, birthDay == '0000/00/00' ? true : false)).toList()
@@ -75,34 +76,6 @@ class _BirthViewState extends State<BirthView> {
         ),
     );
   }
-
-  Widget get _buildDatePicker => Container(
-    decoration: BoxDecoration(
-        border: Border.all(width: 0, color: Colors.transparent),
-        color: const Color(0xFF757575),
-      ),
-    child: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            )
-            ),
-        child: SizedBox(
-              height: 200,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                maximumDate: DateTime.now(),
-                initialDateTime: DateTime.now(),
-                onDateTimeChanged: (DateTime newDateTime) {
-                  setState(() {
-                    birthDay = DateFormat('yyyy/MM/dd').format(newDateTime);
-                  });
-                },
-              ))
-      )
-  );
 
   Widget birthDayText(String date, bool isDefault) => Container(
     padding: const EdgeInsets.only(right: 5),
@@ -127,5 +100,30 @@ class _BirthViewState extends State<BirthView> {
       ],
     ),
   );
+
+  Widget get _buildDatePicker => Container(
+    decoration: BoxDecoration(
+      border: Border.all(width: 0, color: Colors.transparent),
+      color: const Color(0xFF757575),
+    ),
+    child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            )),
+        child: SizedBox(
+            height: 200,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              maximumDate: DateTime.now(),
+              initialDateTime: DateTime.now(),
+              onDateTimeChanged: (DateTime newDateTime) {
+                setState(() {
+                  birthDay = DateFormat('yyyy/MM/dd').format(newDateTime);
+                });
+              },
+            ))));
 
 }
