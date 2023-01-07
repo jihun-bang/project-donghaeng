@@ -52,6 +52,8 @@ class MyColors {
 
   static Color get systemGrey_500 => const Color(0xFFB3B3B3);
 
+  static Color get systemGrey_400 => const Color(0xFFDCDCDC);
+
   static Color get systemGrey_300 => const Color(0xFFEBEBEB);
 
   static Color get error => const Color(0xFFFF3232); 

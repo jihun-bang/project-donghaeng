@@ -1,15 +1,13 @@
+import 'package:donghaeng/presentation/widgets/sign_up_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../injection.dart';
 import '../navigation/navigation.dart';
 import '../provider/sign_up_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
-// import '../widgets/text_form_filed.dart';
+// import 'dart:async';
 import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:donghaeng/presentation/widgets/sign_up_main_button.dart';
-import 'package:donghaeng/presentation/widgets/progress_bar.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -31,11 +29,7 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return Consumer<SignUpViewModel>(
       builder: (_, __, ___) => Scaffold(
-        appBar: AppBar(
-          leading: _goBack,
-          // actions: [_next],
-          bottom: ProgressBar(value: 0.1),
-        ),
+        appBar: SignUpAppbar(value: 0.1),
         body: Column(
             children: <Widget> [
               // _id,
@@ -48,11 +42,6 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
-
-  Widget get _goBack => IconButton(
-        icon: const Icon(Icons.arrow_back_rounded),
-        onPressed: () => sl<NavigationService>().pop(),
-      );
 
   // Widget get _next => TextButton(
   //     onPressed:

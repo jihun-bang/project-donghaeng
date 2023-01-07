@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:donghaeng/presentation/theme/color.dart';
+import 'package:donghaeng/presentation/navigation/navigation.dart';
+import '../../injection.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-
-class SignUpMainButton extends StatelessWidget {
+class SignUpMainButton extends StatefulWidget {
   final String text;
   final bool isEnabled;
   final String? type;
@@ -13,6 +15,13 @@ class SignUpMainButton extends StatelessWidget {
   const SignUpMainButton({Key? key, required this.text, this.type, required this.isEnabled, this.phoneNumberInput, this.callback}) : super(key: key);
 
   @override
+  State<SignUpMainButton> createState() => _SignUpMainButtonState();
+}
+
+class _SignUpMainButtonState extends State<SignUpMainButton> {
+  String verificationCode = '';
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
     child: Column(
@@ -20,10 +29,9 @@ class SignUpMainButton extends StatelessWidget {
         const Spacer(flex: 1),
         OutlinedButton(
               onPressed:
-                !isEnabled ? null : () => {
-                  if (type == null) {
-                    // null // for now 
-                    () => {callback}
+                !widget.isEnabled ? null : () => {
+                  if (widget.type == null) {
+                    widget.callback!()
                   } else {
                     showModalBottomSheet(context: context, builder: (context) => _buildVerification),
                   }
@@ -41,7 +49,7 @@ class SignUpMainButton extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 40),
                 // child: const Text('인증번호 발송',
-                child: Text(text,
+                child: Text(widget.text,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                           fontSize: 16,
@@ -84,7 +92,7 @@ class SignUpMainButton extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 2),
-                    Text(phoneNumberInput ?? '',
+                    Text(widget.phoneNumberInput ?? '',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: MyColors.systemGrey_500,
@@ -98,13 +106,21 @@ class SignUpMainButton extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.refresh, size: 24),
+                      icon: SvgPicture.asset('assets/icons/icon_renew.svg'),
                       color: MyColors.systemSoftBlack),
                 ))
               ],
             ),
             const SizedBox(height: 36),
             TextField(
+              onChanged: (value) {
+                setState(() => verificationCode = value);
+                // TODO: 파베쪽 verification code와 비교해서 맞으면 다음 스탭 페이지로 라우팅
+                // FIXME: 지금은 일단 6자 채우면 다음 스탭으로 넘어가게 작성
+                if (verificationCode.length == 6) {
+                  sl<NavigationService>().pushNamed("/sign-up/gender");
+                }
+              },
               textAlign: TextAlign.center,
               maxLength: 6,
               autofocus: true,
@@ -133,8 +149,6 @@ class SignUpMainButton extends StatelessWidget {
           ],
         ),
       );
-
-
 }
 
 
