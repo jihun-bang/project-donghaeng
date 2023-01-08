@@ -72,9 +72,9 @@ class _SignUpViewState extends State<SignUpView> {
           crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 45),
-              const Text ('가입을 위해 휴대폰 번호를 입력해주세요.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.black)),
+              Text ('가입을 위해 휴대폰 번호를 입력해주세요.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: MyColors.systemBlack)),
               const SizedBox(height: 32),
-              const Text('휴대폰 번호', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey)),
+              Text('휴대폰 번호', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: MyColors.systemGrey_500)),
               _buildPhoneNumberInput,
               const SizedBox(height: 32),
               _buildAgreementInfo,
@@ -132,7 +132,7 @@ class _SignUpViewState extends State<SignUpView> {
                     onInputChanged: (PhoneNumber number) {
                       setState(() => phoneNumberInput = number.phoneNumber);
                       // FIXME: only testing if the input number length is greater than 10
-                      setState(() => isPhoneNumberValid = number.phoneNumber!.length > 10 ? true : false);
+                      setState(() => isPhoneNumberValid = number.phoneNumber!.length > 12 ? true : false);
                     },
                     selectorConfig: const SelectorConfig(
                       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,

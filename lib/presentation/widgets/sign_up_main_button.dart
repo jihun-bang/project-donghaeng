@@ -11,8 +11,17 @@ class SignUpMainButton extends StatefulWidget {
   final String? type;
   final String? phoneNumberInput;
   final VoidCallback? callback; // for onPressed action
+  final bool? isSkippable;
 
-  const SignUpMainButton({Key? key, required this.text, this.type, required this.isEnabled, this.phoneNumberInput, this.callback}) : super(key: key);
+  const SignUpMainButton({
+    Key? key,
+    required this.text,
+    this.type,
+    required this.isEnabled,
+    this.phoneNumberInput,
+    this.callback,
+    this.isSkippable
+    }) : super(key: key);
 
   @override
   State<SignUpMainButton> createState() => _SignUpMainButtonState();
@@ -27,6 +36,23 @@ class _SignUpMainButtonState extends State<SignUpMainButton> {
     child: Column(
       children: <Widget>[
         const Spacer(flex: 1),
+        Visibility(
+          visible: widget.isSkippable == true ? true : false,
+          child: TextButton(
+            onPressed: () {
+              sl<NavigationService>().pushNamedAndRemoveAll("/home");
+            },
+            child: Text('나중에 설정하기', style: TextStyle(
+              height: 1.9,
+              shadows: [Shadow(color: MyColors.systemBlack, offset: const Offset(0, -1))],
+              color: Colors.transparent,
+              fontSize: 16,
+              decoration: TextDecoration.underline,
+              decorationColor: MyColors.systemBlack
+            )),
+          ),
+        ),
+        const SizedBox(height: 48),
         OutlinedButton(
               onPressed:
                 !widget.isEnabled ? null : () => {

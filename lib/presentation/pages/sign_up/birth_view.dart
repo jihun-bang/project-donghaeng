@@ -51,7 +51,7 @@ class _BirthViewState extends State<BirthView> {
               text: '다음',
               isEnabled: birthDay != '0000/00/00',
               callback: () =>
-                  sl<NavigationService>().pushNamed("/sign-up/birth"),
+                  sl<NavigationService>().pushNamed("/sign-up/nickname"),
             )
           ],
         ));
