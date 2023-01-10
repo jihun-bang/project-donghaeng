@@ -18,13 +18,14 @@ class ProfileImage extends StatelessWidget {
         border: Border.all(color: Colors.white, width: 4),
       ),
       child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        backgroundImage:
-            url?.isNotEmpty == true ? CachedNetworkImageProvider(url!) : null,
-        child: url?.isNotEmpty != true
-            ? SvgPicture.asset('assets/icons/icon_default_profile.svg')
-            : null,
-      ),
+              backgroundColor: Colors.transparent,
+              backgroundImage: url?.isNotEmpty == true
+                  ? CachedNetworkImageProvider(url!)
+                  : null,
+              child: url?.isNotEmpty != true
+                  ? SvgPicture.asset('assets/icons/icon_default_profile.svg')
+                  : null,
+            ),
     );
   }
 }

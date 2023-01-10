@@ -103,6 +103,7 @@ class _SignUpViewState extends State<SignUpView> {
 
    Widget _buildTextInfo(String infoString) => Text(
     infoString,
+    maxLines: 2,
     style: TextStyle(color: MyColors.systemGrey_500, fontSize: 12)
    );
 

@@ -121,6 +121,7 @@ class _BirthViewState extends State<BirthView> {
             height: 200,
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.date,
+              dateOrder: DatePickerDateOrder.ymd,
               maximumDate: DateTime.now(),
               initialDateTime: DateTime.now(),
               onDateTimeChanged: (DateTime newDateTime) {
