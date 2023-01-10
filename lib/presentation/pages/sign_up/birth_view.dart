@@ -45,7 +45,11 @@ class _BirthViewState extends State<BirthView> {
                               fontWeight: FontWeight.w400,
                               color: Colors.black)),
                       const SizedBox(height: 46),
-                      Row(children: <Widget>[buildBirthDayTextButton],),
+                       Wrap(
+                          children: <Widget>[buildBirthDayTextButton],
+                        ),
+                    
+
                     ])),
             SignUpMainButton(
               text: '다음',
@@ -79,7 +83,7 @@ class _BirthViewState extends State<BirthView> {
 
   Widget birthDayText(String date, bool isDefault) => Container(
     padding: const EdgeInsets.only(right: 5),
-    width: 36,
+    constraints: const BoxConstraints(maxWidth: 36, minWidth: 24),
     child: Column(
       children: <Widget>[
         Text(date, style: TextStyle(

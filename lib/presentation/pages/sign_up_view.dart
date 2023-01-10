@@ -88,7 +88,8 @@ class _SignUpViewState extends State<SignUpView> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       _buildTextInfo('휴대폰 번호를 입력하면 동행의 이용약관에 동의하는 것으로 간주합니다.'),
-      Row(
+      Wrap( 
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           _buildTextInfo('자세한 내용은'),
           _buildTextButton('개인정보 처리방침'),
