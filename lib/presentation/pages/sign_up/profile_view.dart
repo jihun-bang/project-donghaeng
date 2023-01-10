@@ -1,6 +1,7 @@
 import 'package:donghaeng/presentation/widgets/sign_up_appbar.dart';
 import 'package:donghaeng/presentation/widgets/sign_up_main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../injection.dart';
 import '../../navigation/navigation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,13 +44,16 @@ class _ProfileSetupViewState extends State<ProfileSetupView> {
                           onTap: () => {
                             showModalBottomSheet(context: context, builder: ((builder) => uploadBottomSheet()))
                           },
-                          // FIXME: temporary image placeholder
-                          child: const Icon(Icons.person_pin, size: 140,)
+                          child: SvgPicture.asset('assets/icons/icon_profile_add.svg'),
                         )
                       ),
-                      if (profileImage != null) const SizedBox(height: 20),
+                      if (profileImage != null) const SizedBox(height: 50),
                       if (profileImage != null) Center(
-                        child: Container(constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 40, maxHeight: 300), child: Image.network(profileImage!.path)),
+                        child: CircleAvatar(
+                              backgroundImage: NetworkImage(profileImage!.path),
+                              maxRadius: 90,
+                              minRadius: 70,
+                            ),
                       )
                     ])),
             SignUpMainButton(

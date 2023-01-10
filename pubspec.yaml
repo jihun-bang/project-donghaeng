@@ -41,6 +41,9 @@ dependencies:
   fluttertoast: ^8.0.9
   image_picker: ^0.8.5+3
   intl_phone_number_input: ^0.7.1
+  country_list_pick: ^1.0.1+6
+  dropdown_search: ^5.0.5
+  dropdown_button2: ^1.9.2
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +57,7 @@ flutter:
     - assets/images/
     - assets/data/
     - assets/icons/
+    - assets/flags/
     - env
   fonts:
     - family: Noto_Sans_KR
