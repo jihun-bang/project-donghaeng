@@ -99,6 +99,7 @@ class _CountryDropdownState extends State<CountryDropdown> {
             searchInnerWidget: Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 4, right: 8, left: 8),
               child: TextFormField(
+                autofocus: true,
                 controller: textEditingController,
                 style: const TextStyle(fontSize: 20),
                 decoration: InputDecoration(
