@@ -1,3 +1,4 @@
+import 'package:donghaeng/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:donghaeng/presentation/navigation/navigation.dart';
@@ -28,7 +29,14 @@ class SignUpMainButton extends StatefulWidget {
 }
 
 class _SignUpMainButtonState extends State<SignUpMainButton> {
+  final TextEditingController codeEditingController = TextEditingController();
   String verificationCode = '';
+
+  @override
+  void dispose() {
+    codeEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,20 +139,27 @@ class _SignUpMainButtonState extends State<SignUpMainButton> {
                   height: 60,
                   alignment: Alignment.topRight,
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // TODO: FIXME: 인증번호 재전송 및 입력한 번호 초기화
+                        codeEditingController.clear();
+                      },
                       icon: SvgPicture.asset('assets/icons/icon_renew.svg'),
-                      color: MyColors.systemSoftBlack),
+                      color: MyColors.systemSoftBlack
+                    ),
                 ))
               ],
             ),
             const SizedBox(height: 36),
             TextField(
+              controller: codeEditingController,
+              
               onChanged: (value) {
                 setState(() => verificationCode = value);
                 // TODO: 파베쪽 verification code와 비교해서 맞으면 다음 스탭 페이지로 라우팅
                 // FIXME: 지금은 일단 6자 채우면 다음 스탭으로 넘어가게 작성
                 if (verificationCode.length == 6) {
                   sl<NavigationService>().pushNamed("/sign-up/gender");
+                  showDarkToast(message: '휴대폰 인증이 성공적으로 완료되었습니다.');
                 }
               },
               textAlign: TextAlign.center,

@@ -1,11 +1,11 @@
 import 'package:donghaeng/presentation/theme/color.dart';
 import 'package:donghaeng/presentation/widgets/sign_up_appbar.dart';
 import 'package:donghaeng/presentation/widgets/sign_up_main_button.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import '../../../injection.dart';
 import '../../navigation/navigation.dart';
+import '../../../data/constants.dart' as constants;
 
 class MBTIView extends StatefulWidget {
   const MBTIView({
@@ -17,119 +17,129 @@ class MBTIView extends StatefulWidget {
 }
 
 class _MBTIViewState extends State<MBTIView> {
+  final TextEditingController textEditingController = TextEditingController();
+
   String birthDay = '0000/00/00';
+  String? selectedMBTI;
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SignUpAppbar(value: 0.4),
+        appBar: SignUpAppbar(value: 0.9),
         body: Column(
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 45),
-                      const Text('생일을 알려주세요.',
+                      const Text('동행러님의 \nMBTI를 알려주세요.',
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
                               color: Colors.black)),
-                      const SizedBox(height: 10),
-                      const Text('프로필에 보여집니다.',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black)),
-                      const SizedBox(height: 46),
-                      Row(
-                        children: <Widget>[buildBirthDayTextButton],
-                      ),
+                      const SizedBox(height: 52),
+                      Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            customButton: Container(
+                              height: 40,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: selectedMBTI == null ? MyColors.systemGrey_300 : MyColors.primeOrange, width: 2))
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  selectedMBTI == null ? 
+                                  Text('MBTI', style: TextStyle(fontSize: 20, color: MyColors.systemGrey_400, fontWeight: FontWeight.w500))
+                                  : Text(selectedMBTI!, style: TextStyle(
+                                    color: MyColors.systemBlack,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500
+                                  )),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(Icons.keyboard_arrow_down_outlined,
+                                          size: 24,
+                                          color: MyColors.systemSoftBlack),
+                                      const SizedBox(width: 12)
+                                    ],
+                                  )
+                                ],
+                              )
+                            ),
+                            selectedItemHighlightColor: MyColors.primeOrange_200,
+                            focusColor: MyColors.primeOrange_200,
+                            isExpanded: true,
+                            dropdownMaxHeight:
+                                MediaQuery.of(context).size.height / 2.5,
+                            value: selectedMBTI,
+                            items: constants.mbtiList.map((mbti) => DropdownMenuItem<String>(value: mbti, child: Text(mbti, style: TextStyle(color: MyColors.systemBlack, fontSize: 20)))).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedMBTI = value.toString();
+                              });
+                            },
+                            searchController: textEditingController,
+                            searchInnerWidget: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8, bottom: 4, right: 8, left: 8),
+                              child: TextFormField(
+                                autofocus: true,
+                                controller: textEditingController,
+                                style: const TextStyle(fontSize: 20),
+                                decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MyColors.systemGrey_400,
+                                        // color: selectedMBTI != null
+                                        //     ? MyColors.primeOrange
+                                        //     : MyColors.systemGrey_400,
+                                        width: 2),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: MyColors.systemGrey_400, width: 2),
+                                    // borderSide: BorderSide(color: MyColors.primeOrange, width: 2),
+                                  ),
+                                  errorBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: MyColors.systemError, width: 2)),
+                                  isDense: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 8),
+                                  hintText: '검색',
+                                  hintStyle: const TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                            onMenuStateChange: (isOpen) {
+                              if (!isOpen) {textEditingController.clear();}
+                            },
+                            offset: const Offset(0, -10),
+                            dropdownElevation: 8,
+                          ))
+                      )
                     ])),
             SignUpMainButton(
               text: '다음',
-              isEnabled: birthDay != '0000/00/00',
+              isEnabled: selectedMBTI != null,
               callback: () =>
-                  sl<NavigationService>().pushNamed("/sign-up/birth"),
+                  sl<NavigationService>().pushNamed("/home"),
             )
           ],
         ));
   }
 
-  Widget get buildBirthDayTextButton {
-    var birthDayArray = birthDay.split('');
-    return SizedBox(
-      height: 70,
-      child: OutlinedButton(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context, builder: (context) => _buildDatePicker);
-        },
-        style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.all(0),
-            side: const BorderSide(color: Colors.transparent)),
-        child: Row(
-            children: birthDayArray
-                .map((date) =>
-                    birthDayText(date, birthDay == '0000/00/00' ? true : false))
-                .toList()),
-      ),
-    );
-  }
-
-  Widget birthDayText(String date, bool isDefault) => Container(
-        padding: const EdgeInsets.only(right: 5),
-        width: 36,
-        child: Column(
-          children: <Widget>[
-            Text(
-              date,
-              style: TextStyle(
-                height: 2,
-                color:
-                    isDefault ? MyColors.systemGrey_400 : MyColors.systemBlack,
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 2,
-              width: 24,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                    color: date != '/'
-                        ? MyColors.systemGrey_400
-                        : Colors.transparent),
-              ),
-            )
-          ],
-        ),
-      );
-
-  Widget get _buildDatePicker => Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 0, color: Colors.transparent),
-        color: const Color(0xFF757575),
-      ),
-      child: Container(
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              )),
-          child: SizedBox(
-              height: 200,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                maximumDate: DateTime.now(),
-                initialDateTime: DateTime.now(),
-                onDateTimeChanged: (DateTime newDateTime) {
-                  setState(() {
-                    birthDay = DateFormat('yyyy/MM/dd').format(newDateTime);
-                  });
-                },
-              ))));
 }

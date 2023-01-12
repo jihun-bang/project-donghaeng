@@ -21,7 +21,7 @@ class _GenderViewState extends State<GenderView> {
       appBar: SignUpAppbar(value: 0.2),
       body: Column(children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

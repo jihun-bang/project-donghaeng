@@ -63,7 +63,7 @@ class _SignUpViewState extends State<SignUpView> {
   //     );
 
   Widget get _numberInput => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+    padding: const EdgeInsets.symmetric(horizontal: 24.0),
     child: 
       Form(
         key: formKey,
@@ -72,7 +72,7 @@ class _SignUpViewState extends State<SignUpView> {
           crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 45),
-              Text ('가입을 위해 휴대폰 번호를 입력해주세요.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: MyColors.systemBlack)),
+              Text ('가입을 위해 휴대폰 번호를 \n입력해주세요.', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: MyColors.systemBlack)),
               const SizedBox(height: 32),
               Text('휴대폰 번호', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: MyColors.systemGrey_500)),
               _buildPhoneNumberInput,
@@ -88,29 +88,36 @@ class _SignUpViewState extends State<SignUpView> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       _buildTextInfo('휴대폰 번호를 입력하면 동행의 이용약관에 동의하는 것으로 간주합니다.'),
-      Wrap( 
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-          _buildTextInfo('자세한 내용은'),
-          _buildTextButton('개인정보 처리방침'),
-          _buildTextInfo('및'),
-          _buildTextButton('이용약관'),
-          _buildTextInfo('에서 확인해 주세요.'),
-        ],
+      FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center, 
+          children: <Widget>[
+            _buildTextInfo('자세한 내용은'),
+            _buildTextButton('개인정보 처리방침'),
+            _buildTextInfo('및'),
+            _buildTextButton('이용약관'),
+            _buildTextInfo('에서 확인해 주세요.'),
+          ],
+        ),
       )
     ],
    );
 
-   Widget _buildTextInfo(String infoString) => Text(
-    infoString,
-    maxLines: 2,
-    style: TextStyle(color: MyColors.systemGrey_500, fontSize: 12)
+   Widget _buildTextInfo(String infoString) => FittedBox(
+    fit: BoxFit.scaleDown,
+     child: Text(
+      infoString,
+      maxLines: 1,
+      style: TextStyle(color: MyColors.systemGrey_500, fontSize: 12)
+     ),
    );
 
    Widget _buildTextButton(String buttonString) => TextButton(
     style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 7)),
     onPressed: () => {},
-    child: Text(buttonString, style: TextStyle(
+    child: Text(buttonString,
+                style: TextStyle(
                   height: 1.9,
                   shadows: [Shadow(color: MyColors.systemGrey_500, offset: const Offset(0, -1))],
                   color: Colors.transparent,
@@ -131,6 +138,11 @@ class _SignUpViewState extends State<SignUpView> {
                       }
                       return null;
                     },
+                    inputDecoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: MyColors.primeOrange, width: 2),)
+                    ),
+                    // cursorColor: MyColors.primeOrange,
                     onInputChanged: (PhoneNumber number) {
                       setState(() => phoneNumberInput = number.phoneNumber);
                       // FIXME: only testing if the input number length is greater than 10
@@ -141,6 +153,7 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                     ignoreBlank: false,
                     // autoValidateMode: AutovalidateMode.always,
+                    
                     selectorTextStyle: const TextStyle(color: Colors.black),
                     initialValue: number,
                     textFieldController: controller,

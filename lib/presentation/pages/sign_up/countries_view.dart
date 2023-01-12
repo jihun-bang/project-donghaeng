@@ -35,17 +35,17 @@ class _CountriesViewState extends State<CountriesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SignUpAppbar(value: 0.8),
+        appBar: SignUpAppbar(value: 0.7),
         body: Column(
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 45),
-                      const Text('동행러님이 가보고 싶은 나라는 어디인가요?',
+                      const Text('동행러님이 가보고 싶은 \n나라는 어디인가요?',
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
@@ -101,7 +101,7 @@ class _CountriesViewState extends State<CountriesView> {
               isEnabled: countryFirstPick != null,
               isSkippable: true,
               callback: () =>
-                  sl<NavigationService>().pushNamed("/sign-up/birth"),
+                  sl<NavigationService>().pushNamed("/sign-up/preferred_preferences"),
             )
           ],
         ));

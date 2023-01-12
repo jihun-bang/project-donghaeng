@@ -20,14 +20,19 @@ class _BirthViewState extends State<BirthView> {
   String birthDay = '0000/00/00';
 
   @override
+  void initState() {
+    super.initState();
+    
+  }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SignUpAppbar(value: 0.4),
         body: Column(
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

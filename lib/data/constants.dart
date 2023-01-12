@@ -1,5 +1,23 @@
 class Configuration {}
-// const List<Map> countryList = [
+const List<String> mbtiList = [
+  'INTJ',
+  'INTP',
+  'ENTJ',
+  'ENTP',
+  'INFJ',
+  'INFP',
+  'ENFJ',
+  'ENFP',
+  'ISTJ',
+  'ISFJ',
+  'ESTJ',
+  'ESFJ',
+  'ISTP',
+  'ISFP',
+  'ESTP',
+  'ESFP'
+];
+
 const List<Map> countryList = [
   {"name_en": "Afghanistan", "dial_code": "+93", "code": "AF", "name_kr": "아프가니스탄"},
   {"name_en": "Aland Islands", "dial_code": "+358", "code": "AX", "name_kr": "올란드 제도"},

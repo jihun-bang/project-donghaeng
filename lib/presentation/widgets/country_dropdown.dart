@@ -75,14 +75,6 @@ class _CountryDropdownState extends State<CountryDropdown> {
             focusColor: MyColors.primeOrange_200,
             isExpanded: true,
             dropdownMaxHeight: MediaQuery.of(context).size.height / 2.5,
-            buttonPadding: const EdgeInsets.only(left: 0, right: 16, bottom: 6),
-            hint: Text('나라 선택하기',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: MyColors.systemGrey_400,
-                    fontWeight: FontWeight.w500)),
-            icon: const Icon(Icons.keyboard_arrow_down_outlined),
-            iconSize: 26,
             value: widget.selectedCountry,
             items: (widget.alreadySelected != null)
                 ? CountryList.countryList
@@ -105,13 +97,15 @@ class _CountryDropdownState extends State<CountryDropdown> {
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: widget.selectedCountry != null
-                            ? MyColors.primeOrange
-                            : MyColors.systemGrey_400,
+                        color: MyColors.systemGrey_400,
+                        // color: widget.selectedCountry != null
+                        //     ? MyColors.primeOrange
+                        //     : MyColors.systemGrey_400,
                         width: 2),
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: MyColors.primeOrange, width: 2),
+                    // borderSide: BorderSide(color: MyColors.primeOrange, width: 2),
+                    borderSide: BorderSide(color: MyColors.systemGrey_400, width: 2),
                   ),
                   errorBorder: UnderlineInputBorder(
                       borderSide:
