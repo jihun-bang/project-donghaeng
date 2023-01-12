@@ -135,6 +135,7 @@ class _MBTIViewState extends State<MBTIView> {
             SignUpMainButton(
               text: '다음',
               isEnabled: selectedMBTI != null,
+              isSkippable: true,
               callback: () =>
                   sl<NavigationService>().pushNamed("/home"),
             )

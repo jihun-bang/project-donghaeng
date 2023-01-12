@@ -45,6 +45,7 @@ class _PreferencesViewState extends State<PreferencesView> {
             SignUpMainButton(
               text: '다음',
               isEnabled: selectedKeywords.isNotEmpty,
+              isSkippable: true,
               callback: () =>
                   sl<NavigationService>().pushNamed("/sign-up/mbti"),
             )
