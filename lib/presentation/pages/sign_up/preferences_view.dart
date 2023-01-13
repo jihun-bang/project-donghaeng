@@ -46,6 +46,7 @@ class _PreferencesViewState extends State<PreferencesView> {
               text: '다음',
               isEnabled: selectedKeywords.isNotEmpty,
               isSkippable: true,
+              nextStepRoute: 'mbti',
               callback: () =>
                   sl<NavigationService>().pushNamed("/sign-up/mbti"),
             )

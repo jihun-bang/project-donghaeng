@@ -58,6 +58,7 @@ class _ProfileSetupViewState extends State<ProfileSetupView> {
               text: '다음',
               isEnabled: profileImage != null,
               isSkippable: true,
+              nextStepRoute: 'preferred_countries',
               // FIXME: 프로필 사진 업로드 추가 필요
               callback: () =>
                   sl<NavigationService>().pushNamed("/sign-up/preferred_countries"),

@@ -136,6 +136,7 @@ class _MBTIViewState extends State<MBTIView> {
               text: '다음',
               isEnabled: selectedMBTI != null,
               isSkippable: true,
+              nextStepRoute: 'home',
               callback: () =>
                   sl<NavigationService>().pushNamed("/home"),
             )

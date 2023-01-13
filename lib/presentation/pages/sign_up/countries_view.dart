@@ -100,6 +100,7 @@ class _CountriesViewState extends State<CountriesView> {
               text: '다음',
               isEnabled: countryFirstPick != null,
               isSkippable: true,
+              nextStepRoute: 'preferred_preferences',
               callback: () =>
                   sl<NavigationService>().pushNamed("/sign-up/preferred_preferences"),
             )

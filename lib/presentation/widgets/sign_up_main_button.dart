@@ -13,6 +13,7 @@ class SignUpMainButton extends StatefulWidget {
   final String? phoneNumberInput;
   final VoidCallback? callback; // for onPressed action
   final bool? isSkippable;
+  final String? nextStepRoute; // default 'home'
 
   const SignUpMainButton({
     Key? key,
@@ -21,7 +22,8 @@ class SignUpMainButton extends StatefulWidget {
     required this.isEnabled,
     this.phoneNumberInput,
     this.callback,
-    this.isSkippable
+    this.isSkippable,
+    this.nextStepRoute = 'home'
     }) : super(key: key);
 
   @override
@@ -44,22 +46,24 @@ class _SignUpMainButtonState extends State<SignUpMainButton> {
     child: Column(
       children: <Widget>[
         const Spacer(flex: 1),
-        Visibility(
-          visible: widget.isSkippable == true ? true : false,
-          child: TextButton(
+        if (widget.isSkippable == true)
+          TextButton(
             onPressed: () {
-              sl<NavigationService>().pushNamedAndRemoveAll("/home");
+              sl<NavigationService>().pushNamed("/sign-up/$widget.nextStepRoute");
             },
-            child: Text('나중에 설정하기', style: TextStyle(
-              height: 1.9,
-              shadows: [Shadow(color: MyColors.systemBlack, offset: const Offset(0, -1))],
-              color: Colors.transparent,
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-              decorationColor: MyColors.systemBlack
-            )),
+            child: Text('나중에 설정하기',
+                style: TextStyle(
+                    height: 1.9,
+                    shadows: [
+                      Shadow(
+                          color: MyColors.systemBlack,
+                          offset: const Offset(0, -1))
+                    ],
+                    color: Colors.transparent,
+                    fontSize: 16,
+                    decoration: TextDecoration.underline,
+                    decorationColor: MyColors.systemBlack)),
           ),
-        ),
         const SizedBox(height: 48),
         OutlinedButton(
               onPressed:
