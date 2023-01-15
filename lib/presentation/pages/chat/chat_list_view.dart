@@ -20,7 +20,7 @@ class _ChatListViewState extends State<ChatListView>
   final currentUser = FirebaseAuth.instance.currentUser;
 
   late TabController _tabController;
-  final List<String> _tabList = ['전체보기'];
+  final List<String> _tabList = [];
 
   int _selectedTabIndex = 0;
 
@@ -39,7 +39,7 @@ class _ChatListViewState extends State<ChatListView>
     for (var element in Country.values) {
       _tabList.add(element.korean);
     }
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: Country.values.length, vsync: this);
   }
 
   @override
@@ -89,80 +89,73 @@ class _ChatListViewState extends State<ChatListView>
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: const Color(0xFFEAEAEA)),
                 ),
-                padding: const EdgeInsets.only(top: 16, left: 14, bottom: 18),
+                padding: const EdgeInsets.only(
+                    top: 16, left: 14, bottom: 18, right: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        const Text(
+                          '지역이름',
+                          style: TextStyle(color: Colors.grey, fontSize: 15),
+                        ),
+                        const Text(',',
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
+                        const SizedBox(width: 6),
+                        Text(country,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 15)),
+                        const SizedBox(width: 6),
+                        Text(
+                            '${chatRoom.travelDateStart.substring(5, 10).replaceAll('-', '.')}'
+                            ' - ${chatRoom.travelDateEnd.substring(5, 10).replaceAll('-', '.')}',
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 15)),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 17),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
                         Row(
-                          children: [
-                            const ProfileImage(size: 46),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Transform.translate(
-                                      offset: const Offset(0, 1),
-                                      child: Icon(
-                                        Icons.mail_outline_rounded,
-                                        color: Colors.black.withOpacity(0.4),
-                                        size: 18,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      '$latestChat분전 대화',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black.withOpacity(0.4)),
-                                    ),
-                                  ],
-                                )
-                              ],
+                          children: <Widget>[
+                            const ProfileImage(size: 30),
+                            const SizedBox(height: 8),
+                            Text(
+                              '${chatRoom.members.length}명 참여중',
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.bookmark_border_rounded,
-                              size: 24,
-                              color: Colors.black.withOpacity(0.3),
-                            )),
-                      ],
-                    ),
-                    const Divider(color: Color(0xFFEAEAEA)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            '${chatRoom.travelDateStart.substring(5, 10).replaceAll('-', '/')}'
-                            ' - ${chatRoom.travelDateEnd.substring(5, 10).replaceAll('-', '/')}',
-                            style: _cardSmallTextStyle.copyWith(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.9))),
-                        const SizedBox(height: 8),
-                        Text(
-                          '$tags\n$tags\n$tags',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.6)),
-                        ),
+                        Row(
+                          children: [
+                            Transform.translate(
+                              offset: const Offset(0, 1),
+                              child: Icon(
+                                Icons.mode_comment_rounded,
+                                color: Colors.black.withOpacity(0.4),
+                                size: 18,
+                              ),
+                            ),
+                            Text(
+                              '$latestChat분 전 대화',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black.withOpacity(0.4)),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ],

@@ -1,8 +1,8 @@
 // 서비스하는 나라
 enum Country {
-  france('프랑스'), // 프랑스
+  croatia('크로아티아'), // 크로아티아
   czech('체코'), // 체코
-  croatia('크로아티아'); // 크로아티아
+  italy('이탈리아'); // 이탈리아
 
   final String korean;
   const Country(this.korean);
