@@ -53,6 +53,7 @@ flutter:
     - assets/images/
     - assets/data/
     - assets/icons/
+    - assets/flags/
     - env
   fonts:
     - family: Noto_Sans_KR

@@ -3,6 +3,7 @@ import 'package:donghaeng/presentation/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/toast.dart';
@@ -78,88 +79,41 @@ class _ChatListViewState extends State<ChatListView>
           itemBuilder: (_, index) {
             final chatRoomID = viewModel.publicChatRooms.keys.elementAt(index);
             final chatRoom = chatRooms.elementAt(index);
-            final tags = chatRoom.tags?.map((e) => '#$e').toList().join('');
             final latestChat =
                 DateTime.now().difference(chatRoom.latestChatAt).inMinutes;
+            final startDate =
+                chatRoom.travelDateStart.substring(5, 10).replaceAll('-', '.');
+            final endDate =
+                chatRoom.travelDateEnd.substring(5, 10).replaceAll('-', '.');
 
             return InkWell(
               onTap: () => viewModel.joinChatRoom(chatRoomID),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFFEAEAEA)),
-                ),
-                padding: const EdgeInsets.only(
-                    top: 16, left: 14, bottom: 18, right: 14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '지역이름',
-                          style: TextStyle(color: Colors.grey, fontSize: 15),
-                        ),
-                        const Text(',',
-                            style: TextStyle(color: Colors.grey, fontSize: 15)),
-                        const SizedBox(width: 6),
-                        Text(country,
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 15)),
-                        const SizedBox(width: 6),
-                        Text(
-                            '${chatRoom.travelDateStart.substring(5, 10).replaceAll('-', '.')}'
-                            ' - ${chatRoom.travelDateEnd.substring(5, 10).replaceAll('-', '.')}',
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 15)),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      '${_selectedTabIndex != 0 ? '[$country] ' : ''}${chatRoom.title}',
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 17),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            const ProfileImage(size: 30),
-                            const SizedBox(height: 8),
-                            Text(
-                              '${chatRoom.members.length}명 참여중',
-                              style: const TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Transform.translate(
-                              offset: const Offset(0, 1),
-                              child: Icon(
-                                Icons.mode_comment_rounded,
-                                color: Colors.black.withOpacity(0.4),
-                                size: 18,
-                              ),
-                            ),
-                            Text(
-                              '$latestChat분 전 대화',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black.withOpacity(0.4)),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+              child: Stack(
+                children: <Widget>[
+                  FittedBox(
+                      fit: BoxFit.fill,
+                      child: Image.asset('images/croatia_example.png')),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('지역이름, $country\n$startDate - $endDate',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 30)),
+                      Text(chatRoom.title,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20)),
+                      Row(
+                        children: [
+                          // todo; image
+                          Text(
+                            '${chatRoom.members.length}명 참여중',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
               ),
             );
           });
