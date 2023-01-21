@@ -15,6 +15,9 @@ class SignUpViewModel extends UserViewModel {
   String? name;
   String? description;
   String? instagram;
+  String? phoneNumber;
+
+  
 
   XFile? _profileImage;
   XFile? get profileImage => _profileImage;
@@ -87,4 +90,5 @@ class SignUpViewModel extends UserViewModel {
     }
     return null;
   }
+  
 }

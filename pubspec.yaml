@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   # Resource
   cupertino_icons:
   google_fonts: ^3.0.1
@@ -22,12 +24,12 @@ dependencies:
 
   # Firebase
   google_sign_in: ^5.4.1
-  firebase_core: ^1.20.0
-  firebase_auth: ^3.6.2
+  firebase_core: ^2.4.0
+  firebase_auth: ^4.2.0
   flutterfire_ui: ^0.4.3+4
-  firebase_database: ^9.1.0
-  cloud_firestore: ^3.4.4
-  firebase_storage: ^10.3.7
+  firebase_database: ^10.0.7
+  cloud_firestore: ^4.2.0
+  firebase_storage: ^11.0.7
 
   # DI
   get_it: ^7.2.0
@@ -40,6 +42,10 @@ dependencies:
   tuple: ^2.0.0
   fluttertoast: ^8.0.9
   image_picker: ^0.8.5+3
+  intl_phone_number_input: ^0.7.1
+  country_list_pick: ^1.0.1+6
+  dropdown_search: ^5.0.5
+  dropdown_button2: ^1.9.2
 
 dev_dependencies:
   flutter_test:

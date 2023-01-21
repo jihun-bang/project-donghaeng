@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -62,6 +63,14 @@ class MyApp extends StatelessWidget {
                 create: (_) => sl<SignUpViewModel>()),
           ],
           child: MaterialApp(
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('ko', ''),
+              Locale('en', ''),
+            ],
             theme: themeDate,
             scrollBehavior: const MaterialScrollBehavior().copyWith(
               dragDevices: {
