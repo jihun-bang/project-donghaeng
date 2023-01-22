@@ -17,8 +17,6 @@ class SignUpViewModel extends UserViewModel {
   String? instagram;
   String? phoneNumber;
 
-  
-
   XFile? _profileImage;
   XFile? get profileImage => _profileImage;
 
@@ -43,7 +41,7 @@ class SignUpViewModel extends UserViewModel {
   }
 
   @override
-  Future<bool> updateUser({User? user}) async {
+  Future<bool> updateUser({UserModel? user}) async {
     _loading = true;
     notifyListeners();
 
@@ -59,7 +57,7 @@ class SignUpViewModel extends UserViewModel {
                   image: _backgroundImage!, isProfile: false) ??
               ''
           : user.backgroundImagePath;
-      final updateUser = User(
+      final updateUser = UserModel(
           id: user.id,
           name: name ?? user.name,
           imagePath: imagePath,
@@ -90,5 +88,4 @@ class SignUpViewModel extends UserViewModel {
     }
     return null;
   }
-  
 }

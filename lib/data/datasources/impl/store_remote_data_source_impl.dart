@@ -15,7 +15,7 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
 
   /// User
   @override
-  Future<bool> addUser({required User user}) async {
+  Future<bool> addUser({required UserModel user}) async {
     try {
       await usersCollection.doc(auth.currentUser?.uid).set(user.toJson());
       return true;
@@ -26,7 +26,7 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
   }
 
   @override
-  Future<User> getUser({String? id}) async {
+  Future<UserModel> getUser({String? id}) async {
     final snapshot =
         await usersCollection.doc(id ?? auth.currentUser?.uid).get();
     if (snapshot.exists) {
@@ -38,7 +38,7 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
   }
 
   @override
-  Stream<User> getUserByStream() {
+  Stream<UserModel> getUserByStream() {
     return usersCollection
         .doc(auth.currentUser?.uid)
         .snapshots()
@@ -46,7 +46,7 @@ class StoreRemoteDataSourceImpl implements StoreRemoteDataSource {
   }
 
   @override
-  Future<bool> updateUser({required User user}) async {
+  Future<bool> updateUser({required UserModel user}) async {
     try {
       await usersCollection.doc(auth.currentUser?.uid).update(user.toJson());
       return true;

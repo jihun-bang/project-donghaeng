@@ -14,7 +14,7 @@ class UserRepositoryImpl implements UserRepository {
       required this.storageRemoteDataSource});
 
   @override
-  Future<bool> add({required User user}) async {
+  Future<bool> add({required UserModel user}) async {
     try {
       await storeRemoteDataSource.addUser(user: user);
       return true;
@@ -24,12 +24,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<User?> getByStream() {
+  Stream<UserModel?> getByStream() {
     return storeRemoteDataSource.getUserByStream();
   }
 
   @override
-  Future<User?> get({String? id}) async {
+  Future<UserModel?> get({String? id}) async {
     try {
       return await storeRemoteDataSource.getUser(id: id);
     } catch (e) {
@@ -38,7 +38,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<bool> update({required User user}) async {
+  Future<bool> update({required UserModel user}) async {
     try {
       await storeRemoteDataSource.updateUser(user: user);
       return true;

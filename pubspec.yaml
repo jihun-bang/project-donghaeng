@@ -46,6 +46,7 @@ dependencies:
   country_list_pick: ^1.0.1+6
   dropdown_search: ^5.0.5
   dropdown_button2: ^1.9.2
+  flutter_secure_storage: ^7.0.1
 
 dev_dependencies:
   flutter_test:

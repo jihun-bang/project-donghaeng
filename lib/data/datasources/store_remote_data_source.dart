@@ -7,10 +7,10 @@ abstract class StoreRemoteDataSource {
   StoreRemoteDataSource();
 
   /// User
-  Future<bool> addUser({required User user});
-  Future<User?> getUser({String? id});
-  Stream<User?> getUserByStream();
-  Future<bool> updateUser({required User user});
+  Future<bool> addUser({required UserModel user});
+  Future<UserModel?> getUser({String? id});
+  Stream<UserModel?> getUserByStream();
+  Future<bool> updateUser({required UserModel user});
   Future<bool> deleteUser();
 
   /// Chat Rooms
