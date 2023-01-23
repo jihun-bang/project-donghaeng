@@ -19,7 +19,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late u.User user;
+  late u.UserModel user;
 
   @override
   Widget build(BuildContext context) {

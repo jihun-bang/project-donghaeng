@@ -4,8 +4,8 @@ import '../../domain/models/chat_room.dart';
 import '../../domain/models/user.dart';
 
 extension SnapshotMapper on DocumentSnapshot<Map<String, dynamic>> {
-  User toUser() {
-    return User?.fromJson(data()!);
+  UserModel toUser() {
+    return UserModel?.fromJson(data()!);
   }
 
   ChatRoom toChatRoom() {

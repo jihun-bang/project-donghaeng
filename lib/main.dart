@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:flutterfire_ui/i10n.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,8 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
 import 'injection.dart';
+
+const storage = FlutterSecureStorage();
 
 Future<void> main() async {
   /// 환경 변수
