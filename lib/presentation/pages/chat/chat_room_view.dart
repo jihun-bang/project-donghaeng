@@ -32,7 +32,8 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _chatRoomViewModel = sl<ChatRoomViewModel>();
   final _userViewModel = sl<UserViewModel>();
 
-  final User user = FirebaseAuth.instance.currentUser!;
+  // final User user = FirebaseAuth.instance.currentUser!;
+  late final user;
   String _chatRoomID = "";
 
   final _textController = SendChatController();
@@ -51,6 +52,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   void initState() {
     super.initState();
     _loadChatRoomID();
+    user = _userViewModel.user; // todo: remove
   }
 
   @override

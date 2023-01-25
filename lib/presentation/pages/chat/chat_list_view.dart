@@ -24,6 +24,7 @@ class _ChatListViewState extends State<ChatListView>
   final List<String> _tabList = [];
 
   int _selectedTabIndex = 0;
+  String _selectedCountry = "";
 
   final _cardSmallTextStyle =
       const TextStyle(fontSize: 8, color: Color(0xFF646464));
@@ -40,6 +41,7 @@ class _ChatListViewState extends State<ChatListView>
     for (var element in Country.values) {
       _tabList.add(element.korean);
     }
+    _selectedCountry = _tabList.first;
     _tabController = TabController(length: Country.values.length, vsync: this);
   }
 
@@ -52,18 +54,61 @@ class _ChatListViewState extends State<ChatListView>
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TabBar(
-              onTap: (index) => _onTabTapped(index),
-              controller: _tabController,
-              isScrollable: true,
-              padding: EdgeInsets.zero,
-              indicatorSize: TabBarIndicatorSize.label,
-              tabs: _tabList.map((e) => Tab(text: e)).toList()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _countryDropdown(context),
+              Row(
+                children: const <Widget>[
+                  Icon(
+                    Icons.add_box_outlined,
+                    size: 30,
+                  ),
+                  Icon(
+                    Icons.notifications_none,
+                    size: 30,
+                  )
+                ],
+              )
+            ],
+          ),
+          // TabBar(
+          //     onTap: (index) => _onTabTapped(index),
+          //     controller: _tabController,
+          //     isScrollable: true,
+          //     padding: EdgeInsets.zero,
+          //     indicatorSize: TabBarIndicatorSize.label,
+          //     tabs: _tabList.map((e) => Tab(text: e)).toList()),
           Expanded(
             child: _communities(context),
           ),
         ],
       );
+
+  Widget _countryDropdown(BuildContext context) {
+      return DropdownButton<String>(
+      value: _selectedCountry,
+      underline: Container(color: Colors.transparent),
+      icon: const Icon(
+        Icons.keyboard_arrow_down_outlined,
+        color: Colors.black,
+        size: 24,
+      ),
+      elevation: 16,
+      style: const TextStyle(fontSize: 30),
+      onChanged: (String? value) {
+        setState(() {
+          _selectedCountry = value!;
+        });
+      },
+      items: _tabList.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
 
   Widget _communities(BuildContext context) {
     return Consumer<ChatRoomViewModel>(builder: (_, viewModel, ___) {
@@ -89,29 +134,43 @@ class _ChatListViewState extends State<ChatListView>
             return InkWell(
               onTap: () => viewModel.joinChatRoom(chatRoomID),
               child: Stack(
+                fit: StackFit.passthrough,
                 children: <Widget>[
-                  FittedBox(
-                      fit: BoxFit.fill,
-                      child: Image.asset('images/croatia_example.png')),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('지역이름, $country\n$startDate - $endDate',
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 30)),
-                      Text(chatRoom.title,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20)),
-                      Row(
-                        children: [
-                          // todo; image
-                          Text(
-                            '${chatRoom.members.length}명 참여중',
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                  Image.asset(
+                    'images/croatia_example.png',
+                    fit: BoxFit.fill,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('지역이름, $country\n$startDate - $endDate',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 30)),
+                          Text(chatRoom.title,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              // todo; image
+                              Text(
+                                '${chatRoom.members.length}명 참여중',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                '$latestChat분 전 대화',
+                                style: const TextStyle(color: Colors.white),
+                              )
+                            ],
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   )
                 ],
               ),

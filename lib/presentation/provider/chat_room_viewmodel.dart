@@ -17,7 +17,8 @@ import '../navigation/navigation.dart';
 class ChatRoomViewModel extends ChangeNotifier {
   final _userViewModel = sl<UserViewModel>();
 
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
+  late final user;
 
   final _chatRepository = sl<ChatRepository>();
   final _chatRoomRepository = sl<ChatRoomRepository>();
@@ -37,6 +38,7 @@ class ChatRoomViewModel extends ChangeNotifier {
 
   ChatRoomViewModel() {
     getChatList();
+    user = _userViewModel.user;  // todo: remove
   }
 
   getChatList() async {
