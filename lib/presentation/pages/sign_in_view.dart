@@ -129,17 +129,6 @@ class _SignInViewState extends State<SignInView> {
         child: SvgPicture.asset('assets/icons/main_logo.svg'),
       );
 
-  //! check if it should be removed or not
-  // Widget get _buildInfo => const Padding(
-  //       padding: EdgeInsets.only(bottom: 28),
-  //       child: Text(
-  //         '로그인 하면 GiGi 이용약관에 동의하는 것으로 간주합니다.\n자세한 내용은 개인정보 처리방침 및 이용약관에서 확인해 보세요.',
-  //         style: TextStyle(
-  //             fontSize: 13, fontWeight: FontWeight.w500, color: Colors.white),
-  //         textAlign: TextAlign.center,
-  //       ),
-  //     );
-
   Widget get _signUp => Container(
       // width: 10,
       height: 54,
@@ -194,14 +183,14 @@ class _SignInViewState extends State<SignInView> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
-                  onTap: () async => await userViewModel.getUser(),
+                  onTap: () async => await signInViewModel.signIn(type),
                   child: Image.asset('assets/icons/icon_${type.name}.png'),
                 ))
           ] else ...[
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
-                  onTap: () async => await userViewModel.getUser(),
+                  onTap: () async => await signInViewModel.signIn(type),
                   child: getSVGImage('assets/icons/icon_${type.name}.svg'),
                 ))
           ]
